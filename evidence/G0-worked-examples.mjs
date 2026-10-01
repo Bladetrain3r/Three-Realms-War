@@ -90,7 +90,7 @@ const hashOf = (v) => sha256(new TextEncoder().encode(canon(v)));
 
 // ---- design formulas --------------------------------------------------------------------------
 const heroBase = (s1, L) => s1 + idiv(s1 * 9 * (L - 1), 49);
-const enemyBase = (p, L, k = 22) => p + idiv(p * k * (L - 1), 49);
+const enemyBase = (p, L, k = 34) => p + idiv(p * k * (L - 1), 49);
 const starMul = (star) => 10000 + 500 * star;
 const gearMain = (coef, ilvl, tierBp, star) => mulbp(mulbp(coef * ilvl, tierBp), starMul(star));
 const mitBp = (def, attackerLevel) => Math.min(8000, idiv(def * 10000, def + 40 + 12 * attackerLevel));
@@ -116,7 +116,7 @@ function damage({ atk, power, def, attackerLevel, affinity, elemRes, takenBp, va
 const rng1 = makeRng(1);
 const first3 = [rng1(), rng1(), rng1()];
 const huscarlHit = { atk: 300, power: 16000, def: 250, attackerLevel: 26, affinity: true, elemRes: 2000, takenBp: 0, variance: 10500, critRoll: 9000, critChance: 500, critDmg: 15000 };
-const brute171 = enemyBase(14, 26);
+const brute171 = enemyBase(6, 26); // DESIGN 0.3 retuned K to 34 and the brute VIG profile to 6 (originally K 22, VIG 14)
 const brute = mulbp(brute171, 11000);
 const sample = { schema: 1, kind: 'x', z: [3, 1, 2], a: { y: 2, b: 1 } };
 
@@ -137,7 +137,7 @@ export const EXAMPLES = [
   ['WE-14', 'burn tick on max HP 1455 at 600 bp', () => [Math.max(1, mulbp(1455, 600))]],
   ['WE-15', 'injured early: MIT 300, VIG 291 halved, resulting max HP', () => [mulbp(300, 5000), mulbp(291, 5000), 5 * mulbp(291, 5000)]],
   ['WE-16', 'turn order: ids 0..5 with SPD 14, 9, 14, 12, 9, 12 (chill on id 3 = -3000bp)', () => unitOrder([{ id: 0, spd: 14 }, { id: 1, spd: 9 }, { id: 2, spd: 14 }, { id: 3, spd: mulbp(12, 7000) }, { id: 4, spd: 9 }, { id: 5, spd: 12 }])],
-  ['WE-17', 'enemy brute VIG 14 at L26: scaled, Midgard tilt, max HP, with Hardy (+4000bp)', () => [brute171, brute, 5 * brute, 5 * mulbp(brute, 14000)]],
+  ['WE-17', 'enemy brute VIG 6 at L26 (DESIGN 0.3): scaled, Midgard tilt, max HP, with Hardy (+4000bp)', () => [brute171, brute, 5 * brute, 5 * mulbp(brute, 14000)]],
   ['WE-18', 'upgrade cost in common materials: ilvl 26 at star 0 and star 3', () => [upgradeCost(26, 0), upgradeCost(26, 3)]],
   ['WE-19', 'bonus line raw 300 at star 3 and star 5', () => [mulbp(300, starMul(3)), mulbp(300, starMul(5))]],
   ['WE-20', 'new line: ten kinds available, draws 6 (CRIT, range 100..400) then 150', () => [6, 100 + 150]],

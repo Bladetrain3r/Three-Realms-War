@@ -39,7 +39,7 @@ export const registry = {
   'WE-07': () => [itemMain(item({ tier: 'runed', ilvl: 26, star: 2 }), content).flat[0][1]],
   'WE-08': () => { const u = buildHeroUnit(hero({ level: 26, slots: { weapon: null, armour: 10, helm: 11, charm: 12 } }), wsItems, content); return [fin(u, 'VIG', false), u.maxHp]; },
   'WE-15': () => { const u = buildHeroUnit(hero({ level: 26, slots: { weapon: null, armour: 10, helm: 11, charm: 12 } }), wsItems, content, { forced: true }); const t = content.tables.stats; return [finalStat(300, 0, true, t), fin(u, 'VIG', true), u.maxHp]; },
-  'WE-17': () => { const e = content.tables.enemy, t = content.tables.stats, b = enemyBase(14, 26, e, { tilt: true }); return [enemyScaled(14, 26, e), b, 5 * b, 5 * finalStat(b, 4000, false, t)]; },
+  'WE-17': () => { const e = content.tables.enemy, t = content.tables.stats, v = content.archetypeById.brute.stats.VIG, b = enemyBase(v, 26, e, { tilt: true }); return [enemyScaled(v, 26, e), b, 5 * b, 5 * finalStat(b, 4000, false, t)]; },
   'WE-18': () => [upgradeCost(item({ ilvl: 26, star: 0 }), content).common, upgradeCost(item({ ilvl: 26, star: 3 }), content).common],
   'WE-19': () => [lineValue(300, 3, content.items), lineValue(300, 5, content.items)],
   'WE-20': () => { const s = [6, 150]; const l = rollLines({ range: () => s.shift() }, 1, content)[0]; return l; },

@@ -135,13 +135,12 @@ the base at the high end" decision: geared HP lands in the low thousands, and ge
 
 Enemies are not built from equipment. An archetype has a level-1 profile `p`; at level `L`:
 
-`enemy(p, L) = p + idiv(p * 22 * (L - 1), 49)`
+`enemy(p, L) = p + idiv(p * 34 * (L - 1), 49)`
 
-(about 23x at level 50). Order, flooring after each step: the curve, then the signature (`x11500`) or boss multiplier
-(10.3, 10.4), then the realm tilt (+1000 bp on two stats, section 10.2), then affixes. The constant 22 is a design constant, set so that on-level, on-tier gear gives a fight of
-four to five rounds across the whole range (a scratch check, to be re-measured in G1 and G3).
+(about 35x at level 50). Order, flooring after each step: the curve, then the signature (`x11500`) or boss multiplier
+(10.3, 10.4), then the realm tilt (+1000 bp on two stats, section 10.2), then affixes. The constant 34 and the level-1 profiles of section 10.2 were tuned in G3 against `checks/balance.yaml` (Changes 0.3).
 
-[WE-17] brute VIG 14 at L26: scaled, Midgard tilt, max HP, and max HP with the Hardy affix (+4000 bp) => 171, 188, 940, 1315
+[WE-17] brute VIG 6 at L26: scaled, Midgard tilt, max HP, and max HP with the Hardy affix (+4000 bp) => 110, 121, 605, 845
 
 Enemy `SRES = 500 + 80 x level`, `CRIT = 500`, `CRITDMG = 15000`. Enemy elemental resistances: the realm's own element
 `+5000`, and the element the realm is weak to `-2500` (section 10.1).
@@ -561,14 +560,14 @@ Realm tilt: `+1000 bp` on the two affinity stats of the realm (7.1). A *signatur
 
 | Archetype | Pos | Atk | VIG | MIT | ARC | GRD | WRD | SPD | Threat | Skill |
 |---|---|---|---|---|---|---|---|---|---|---|
-| brute | F | melee | 14 | 16 | 2 | 12 | 6 | 9 | 2 | smash |
-| guard | F | melee | 18 | 10 | 2 | 20 | 12 | 6 | 2 | shieldbash |
-| skirmisher | F | melee | 10 | 14 | 2 | 8 | 6 | 14 | 1 | lunge |
-| archer | B | ranged | 10 | 15 | 2 | 7 | 8 | 11 | 1 | piercing_shot |
-| caster | B | magic | 9 | 2 | 17 | 5 | 14 | 10 | 2 | bolt_storm |
-| healer | B | magic | 11 | 2 | 15 | 7 | 14 | 9 | 1 | mend |
-| hexer | B | magic | 10 | 2 | 14 | 6 | 12 | 10 | 2 | curse |
-| striker | F | melee | 8 | 18 | 2 | 5 | 5 | 15 | 3 | assassinate |
+| brute | F | melee | 6 | 11 | 1 | 6 | 3 | 9 | 2 | smash |
+| guard | F | melee | 7 | 7 | 1 | 10 | 6 | 6 | 2 | shieldbash |
+| skirmisher | F | melee | 4 | 10 | 1 | 4 | 3 | 14 | 1 | lunge |
+| archer | B | ranged | 4 | 11 | 1 | 4 | 4 | 11 | 1 | piercing_shot |
+| caster | B | magic | 4 | 1 | 12 | 3 | 7 | 10 | 2 | bolt_storm |
+| healer | B | magic | 4 | 1 | 11 | 4 | 7 | 9 | 1 | mend |
+| hexer | B | magic | 4 | 1 | 10 | 3 | 6 | 10 | 2 | curse |
+| striker | F | melee | 3 | 13 | 1 | 3 | 3 | 15 | 3 | assassinate |
 
 Archetype skills (monster skills use the same fields as hero skills). Damage skills carry the **realm rider**: Midgard
 `burn 3000/3`, Asgard `shock 2500/1`, Helheim `chill 4000/2`; and the **realm element**.
@@ -912,3 +911,14 @@ replay round trip; replay hash equal in Node and the browser.
   unknown, or wrong for the target); a skill refused as E06 or E07 is not also refused for its selector. (j) The three
   basic attacks (`strike`, `shoot`, `bolt`) are rows in `content/skills.json`. (k) A unit may not start a fight with HP
   outside 0 to max HP.
+- **0.3 (2026-10-02, a G3 tuning permitted by 0.2):** the enemy curve constant changes from 22 to **34**, and the level-1
+  monster profiles of section 10.2 are scaled: VIG x0.4, MIT and ARC x0.7, GRD and WRD x0.5 (rounded, minimum 1; SPD
+  unchanged), with section 4.5 and the worked example WE-17 updated to match (brute VIG 14 becomes 6; WE-17 is now 110, 121,
+  605, 845). **Measurement that prompted it:** the first balance run (commit 4d4ad1a, `evidence/G3-balance-baseline.json`)
+  had 116 of 148 checks in bounds and showed the delve win rate for each gear tier was the same at every level from 5 to 50
+  (starter 0.14 to 0.28, Fine about 0.66, Runed about 0.94, Heirloom 1.00), against the intent of 0.2. A search of 144
+  settings (`node checks/tune-enemy.mjs`, `evidence/G3-tuning.txt`) and confirmation at 900 delves per cell chose K=34 with
+  those scales: **124 of 148** in bounds, the gear-gap growth bound met (0.42 against 0.35), and low levels playable
+  (level 5 starter gear wins 0.82). The six delve checks still out of bounds are at levels 40 and 50 and are structural:
+  with hero base stats, gear and enemies all linear in level, no setting of these knobs makes the better tiers decline with
+  level (see STOP-1, decision 1). The golden replay hashes were regenerated because the content changed.

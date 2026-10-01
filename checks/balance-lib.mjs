@@ -8,10 +8,12 @@ import { parseYaml } from './yaml.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (...p) => readFileSync(join(root, ...p), 'utf8');
+// CONTENT_DIR points a tuning experiment at a scratch copy of content/ (never set in a real run).
+const readContent = (...p) => (process.env.CONTENT_DIR ? readFileSync(join(process.env.CONTENT_DIR, ...p), 'utf8') : read('content', ...p));
 
 export function loadAll(overrides = {}) {
-  const texts = Object.fromEntries(FILES.map((f) => [f, read('content', f + '.json')]));
-  const schemas = Object.fromEntries(FILES.map((f) => [f, read('content', 'schema', f + '.schema.json')]));
+  const texts = Object.fromEntries(FILES.map((f) => [f, readContent(f + '.json')]));
+  const schemas = Object.fromEntries(FILES.map((f) => [f, readContent('schema', f + '.schema.json')]));
   const B = parseYaml(read('checks', 'balance.yaml'));
   Object.assign(B.run, overrides);
   return { content: loadContent(texts, schemas), B, runbooks: JSON.parse(read('checks', 'balance-runbooks.json')).runbooks };

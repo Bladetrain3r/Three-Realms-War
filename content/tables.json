@@ -12,7 +12,7 @@
     "baseCritDmg": 15000
   },
   "enemy": {
-    "curveK": 22,
+    "curveK": 34,
     "curveDiv": 49,
     "signatureBp": 11500,
     "bossVigBp": 30000,

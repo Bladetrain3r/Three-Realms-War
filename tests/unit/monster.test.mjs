@@ -9,15 +9,15 @@ const e = content.tables.enemy, t = content.tables.stats;
 const row = (id) => content.roster.find((m) => m.id === id);
 const affix = (id) => content.affixes.find((a) => a.id === id);
 
-test('monster: an Ember Raider at level 26 has the documented VIG and 940 HP (DESIGN.md WE-17)', () => {
+test('monster: an Ember Raider at level 26 has the documented VIG and 605 HP (DESIGN.md WE-17)', () => {
   const m = buildMonster(row('midgard_ember_raider'), 26, content);
-  assert.equal(m.stats.VIG.base, 188);
-  assert.equal(m.maxHp, 940);
+  assert.equal(m.stats.VIG.base, 121);
+  assert.equal(m.maxHp, 605);
 });
 
 test('monster: Hardy raises VIG by 40% and max HP with it (DESIGN.md WE-17)', () => {
   const m = buildMonster(row('midgard_ember_raider'), 26, content, { affixes: [affix('hardy')] });
-  assert.equal(m.maxHp, 1315);
+  assert.equal(m.maxHp, 845);
   assert.deepEqual(m.affixes, ['hardy']);
 });
 
@@ -31,15 +31,15 @@ test('monster: tilt applies to the realm\'s two stats only', () => {
 
 test('monster: a signature monster is 15% stronger before the tilt, and carries its special first', () => {
   const chief = buildMonster(row('midgard_warband_chief'), 26, content);
-  assert.equal(chief.stats.VIG.base, enemyBase(14, 26, e, { multiplierBp: e.signatureBp, tilt: true }));
+  assert.equal(chief.stats.VIG.base, enemyBase(content.archetypeById.brute.stats.VIG, 26, e, { multiplierBp: e.signatureBp, tilt: true }));
   assert.deepEqual(chief.skills, ['war_cry', 'smash']);
   assert.deepEqual(buildMonster(row('midgard_ember_raider'), 26, content).skills, ['smash']);
 });
 
 test('monster: a boss has triple VIG, 1.5x elsewhere, is level+2 by the caller, immune to shock, never affixed', () => {
   const b = buildMonster(content.bossById.surtr, 14, content, { boss: true });
-  assert.equal(b.stats.VIG.base, enemyBase(14, 14, e, { multiplierBp: e.bossVigBp, tilt: true }));
-  assert.equal(b.stats.GRD.base, enemyBase(12, 14, e, { multiplierBp: e.bossOtherBp, tilt: false }));
+  assert.equal(b.stats.VIG.base, enemyBase(content.archetypeById.brute.stats.VIG, 14, e, { multiplierBp: e.bossVigBp, tilt: true }));
+  assert.equal(b.stats.GRD.base, enemyBase(content.archetypeById.brute.stats.GRD, 14, e, { multiplierBp: e.bossOtherBp, tilt: false }));
   assert.equal(b.boss, true);
   assert.deepEqual(b.skills, ['sword_of_flame', 'ragnarok_blaze']);
   assert.ok(b.maxHp > 2.5 * buildMonster(row('midgard_ember_raider'), 14, content).maxHp);
