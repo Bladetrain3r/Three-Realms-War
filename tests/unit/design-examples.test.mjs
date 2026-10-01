@@ -9,6 +9,8 @@ import { canonical, hashOf } from '../../sim/canon.js';
 import { content, item, hero } from '../helpers/content.mjs';
 import { healEvent, tickAmounts, orderIds, chillApplies } from '../helpers/units.mjs';
 import { damageSteps } from '../../sim/damage.js';
+import { pickBand } from '../../sim/delve.js';
+import { scripted } from '../helpers/units.mjs';
 import { heroBase, withAffinity, enemyScaled, enemyBase, finalStat } from '../../sim/stats.js';
 import { itemMain, lineValue, rollLines, upgradeCost, salvageValue } from '../../sim/items.js';
 import { buildHeroUnit } from '../../sim/hero.js';
@@ -54,15 +56,27 @@ export const registry = {
   'WE-16': () => orderIds(),
   'WE-31': () => [mbp(258, 5000)],
   'WE-32': () => [tickAmounts()[1]],
+  'WE-27': () => [pickBand(scripted([6]), [3, 4, 3])],
   'WE-28': () => [sha256Hex(utf8('abc'))],
   'WE-29': () => [canonical(sample)],
   'WE-30': () => [hashOf(sample)],
 };
 
 const documented = documentedExamples();
+// Expedition examples are implemented with the expedition code in G5; listed here so none can be forgotten silently.
+export const pendingForG5 = ['WE-24', 'WE-25', 'WE-26'];
 
 test('design examples: DESIGN.md carries 33 tagged worked examples', () => {
   assert.equal(documented.size, 33);
+});
+
+test('design examples: every documented example is checked by the sim, or is explicitly pending for G5', () => {
+  const covered = new Set([...Object.keys(registry), ...pendingForG5]);
+  const missing = [...documented.keys()].filter((id) => !covered.has(id));
+  assert.deepEqual(missing, [], `no sim check for: ${missing.join(', ')}`);
+  const unknown = Object.keys(registry).filter((id) => !documented.has(id));
+  assert.deepEqual(unknown, [], `registry names examples DESIGN.md does not contain: ${unknown.join(', ')}`);
+  assert.equal(Object.keys(registry).length, 30);
 });
 
 for (const [id, fn] of Object.entries(registry)) {

@@ -6,7 +6,7 @@ import { buildMonster, rowOf } from './monster.js';
 import { encounterRewards } from './progress.js';
 import { generateItem } from './items.js';
 
-function pickBand(rng, weights) {
+export function pickBand(rng, weights) {
   let r = rng.range(weights[0] + weights[1] + weights[2]);
   for (let b = 0; b < 3; b++) {
     if (r < weights[b]) return b + 1;
