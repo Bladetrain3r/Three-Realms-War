@@ -896,3 +896,7 @@ replay round trip; replay hash equal in Node and the browser.
   on-level. (c) **Permission:** G3 may tune the enemy curve constant (22, section 4.5) and the monster profile tables to
   meet that intent, without a new STOP, provided each change is logged here with the measurement that prompted it. The
   thresholds in `checks/balance.yaml` are still never loosened.
+- **0.2.1 (2026-10-01, clarification found while authoring `content/`; no number changed):** every *damaging* monster
+  skill (archetype, special or affix-modified) uses its dungeon's realm element. The realm rider is added only where a
+  skill's row says "realm rider"; a skill that lists its own riders (Tempest, Death Chill, Flame Breath, Wail, Curse) uses
+  those instead and still deals the realm element. Sections 10.2 and 10.3 are to be read this way.

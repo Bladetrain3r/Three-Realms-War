@@ -1,0 +1,54 @@
+[
+  {
+    "id": "burn",
+    "kind": "debuff",
+    "duration": 3,
+    "tickDamageBp": 600
+  },
+  {
+    "id": "chill",
+    "kind": "debuff",
+    "duration": 2,
+    "mods": {
+      "SPD": -3000
+    }
+  },
+  {
+    "id": "shock",
+    "kind": "debuff",
+    "duration": 1,
+    "skipsAction": true,
+    "immuneTurns": 2,
+    "bossImmune": true
+  },
+  {
+    "id": "mark",
+    "kind": "debuff",
+    "duration": 3,
+    "damageTakenBp": 2500
+  },
+  {
+    "id": "bulwark",
+    "kind": "buff",
+    "duration": 3,
+    "mods": {
+      "GRD": 3000,
+      "WRD": 3000
+    }
+  },
+  {
+    "id": "fury",
+    "kind": "buff",
+    "duration": 3,
+    "mods": {
+      "MIT": 2500,
+      "ARC": 2500
+    }
+  },
+  {
+    "id": "mend",
+    "kind": "buff",
+    "duration": 3,
+    "tickHealBp": 500
+  }
+]

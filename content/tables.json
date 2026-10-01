@@ -1,0 +1,113 @@
+{
+  "stats": {
+    "levelCap": 50,
+    "growthMul": 9,
+    "growthDiv": 49,
+    "hpPerVig": 5,
+    "affinityBp": 1000,
+    "affinityResBp": 2000,
+    "injuredBp": 5000,
+    "heroSresBase": 500,
+    "baseCrit": 500,
+    "baseCritDmg": 15000
+  },
+  "enemy": {
+    "curveK": 22,
+    "curveDiv": 49,
+    "signatureBp": 11500,
+    "bossVigBp": 30000,
+    "bossOtherBp": 15000,
+    "bossLevelBonus": 2,
+    "tiltBp": 1000,
+    "sresBase": 500,
+    "sresPerLevel": 80,
+    "ownResistBp": 5000,
+    "weakResistBp": -2500
+  },
+  "combat": {
+    "roundCap": 30,
+    "mitCapBp": 8000,
+    "mitBase": 40,
+    "mitPerLevel": 12,
+    "realmDamageBp": 11000,
+    "resMin": -5000,
+    "resMax": 7500,
+    "varianceMin": 9000,
+    "varianceSpan": 2001,
+    "restHealBp": 2000,
+    "braceTurns": 1
+  },
+  "injury": {
+    "delves": 2
+  },
+  "recruit": {
+    "levelNum": 3,
+    "levelDen": 4,
+    "costBase": 100,
+    "costPerLevel": 20,
+    "rareMul": 3,
+    "rosterMax": 24,
+    "startingRoster": [
+      "shieldwarden",
+      "huscarl",
+      "stormcaller",
+      "hearthkeeper"
+    ]
+  },
+  "delve": {
+    "minEncounters": 3,
+    "encounterSpan": 3,
+    "firstEnemies": 3,
+    "otherEnemies": 4,
+    "bossAdds": 2,
+    "bandWeights": {
+      "first": [
+        6,
+        3,
+        1
+      ],
+      "middle": [
+        3,
+        4,
+        3
+      ],
+      "boss": [
+        2,
+        4,
+        4
+      ]
+    },
+    "affix": {
+      "minDelve": 10,
+      "chanceBp": 3000,
+      "chanceHighBp": 5000,
+      "highFrom": 25,
+      "secondBp": 1500,
+      "secondFrom": 25
+    }
+  },
+  "progress": {
+    "xpBase": 50,
+    "xpPerLevel": 30,
+    "xpCubeDiv": 20,
+    "encXpBase": 10,
+    "encXpPerD": 4,
+    "bossMul": 2,
+    "restXpBp": 5000,
+    "matBase": 2,
+    "matDiv": 3,
+    "silverBase": 5,
+    "bossSilverMul": 3,
+    "bossMatMul": 2,
+    "repWin": 5,
+    "repBoss": 5,
+    "threadBp": 300,
+    "rep": {
+      "known": 50,
+      "trusted": 150,
+      "honoured": 400
+    },
+    "threadHearts": 5,
+    "unlockCap": 50
+  }
+}
