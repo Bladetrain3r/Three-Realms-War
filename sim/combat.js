@@ -93,8 +93,12 @@ const anyAlive = (list) => list.some((u) => u.alive);
 
 // heroes, enemies: resolved unit definitions. heroHp: current HP per hero (null for full). Returns the outcome and HP.
 export function resolveEncounter(ctx, { index, heroes, heroHp, enemies }) {
-  const hs = heroes.map((d, i) => makeUnit(d, i, 0, i, heroHp ? heroHp[i] : null, ctx.content));
-  const es = enemies.map((d, i) => makeUnit(d, 4 + i, 1, i, null, ctx.content));
+  const slotOf = (d, i) => (d.slot === undefined ? i : d.slot);
+  const hs = heroes.map((d, i) => makeUnit(d, slotOf(d, i), 0, slotOf(d, i), heroHp ? heroHp[i] : null, ctx.content));
+  const es = enemies.map((d, i) => makeUnit(d, 4 + slotOf(d, i), 1, slotOf(d, i), null, ctx.content));
+  for (const side of [hs, es]) {
+    side.forEach((u, i) => { if (u.slot < 0 || u.slot > 3 || (i > 0 && u.slot <= side[i - 1].slot)) throw new RangeError('units must have distinct slots 0..3 in ascending order'); });
+  }
   ctx.sides = [hs, es];
   ctx.emit([0, index, es.length]);
   const cap = ctx.content.tables.combat.roundCap, all = hs.concat(es);
