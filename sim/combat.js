@@ -115,5 +115,5 @@ export function resolveEncounter(ctx, { index, heroes, heroHp, enemies }) {
   }
   if (outcome === null) outcome = 0;
   ctx.emit([11, outcome, rounds]);
-  return { outcome, rounds, heroHp: hs.map((u) => u.hp) };
+  return { outcome, rounds, heroHp: hs.map((u) => u.hp), enemyHp: es.map((u) => u.hp) };
 }
