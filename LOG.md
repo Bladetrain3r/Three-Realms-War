@@ -14,3 +14,10 @@ decision: proceed — every G0 bullet has a DESIGN.md section (evidence/G0.md se
 
 ### G0 retrospective — 2026-10-01
 rounds used: 1 (one design round, two evaluation passes). What evaluation caught that reading would not: the HP and gear-ratio figures I had written confidently from memory were wrong, and three formulas had no worked example until the gate's "each formula has an example" rule was applied mechanically. The scratch fight showed gear is decisive (0% to 100% win from level 10), a balance fact I had not predicted from the formulas, so it goes to Ziggy as a caveat, not a result. What I would specify differently: the design should state each balance-relevant constant (here the enemy curve constant 22) with the rule for who may change it in G3, because GATES forbids loosening thresholds but is silent on design constants; also a monster-skill model in the scratch check would have made it less crude. Ziggy's mid-session note (12 to 15 monsters is half an hour) changed the content scale before it was written down, which is the cheapest time for it to change.
+
+### R2 — G0/approval + G1/scaffold — 2026-10-01T18:50Z
+plan: record Ziggy's approval and the design intent in DESIGN.md (0.2) and STOP-0.md; then G1 round 1: package.json (no dependencies; tests use Node's built-in runner), `sim/arith.js`, `sim/prng.js`, `sim/sha256.js`, `sim/canon.js`, with unit tests including SHA-256 published vectors and design examples WE-01..04 and WE-28..30 checked against the *sim* (not the G0 reference script) | eval: `node --test "tests/**/*.test.mjs"` | expect: all pass; the sim reproduces the doc's PRNG, seed, hash and canonical-JSON values independently of the G0 script
+result: pending
+decision: pending
+
+G1 round map (each a logged round; the gate has no STOP): R3 content JSON in the G2 shape (the sim needs rosters to run a delve; G2 adds schemas and the table cross-check), R4 stats + items + hero units, R5 combat + statuses + runbook, R6 delve generation/runner/rewards, R7 replay writer/reader + 1,000-seed determinism + banned-call guards, R8 budgets measured + browser hash check + evidence/G1.md.

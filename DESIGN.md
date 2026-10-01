@@ -890,3 +890,9 @@ replay round trip; replay hash equal in Node and the browser.
 ## Changes
 
 - **0.1 (2026-10-01):** first version, for STOP-0. Nothing earlier.
+- **0.2 (2026-10-01, approved by Ziggy in chat after STOP-0):** (a) the design as written is approved; later gates run on
+  until a STOP or a blocked gate. (b) **Design intent for balance:** gear becomes progressively *more necessary* as level
+  rises: at low levels starter gear is enough, and by the upper levels only upgraded Runed and Heirloom gear keeps a party
+  on-level. (c) **Permission:** G3 may tune the enemy curve constant (22, section 4.5) and the monster profile tables to
+  meet that intent, without a new STOP, provided each change is logged here with the measurement that prompted it. The
+  thresholds in `checks/balance.yaml` are still never loosened.

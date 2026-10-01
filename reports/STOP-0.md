@@ -66,4 +66,9 @@ determinism test; the banned-call test; and the `[WE-nn]` examples reimplemented
 
 ## Your answers
 
-*(write here, or reply on the PR)*
+*Ziggy, 2026-10-01, in chat:* "Read through it and it looks good to go with unless gate pauses or stops happen. On balance in
+section C in particular, yea gear should become more necessary over time."
+
+Recorded as: **approved as written**; later gates proceed until a STOP point or a blocked gate. On the enemy-curve
+question, G3 may tune the constant and the monster profiles (each change logged in `DESIGN.md` Changes with its
+measurement), with the intent that gear becomes progressively more necessary as level rises (`DESIGN.md` 0.2).
