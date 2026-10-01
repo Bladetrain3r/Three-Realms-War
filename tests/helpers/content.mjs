@@ -2,8 +2,10 @@ import { readFileSync } from 'node:fs';
 import { repoPath } from './design.mjs';
 import { loadContent, FILES } from '../../sim/contentcheck.js';
 
-export const contentTexts = Object.fromEntries(FILES.map((f) => [f, readFileSync(repoPath('content', f + '.json'), 'utf8')]));
-export const schemaTexts = Object.fromEntries(FILES.map((f) => [f, readFileSync(repoPath('content', 'schema', f + '.schema.json'), 'utf8')]));
+// CONTENT_DIR lets a mutation experiment point the suite at a scratch copy of content/ (never set in normal runs).
+const DIR = process.env.CONTENT_DIR || repoPath('content');
+export const contentTexts = Object.fromEntries(FILES.map((f) => [f, readFileSync(`${DIR}/${f}.json`, 'utf8')]));
+export const schemaTexts = Object.fromEntries(FILES.map((f) => [f, readFileSync(`${DIR}/schema/${f}.schema.json`, 'utf8')]));
 // Every test now gets its content through the validator, so a content file that fails its schema stops the whole suite.
 export const content = loadContent(contentTexts, schemaTexts);
 export const rawContent = content.raw;
