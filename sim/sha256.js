@@ -1,4 +1,5 @@
 // SHA-256 in plain JavaScript so Node and the browser run identical code (DESIGN.md section 14).
+import { idiv } from './arith.js';
 
 const K = new Uint32Array([
   0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
@@ -20,7 +21,7 @@ export function sha256Hex(bytes) {
   m.set(bytes);
   m[len] = 0x80;
   const dv = new DataView(m.buffer);
-  dv.setUint32(total - 8, Math.floor((len * 8) / 4294967296));
+  dv.setUint32(total - 8, idiv(len * 8, 4294967296));
   dv.setUint32(total - 4, (len * 8) >>> 0);
   const H = new Uint32Array([0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19]);
   const w = new Uint32Array(64);

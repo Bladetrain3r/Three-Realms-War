@@ -69,7 +69,7 @@ export const planOf = (encounters) => encounters.map((es) => es.map((e) => ({ sl
 export function resolveDelve(input, content) {
   if (input.party.length < 1 || input.party.length > 4) throw new RangeError('a party has 1 to 4 heroes');
   const rng = createRng(input.seed), events = [], ctx = makeContext(content, rng, events);
-  const D = input.level, p = content.tables.progress, realm = content.realmById[input.realm];
+  const p = content.tables.progress, realm = content.realmById[input.realm];
   const encounters = generateDelve(rng, input, content);
   let heroHp = null, cleared = 0, won = true;
   for (let k = 0; k < encounters.length; k++) {
