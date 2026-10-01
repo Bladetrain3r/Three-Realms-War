@@ -1,10 +1,12 @@
 import { readFileSync } from 'node:fs';
 import { repoPath } from './design.mjs';
-import { indexContent } from '../../sim/content.js';
+import { loadContent, FILES } from '../../sim/contentcheck.js';
 
-const FILES = ['realms', 'statuses', 'heroes', 'skills', 'monsters', 'items', 'tables', 'names', 'runbook'];
-export const rawContent = Object.fromEntries(FILES.map((f) => [f, JSON.parse(readFileSync(repoPath('content', f + '.json'), 'utf8'))]));
-export const content = indexContent(rawContent);
+export const contentTexts = Object.fromEntries(FILES.map((f) => [f, readFileSync(repoPath('content', f + '.json'), 'utf8')]));
+export const schemaTexts = Object.fromEntries(FILES.map((f) => [f, readFileSync(repoPath('content', 'schema', f + '.schema.json'), 'utf8')]));
+// Every test now gets its content through the validator, so a content file that fails its schema stops the whole suite.
+export const content = loadContent(contentTexts, schemaTexts);
+export const rawContent = content.raw;
 
 // A plain item for tests.
 export function item(over = {}) {

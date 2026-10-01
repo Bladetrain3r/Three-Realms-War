@@ -39,8 +39,9 @@ const RULES = [
   ['Map or Set (iterable, order-dependent; WeakMap cannot be iterated and is allowed)', /\bMap\b|\bSet\b/],
   ['decimal literal', /(?<![\w.])\d+\.\d+/],
 ];
-// Allowed only in these files, which were reviewed: canonical JSON sorts keys; the validator walks parsed user JSON.
-const OBJECT_ITERATION_OK = ['canon.js', 'runbook.js'];
+// Allowed only in these files, which were reviewed: canonical JSON sorts keys; the validators walk parsed external JSON
+// and only report errors (their key order is the file's, never an input to the simulation).
+const OBJECT_ITERATION_OK = ['canon.js', 'runbook.js', 'schema.js', 'contentcheck.js'];
 // .sort( is allowed only where the comparator is a reviewed total order.
 const SORT_OK = ['canon.js', 'combat.js'];
 

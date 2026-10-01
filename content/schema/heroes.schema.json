@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "heroes.json",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]*$"
+      },
+      "name": {
+        "type": "string",
+        "minLength": 1
+      },
+      "realm": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]*$"
+      },
+      "rarity": {
+        "enum": [
+          "common",
+          "rare",
+          "legendary",
+          "unique"
+        ]
+      },
+      "role": {
+        "type": "string",
+        "minLength": 1
+      },
+      "row": {
+        "enum": [
+          "front",
+          "back"
+        ]
+      },
+      "attack": {
+        "enum": [
+          "melee",
+          "ranged",
+          "magic"
+        ]
+      },
+      "stats": {
+        "type": "object",
+        "properties": {
+          "VIG": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 400
+          },
+          "MIT": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 400
+          },
+          "ARC": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 400
+          },
+          "GRD": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 400
+          },
+          "WRD": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 400
+          },
+          "SPD": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 400
+          }
+        },
+        "required": [
+          "VIG",
+          "MIT",
+          "ARC",
+          "GRD",
+          "WRD",
+          "SPD"
+        ],
+        "additionalProperties": false
+      },
+      "skills": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "minItems": 2,
+        "maxItems": 4,
+        "uniqueItems": true
+      }
+    },
+    "required": [
+      "id",
+      "name",
+      "realm",
+      "rarity",
+      "role",
+      "row",
+      "attack",
+      "stats",
+      "skills"
+    ],
+    "additionalProperties": false
+  },
+  "minItems": 1,
+  "maxItems": 200
+}
