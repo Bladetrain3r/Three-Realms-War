@@ -7,6 +7,8 @@ import { createRng, deriveSeed } from '../../sim/prng.js';
 import { sha256Hex } from '../../sim/sha256.js';
 import { canonical, hashOf } from '../../sim/canon.js';
 import { content, item, hero } from '../helpers/content.mjs';
+import { healEvent, tickAmounts, orderIds, chillApplies } from '../helpers/units.mjs';
+import { damageSteps } from '../../sim/damage.js';
 import { heroBase, withAffinity, enemyScaled, enemyBase, finalStat } from '../../sim/stats.js';
 import { itemMain, lineValue, rollLines, upgradeCost, salvageValue } from '../../sim/items.js';
 import { buildHeroUnit } from '../../sim/hero.js';
@@ -16,6 +18,7 @@ import { mulbp as mbp } from '../../sim/arith.js';
 const utf8 = (s) => new TextEncoder().encode(s);
 const sample = { schema: 1, kind: 'x', z: [3, 1, 2], a: { y: 2, b: 1 } };
 
+const HIT = { atk: 300, power: 16000, def: 250, attackerLevel: 26, affinity: true, elemRes: 2000, takenBp: 0, variance: 10500, critRoll: 9000, critChance: 500, critDmg: 15000 };
 const wsItems = {
   10: item({ id: 10, slot: 'armour', ilvl: 26 }),
   11: item({ id: 11, slot: 'helm', ilvl: 26 }),
@@ -42,6 +45,15 @@ export const registry = {
   'WE-22': () => { const p = content.tables.progress; let xp = 0, mat = 0, sv = 0; for (let i = 0; i < 4; i++) { const e = encounterRewards(20, i === 3, p); xp += e.xp; mat += e.materials; sv += e.hacksilver; } return [xp, mbp(xp, p.restXpBp), mat, sv]; },
   'WE-23': () => [recruitLevel(26, content.tables.recruit), recruitLevel(1, content.tables.recruit)],
   'WE-33': () => [salvageValue(item({ tier: 'runed', ilvl: 26 }))],
+  'WE-09': () => [damageSteps({ atk: 100, power: 10000, def: 150, attackerLevel: 26, affinity: false, elemRes: 0, takenBp: 0, variance: 10000, critRoll: 9999, critChance: 0, critDmg: 15000 }, content.tables.combat).steps[1]],
+  'WE-10': () => damageSteps(HIT, content.tables.combat).steps,
+  'WE-11': () => damageSteps({ ...HIT, critRoll: 100 }, content.tables.combat).steps,
+  'WE-12': () => [mbp(4000, 10000 - 2500), chillApplies(2999), chillApplies(3000)],
+  'WE-13': () => [healEvent(100)[3] === 100 ? 264 : -1, healEvent(100)[3], healEvent(400)[3]],
+  'WE-14': () => [tickAmounts()[0]],
+  'WE-16': () => orderIds(),
+  'WE-31': () => [mbp(258, 5000)],
+  'WE-32': () => [tickAmounts()[1]],
   'WE-28': () => [sha256Hex(utf8('abc'))],
   'WE-29': () => [canonical(sample)],
   'WE-30': () => [hashOf(sample)],

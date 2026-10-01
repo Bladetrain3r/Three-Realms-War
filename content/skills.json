@@ -708,8 +708,7 @@
         "on": "target"
       }
     ],
-    "owner": "archetype",
-    "realmRider": true
+    "owner": "archetype"
   },
   {
     "id": "assassinate",
@@ -1022,5 +1021,41 @@
       }
     ],
     "owner": "boss"
+  },
+  {
+    "id": "strike",
+    "name": "Strike",
+    "type": "physical",
+    "range": "melee",
+    "target": "enemy",
+    "power": 10000,
+    "element": "none",
+    "cooldown": 0,
+    "riders": [],
+    "owner": "basic"
+  },
+  {
+    "id": "shoot",
+    "name": "Shoot",
+    "type": "physical",
+    "range": "ranged",
+    "target": "enemy",
+    "power": 10000,
+    "element": "none",
+    "cooldown": 0,
+    "riders": [],
+    "owner": "basic"
+  },
+  {
+    "id": "bolt",
+    "name": "Bolt",
+    "type": "magic",
+    "range": "ranged",
+    "target": "enemy",
+    "power": 10000,
+    "element": "none",
+    "cooldown": 0,
+    "riders": [],
+    "owner": "basic"
   }
 ]

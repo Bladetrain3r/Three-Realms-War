@@ -900,3 +900,15 @@ replay round trip; replay hash equal in Node and the browser.
   skill (archetype, special or affix-modified) uses its dungeon's realm element. The realm rider is added only where a
   skill's row says "realm rider"; a skill that lists its own riders (Tempest, Death Chill, Flame Breath, Wail, Curse) uses
   those instead and still deals the realm element. Sections 10.2 and 10.3 are to be read this way.
+- **0.2.2 (2026-10-01, clarifications decided while writing the combat resolver; no number changed):**
+  (a) 5.6: "a chance of 10000 bp or more applies without a draw" is tested on the *effective* chance, after status
+  resist for a debuff; a 10000 bp debuff against any status resist above 0 therefore still draws. (b) The status roll is
+  drawn first and immunity (a boss, or shock immunity) is checked after it, so the stream does not depend on immunity.
+  (c) Conditions that speak of "some living ally" (`ally_hp_below`, `ally_lacks`) include the hero. (d) Lifesteal heals a
+  share of the HP actually removed, not of overkill. (e) A heal's riders apply to the healed target after the heal.
+  (f) A `best`-type skill uses MIT when final MIT is at least final ARC, otherwise ARC. (g) Ticks fire in the order the
+  statuses were applied, then a regeneration affix. (h) `brace` appears in the event log as a skill named `brace`. (i) Runbook
+  refusals: E04 covers an unknown *action* id as well as a condition id; E08 covers any selector problem (missing,
+  unknown, or wrong for the target); a skill refused as E06 or E07 is not also refused for its selector. (j) The three
+  basic attacks (`strike`, `shoot`, `bolt`) are rows in `content/skills.json`. (k) A unit may not start a fight with HP
+  outside 0 to max HP.
