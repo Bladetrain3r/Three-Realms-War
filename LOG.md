@@ -17,7 +17,7 @@ rounds used: 1 (one design round, two evaluation passes). What evaluation caught
 
 ### R2 — G0/approval + G1/scaffold — 2026-10-01T18:50Z
 plan: record Ziggy's approval and the design intent in DESIGN.md (0.2) and STOP-0.md; then G1 round 1: package.json (no dependencies; tests use Node's built-in runner), `sim/arith.js`, `sim/prng.js`, `sim/sha256.js`, `sim/canon.js`, with unit tests including SHA-256 published vectors and design examples WE-01..04 and WE-28..30 checked against the *sim* (not the G0 reference script) | eval: `node --test "tests/**/*.test.mjs"` | expect: all pass; the sim reproduces the doc's PRNG, seed, hash and canonical-JSON values independently of the G0 script
-result: pending
-decision: pending
+result: green — `node --test "tests/**/*.test.mjs"`: 28 tests, 28 pass, 0 fail; sim reproduces WE-01..04 and WE-28..30 from DESIGN.md; SHA-256 matches the published vectors including a million-"a" input and agrees with Node's crypto at every length 0..130
+decision: proceed — foundation is sound; next R3 content data
 
 G1 round map (each a logged round; the gate has no STOP): R3 content JSON in the G2 shape (the sim needs rosters to run a delve; G2 adds schemas and the table cross-check), R4 stats + items + hero units, R5 combat + statuses + runbook, R6 delve generation/runner/rewards, R7 replay writer/reader + 1,000-seed determinism + banned-call guards, R8 budgets measured + browser hash check + evidence/G1.md.
