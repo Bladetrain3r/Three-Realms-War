@@ -83,7 +83,7 @@ test('delve: a strong party wins a level-1 delve and is paid exactly per DESIGN.
   const r = resolveDelve(input({ level: 1, realm: 'midgard', seed: 21 }), content);
   assert.equal(r.result.outcome, 1);
   const n = r.result.encounters, D = 1, p = content.tables.progress;
-  const enc = 10 + 4 * D, mat = 2 + Math.floor(D / 3), sv = 5 + D;
+  const enc = 10 + 4 * D, mat = 3 + Math.floor(D / 3), sv = 5 + D;
   assert.equal(r.result.rewards.xp, (n - 1) * enc + 2 * enc);
   assert.equal(r.result.rewards.materials.forge_iron, (n - 1) * mat + 2 * mat);
   assert.equal(r.result.rewards.materials.ember_heart, 1);
@@ -103,7 +103,7 @@ test('delve: the documented level-20 reward arithmetic holds for a real delve (D
     if (r.result.encounters !== 4 || r.result.outcome !== 1) continue;
     found++;
     assert.equal(r.result.rewards.xp, 450);
-    assert.equal(r.result.rewards.materials.forge_iron, 40);
+    assert.equal(r.result.rewards.materials.forge_iron, 45);
     assert.equal(r.result.rewards.hacksilver, 150);
   }
   assert.equal(found, 3);

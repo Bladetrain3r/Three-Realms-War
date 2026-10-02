@@ -90,7 +90,7 @@ const hashOf = (v) => sha256(new TextEncoder().encode(canon(v)));
 
 // ---- design formulas --------------------------------------------------------------------------
 const heroBase = (s1, L) => s1 + idiv(s1 * 9 * (L - 1), 49);
-const enemyBase = (p, L, k = 34) => p + idiv(p * k * (L - 1), 49);
+const enemyBase = (p, L, k = 30, q = 10) => p + idiv(p * (k * 49 * (L - 1) + q * (L - 1) * (L - 1)), 49 * 49);
 const starMul = (star) => 10000 + 500 * star;
 const gearMain = (coef, ilvl, tierBp, star) => mulbp(mulbp(coef * ilvl, tierBp), starMul(star));
 const mitBp = (def, attackerLevel) => Math.min(8000, idiv(def * 10000, def + 40 + 12 * attackerLevel));
@@ -116,7 +116,7 @@ function damage({ atk, power, def, attackerLevel, affinity, elemRes, takenBp, va
 const rng1 = makeRng(1);
 const first3 = [rng1(), rng1(), rng1()];
 const huscarlHit = { atk: 300, power: 16000, def: 250, attackerLevel: 26, affinity: true, elemRes: 2000, takenBp: 0, variance: 10500, critRoll: 9000, critChance: 500, critDmg: 15000 };
-const brute171 = enemyBase(6, 26); // DESIGN 0.3 retuned K to 34 and the brute VIG profile to 6 (originally K 22, VIG 14)
+const brute171 = enemyBase(6, 26); // DESIGN 0.3/0.4: brute VIG profile 6, K=30 and a quadratic term Q=10 (originally linear K 22, VIG 14)
 const brute = mulbp(brute171, 11000);
 const sample = { schema: 1, kind: 'x', z: [3, 1, 2], a: { y: 2, b: 1 } };
 
@@ -142,10 +142,10 @@ export const EXAMPLES = [
   ['WE-19', 'bonus line raw 300 at star 3 and star 5', () => [mulbp(300, starMul(3)), mulbp(300, starMul(5))]],
   ['WE-20', 'new line: ten kinds available, draws 6 (CRIT, range 100..400) then 150', () => [6, 100 + 150]],
   ['WE-21', 'xp_to_next at L1, L20, L49', () => [xpToNext(1), xpToNext(20), xpToNext(49)]],
-  ['WE-22', 'delve D=20, 3 encounters + boss: xp per hero, rest xp, common materials, hacksilver', () => { const e = 10 + 4 * 20; const xp = 3 * e + 2 * e; return [xp, idiv(xp, 2), 3 * (2 + idiv(20, 3)) + 2 * (2 + idiv(20, 3)), 3 * (5 + 20) + 3 * (5 + 20)]; }],
+  ['WE-22', 'delve D=20, 3 encounters + boss: xp per hero, rest xp, common materials, hacksilver', () => { const e = 10 + 4 * 20; const xp = 3 * e + 2 * e; return [xp, idiv(xp, 2), 3 * (3 + idiv(20, 3)) + 2 * (3 + idiv(20, 3)), 3 * (5 + 20) + 3 * (5 + 20)]; }],
   ['WE-23', 'recruit level when the top hero is L26 and L1', () => [Math.max(1, idiv(26 * 3, 4)), Math.max(1, idiv(1 * 3, 4))]],
   ['WE-24', 'expedition: path cost (4 plain, 1 forest, 1 hills), site level at E=20 dist 11, distance multiplier', () => [4 + 2 + 2, 20 + idiv(11, 3), 10000 + 300 * 11]],
-  ['WE-25', 'expedition reward: base 9 materials, dist 11, floor 3', () => [mulbp(mulbp(2 + idiv(23, 3), 10000 + 300 * 11), 10000 + 2500 * 2)]],
+  ['WE-25', 'expedition reward: base 10 materials, dist 11, floor 3', () => [mulbp(mulbp(3 + idiv(23, 3), 10000 + 300 * 11), 10000 + 2500 * 2)]],
   ['WE-26', 'death save at 4000 bp: roll 3999 and roll 4000 (1 = dies)', () => [3999 < 4000 ? 1 : 0, 4000 < 4000 ? 1 : 0]],
   ['WE-27', 'encounter band draw: weights 3,4,3 and draw 6 -> band', () => { const w = [3, 4, 3]; let r = 6, b = 0; while (r >= w[b]) { r -= w[b]; b++; } return [b + 1]; }],
   ['WE-28', 'sha256("abc")', () => [sha256(new TextEncoder().encode('abc'))]],

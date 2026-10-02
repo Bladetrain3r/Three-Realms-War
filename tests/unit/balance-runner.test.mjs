@@ -36,19 +36,19 @@ test('balance runner: an out-of-bounds value is reported as out (the evaluation 
   assert.ok(bad.includes('encounter.median_rounds') && bad.includes('encounter.timeout_rate') && bad.includes('injury.per_hero_per_won_delve'));
   assert.ok(bad.includes('gear_gap.growth'));
   assert.ok(!bad.includes('naked_party.L20'), 'a naked party that wins nothing satisfies its own bound');
-  const m = checkMirror({ compositions: [{ classes: ['a'], winRate: 0.9 }], classWinRate: { x: 0.2 }, realmWinRate: { y: 0.7 }, sideBias: 0.9, timeoutRate: 0.5 }, B);
+  const m = checkMirror({ compositions: [{ classes: ['a'], winRate: 0.95 }], classWinRate: { x: 0.2 }, realmWinRate: { y: 0.7 }, sideBias: 0.9, timeoutRate: 0.5 }, B);
   assert.equal(m.filter((c) => !c.ok).length, 5);
 });
 
 test('balance runner: the economy figures reproduce hand calculations from the design formulas', () => {
   const ctx = loadAll(SMALL), e = econ(ctx);
   assert.equal(e.firstUpgradeDelves, 1);                         // 3 materials, a first delve pays at least 8
-  assert.equal(e.materialsGrowth, 9);                            // 5*(2+16) / 5*(2+0)
+  assert.equal(e.materialsGrowth, 6.333333);                     // 5*(3+16) / 5*(3+0)
   assert.equal(e.delvesPerLevel.L10, 1.6);                       // xp_to_next(10) = 400 over 5 * (10 + 40)
   const expected3 = (3 + 5 / 1) / 0.9 + (3 + 10) / 0.75 + (3 + 15) / 0.6; // item level 10: costs 8, 13, 18
-  assert.ok(Math.abs(e.delvesPerItemTo3.L10 - expected3 / (5 * 5)) < 1e-5, `${e.delvesPerItemTo3.L10} vs ${expected3 / 25}`);
+  assert.ok(Math.abs(e.delvesPerItemTo3.L10 - expected3 / (5 * 6)) < 1e-5, `${e.delvesPerItemTo3.L10} vs ${expected3 / 30}`); // 5 * (3 + floor(10/3)) materials a delve
   const checks = checkEcon(e, ctx.B);
-  assert.ok(checks.find((c) => c.id === 'rewards.materials_per_delve_growth' && !c.ok), 'growth 9 is outside [3, 8] and must be reported');
+  assert.ok(checks.find((c) => c.id === 'rewards.materials_per_delve_growth' && c.ok), 'growth 6.33 is inside [3, 8]');
 });
 
 test('balance runner: sampled compositions are four distinct commons, and the report carries no timing', () => {

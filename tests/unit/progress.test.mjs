@@ -26,5 +26,5 @@ test('progress: a level-20 delve of three encounters and a boss (DESIGN.md WE-22
   for (let i = 0; i < 3; i++) { const e = encounterRewards(20, false, p); xp += e.xp; mat += e.materials; silver += e.hacksilver; }
   const b = encounterRewards(20, true, p);
   xp += b.xp; mat += b.materials; silver += b.hacksilver;
-  assert.deepEqual([xp, mulbp(xp, p.restXpBp), mat, silver], [450, 225, 40, 150]);
+  assert.deepEqual([xp, mulbp(xp, p.restXpBp), mat, silver], [450, 225, 45, 150]);
 });

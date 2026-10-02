@@ -12,7 +12,8 @@
     "baseCritDmg": 15000
   },
   "enemy": {
-    "curveK": 34,
+    "curveK": 30,
+    "curveQ": 10,
     "curveDiv": 49,
     "signatureBp": 11500,
     "bossVigBp": 30000,
@@ -94,7 +95,7 @@
     "encXpPerD": 4,
     "bossMul": 2,
     "restXpBp": 5000,
-    "matBase": 2,
+    "matBase": 3,
     "matDiv": 3,
     "silverBase": 5,
     "bossSilverMul": 3,

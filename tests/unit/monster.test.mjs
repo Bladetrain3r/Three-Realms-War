@@ -9,15 +9,15 @@ const e = content.tables.enemy, t = content.tables.stats;
 const row = (id) => content.roster.find((m) => m.id === id);
 const affix = (id) => content.affixes.find((a) => a.id === id);
 
-test('monster: an Ember Raider at level 26 has the documented VIG and 605 HP (DESIGN.md WE-17)', () => {
+test('monster: an Ember Raider at level 26 has the documented VIG and 620 HP (DESIGN.md WE-17)', () => {
   const m = buildMonster(row('midgard_ember_raider'), 26, content);
-  assert.equal(m.stats.VIG.base, 121);
-  assert.equal(m.maxHp, 605);
+  assert.equal(m.stats.VIG.base, 124);
+  assert.equal(m.maxHp, 620);
 });
 
 test('monster: Hardy raises VIG by 40% and max HP with it (DESIGN.md WE-17)', () => {
   const m = buildMonster(row('midgard_ember_raider'), 26, content, { affixes: [affix('hardy')] });
-  assert.equal(m.maxHp, 845);
+  assert.equal(m.maxHp, 865);
   assert.deepEqual(m.affixes, ['hardy']);
 });
 

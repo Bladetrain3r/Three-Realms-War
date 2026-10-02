@@ -79,6 +79,11 @@
           "minimum": 0,
           "maximum": 1000
         },
+        "curveQ": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2000
+        },
         "curveDiv": {
           "type": "integer",
           "minimum": 1,
@@ -132,6 +137,7 @@
       },
       "required": [
         "curveK",
+        "curveQ",
         "curveDiv",
         "signatureBp",
         "bossVigBp",

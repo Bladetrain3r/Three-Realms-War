@@ -15,7 +15,8 @@ export function withAffinity(value, t) {
 
 // 4.5: the enemy curve, then (optionally) the signature or boss multiplier, then the realm tilt.
 export function enemyScaled(p, level, e) {
-  return p + idiv(p * e.curveK * (level - 1), e.curveDiv);
+  const x = level - 1;
+  return p + idiv(p * (e.curveK * x * e.curveDiv + e.curveQ * x * x), e.curveDiv * e.curveDiv);
 }
 
 export function enemyBase(p, level, e, { multiplierBp = 0, tilt = false } = {}) {

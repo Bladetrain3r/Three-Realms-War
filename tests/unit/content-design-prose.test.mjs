@@ -17,7 +17,7 @@ const CASES = [
   ['4.3 realm affinity bonus', /multiplied by `\+(\d+) bp`/, () => [T.stats.affinityBp]],
   ['4.3 realm element resist', /`RES` of the realm's element of `\+(\d+) bp`/, () => [T.stats.affinityResBp]],
   ['4.4 injured halving', /halve it \(`mulbp\(x, (\d+)\)`\)/, () => [T.stats.injuredBp]],
-  ['4.5 enemy curve', /`enemy\(p, L\) = p \+ idiv\(p \* (\d+) \* \(L - 1\), (\d+)\)`/, () => [T.enemy.curveK, T.enemy.curveDiv]],
+  ['4.5 enemy curve (linear and quadratic terms)', /`enemy\(p, L\) = p \+ idiv\(p \* \((\d+) \* (\d+) \* \(L - 1\) \+ (\d+) \* \(L - 1\) \* \(L - 1\)\), (\d+) \* (\d+)\)`/, () => [T.enemy.curveK, T.enemy.curveDiv, T.enemy.curveQ, T.enemy.curveDiv, T.enemy.curveDiv]],
   ['4.5 signature multiplier', /signature \(`x(\d+)`\)/, () => [T.enemy.signatureBp]],
   ['4.5 realm tilt', /realm tilt\s+\(\+(\d+) bp on two stats/, () => [T.enemy.tiltBp]],
   ['4.5 enemy status resist', /`SRES = (\d+) \+ (\d+) x level`/, () => [T.enemy.sresBase, T.enemy.sresPerLevel]],

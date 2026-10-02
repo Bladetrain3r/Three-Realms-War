@@ -26,10 +26,10 @@ test('stats: affinity is +10% floored', () => assert.equal(withAffinity(123, t),
 test('stats: enemy curve and tilt, with the Hardy affix as a percentage (DESIGN.md WE-17)', () => {
   const vig = content.archetypeById.brute.stats.VIG;
   assert.equal(vig, 6);
-  assert.equal(enemyScaled(vig, 26, e), 110);
+  assert.equal(enemyScaled(vig, 26, e), 113);
   const base = enemyBase(vig, 26, e, { tilt: true });
-  assert.equal(base, 121);
-  assert.equal(finalStat(base, 4000, false, t), 169);
+  assert.equal(base, 124);
+  assert.equal(finalStat(base, 4000, false, t), 173);
 });
 
 test('stats: boss multiplier applies before the tilt', () => {

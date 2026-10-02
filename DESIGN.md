@@ -135,12 +135,12 @@ the base at the high end" decision: geared HP lands in the low thousands, and ge
 
 Enemies are not built from equipment. An archetype has a level-1 profile `p`; at level `L`:
 
-`enemy(p, L) = p + idiv(p * 34 * (L - 1), 49)`
+`enemy(p, L) = p + idiv(p * (30 * 49 * (L - 1) + 10 * (L - 1) * (L - 1)), 49 * 49)`
 
-(about 35x at level 50). Order, flooring after each step: the curve, then the signature (`x11500`) or boss multiplier
-(10.3, 10.4), then the realm tilt (+1000 bp on two stats, section 10.2), then affixes. The constant 34 and the level-1 profiles of section 10.2 were tuned in G3 against `checks/balance.yaml` (Changes 0.3).
+(the multiplier is 41 at level 50: 30 from the linear term, 10 from the quadratic term, plus 1). Order, flooring after each step: the curve, then the signature (`x11500`) or boss multiplier
+(10.3, 10.4), then the realm tilt (+1000 bp on two stats, section 10.2), then affixes. The constants (K = 30, Q = 10) and the level-1 profiles of section 10.2 were tuned in G3 against `checks/balance.yaml` (Changes 0.3 and 0.4); the quadratic term is what makes the better gear tiers lose ground as level rises.
 
-[WE-17] brute VIG 6 at L26: scaled, Midgard tilt, max HP, and max HP with the Hardy affix (+4000 bp) => 110, 121, 605, 845
+[WE-17] brute VIG 6 at L26: scaled, Midgard tilt, max HP, and max HP with the Hardy affix (+4000 bp) => 113, 124, 620, 865
 
 Enemy `SRES = 500 + 80 x level`, `CRIT = 500`, `CRITDMG = 15000`. Enemy elemental resistances: the realm's own element
 `+5000`, and the element the realm is weak to `-2500` (section 10.1).
@@ -322,11 +322,11 @@ user. All melee skills follow the front-row rule (5.4).
 | id | Name | Class | Type | Range | Target | Power | Element | CD | Riders |
 |---|---|---|---|---|---|---|---|---|---|
 | hold_the_line | Hold the Line | shieldwarden | U | self | self | 0 | none | 4 | bulwark 10000/3 self |
-| shield_bash | Shield Bash | shieldwarden | P | melee | enemy | 12000 | none | 3 | shock 2500/1 |
-| cleave | Cleave | huscarl | P | melee | all_enemies | 7500 | none | 4 | |
+| shield_bash | Shield Bash | shieldwarden | P | melee | enemy | 24000 | none | 3 | shock 2500/1 |
+| cleave | Cleave | huscarl | P | melee | all_enemies | 5250 | none | 4 | |
 | hearth_strike | Hearth Strike | huscarl | P | melee | enemy | 16000 | fire | 3 | burn 4000/3 |
 | pinning_shot | Pinning Shot | hunter | P | ranged | enemy | 13000 | none | 3 | chill 5000/2 |
-| volley | Volley | hunter | P | ranged | all_enemies | 6500 | none | 4 | |
+| volley | Volley | hunter | P | ranged | all_enemies | 4550 | none | 4 | |
 | hearth_light | Hearth Light | hearthkeeper | H | ranged | ally | 12000 | none | 2 | |
 | warm_embers | Warm Embers | hearthkeeper | U | ranged | all_allies | 0 | none | 5 | mend 10000/3 |
 | frenzy | Frenzy | berserker | U | self | self | 0 | none | 4 | fury 10000/3 self |
@@ -334,16 +334,16 @@ user. All melee skills follow the front-row rule (5.4).
 | maul | Maul | berserker | P | melee | enemy | 26000 | none | 5 | |
 | valhalla_strike | Valhalla Strike | einherjar | P | melee | enemy | 14000 | lightning | 3 | shock 2000/1 |
 | rally | Rally | einherjar | U | ranged | all_allies | 0 | none | 5 | fury 10000/2 |
-| chain_lightning | Chain Lightning | stormcaller | M | ranged | all_enemies | 7500 | lightning | 4 | |
+| chain_lightning | Chain Lightning | stormcaller | M | ranged | all_enemies | 5250 | lightning | 4 | |
 | thunderclap | Thunderclap | stormcaller | M | ranged | enemy | 15000 | lightning | 3 | shock 3500/1 |
 | battle_hymn | Battle Hymn | skald | U | ranged | all_allies | 0 | none | 5 | fury 10000/3 |
 | mending_verse | Mending Verse | skald | H | ranged | all_allies | 7000 | none | 4 | |
 | dive | Dive | skyrider | P | ranged | enemy | 16000 | none | 3 | |
-| pinion_volley | Pinion Volley | skyrider | P | ranged | all_enemies | 6500 | none | 4 | |
+| pinion_volley | Pinion Volley | skyrider | P | ranged | all_enemies | 4550 | none | 4 | |
 | choose_the_slain | Choose the Slain | valkyrie | P | melee | enemy | 22000 | none | 3 | |
 | wings_shield | Wings' Shield | valkyrie | U | ranged | all_allies | 0 | none | 5 | bulwark 10000/3 |
-| storm_rend | Storm Rend | valkyrie | P | melee | all_enemies | 8500 | lightning | 4 | |
-| cold_grip | Cold Grip | draugr_knight | P | melee | enemy | 10000 | frost | 3 | chill 6000/2 |
+| storm_rend | Storm Rend | valkyrie | P | melee | all_enemies | 5950 | lightning | 4 | |
+| cold_grip | Cold Grip | draugr_knight | P | melee | enemy | 20000 | frost | 3 | chill 6000/2 |
 | undying_will | Undying Will | draugr_knight | U | self | self | 0 | none | 5 | bulwark 10000/3 self, mend 10000/3 self |
 | hex | Hex | volva | M | ranged | enemy | 8000 | none | 3 | mark 9000/3 |
 | frostbite | Frostbite | volva | M | ranged | enemy | 14000 | frost | 3 | chill 6000/2 |
@@ -352,7 +352,7 @@ user. All melee skills follow the front-row rule (5.4).
 | frostmend | Frostmend | rime_mender | H | ranged | ally | 11000 | frost | 3 | bulwark 10000/2 |
 | mist_veil | Mist Veil | rime_mender | U | ranged | all_allies | 0 | none | 5 | bulwark 10000/3 |
 | soul_arrow | Soul Arrow | wraith_hunter | P | ranged | enemy | 20000 | none | 3 | |
-| deaths_chill | Death's Chill | wraith_hunter | P | ranged | all_enemies | 5500 | frost | 5 | chill 4000/2 |
+| deaths_chill | Death's Chill | wraith_hunter | P | ranged | all_enemies | 3850 | frost | 5 | chill 4000/2 |
 | gravecall | Gravecall | wraith_hunter | M | ranged | enemy | 8000 | none | 4 | shock 6000/1 |
 
 (The element on a heal, as for Frostmend, is cosmetic: heals take no element step.)
@@ -681,11 +681,11 @@ carries over; several levels may be gained at once.
 
 ### 11.2 Rewards per cleared delve (win only)
 
-Per cleared encounter: **common materials** `2 + idiv(D, 3)`, **hacksilver** `5 + D`; a boss encounter pays 2x
+Per cleared encounter: **common materials** `3 + idiv(D, 3)`, **hacksilver** `5 + D`; a boss encounter pays 2x
 materials and 3x hacksilver. **Reputation** in the realm: `+5` per won delve, `+5` more for the boss. A boss also drops
 one rare material (the realm's *heart*) and has a 300 bp chance to drop a **Thread of the Norns** (the insurance item).
 
-[WE-22] a level-20 delve of 3 monster encounters and a boss: xp per hero, the rest xp, common materials, hacksilver => 450, 225, 40, 150
+[WE-22] a level-20 delve of 3 monster encounters and a boss: xp per hero, the rest xp, common materials, hacksilver => 450, 225, 45, 150
 
 ### 11.3 Reputation
 
@@ -735,7 +735,7 @@ Each floor has 2 encounters; the last floor has the boss. Between floors the pla
 (materials, hacksilver, xp) use the delve formulas at the site level, multiplied by `mulbp(mulbp(x, dist multiplier),
 10000 + 2500 x (floor - 1))`. All loot is carried in the **pack** and is banked only on a safe return.
 
-[WE-25] base 9 common materials (site level 23), distance 11, floor 3 => 16
+[WE-25] base 10 common materials (site level 23), distance 11, floor 3 => 19
 
 ### 12.4 Death and loss
 
@@ -922,3 +922,15 @@ replay round trip; replay hash equal in Node and the browser.
   (level 5 starter gear wins 0.82). The six delve checks still out of bounds are at levels 40 and 50 and are structural:
   with hero base stats, gear and enemies all linear in level, no setting of these knobs makes the better tiers decline with
   level (see STOP-1, decision 1). The golden replay hashes were regenerated because the content changed.
+- **0.4 (2026-10-02, approved by Ziggy in chat after STOP-1: "good to go with your recommendations"):** (1) **the enemy curve gains a
+  quadratic term**, `enemy(p, L) = p + idiv(p * (30 * 49 * (L - 1) + 10 * (L - 1) * (L - 1)), 49 * 49)` (K = 30, Q = 10; the
+  multiplier at level 50 is 41), because the linear curve made every gear tier win the same share at every level (STOP-1,
+  decision 1); WE-17 is now 113, 124, 620, 865. (2) **Hero skill powers** (section 7.4): the six four-target skills x0.7
+  (Cleave 7500 to 5250, Volley 6500 to 4550, Chain Lightning 7500 to 5250, Pinion Volley 6500 to 4550, Storm Rend 8500 to 5950,
+  Death's Chill 5500 to 3850) and the two tank skills x2 (Shield Bash 12000 to 24000, Cold Grip 10000 to 20000), because tank
+  teams lost and four-target skills out-damaged single-target ones (decision 2). (3) **Materials per encounter** `3 + idiv(D, 3)`
+  (was 2): the level-50 over level-1 growth of materials falls from 9.0 to 6.3 (decision 3); WE-22 is now 450, 225, 45, 150 and
+  WE-25 is 19. (4) **Thresholds loosened with Ziggy's word** in `checks/balance.yaml`: mirror composition win rate [0.25, 0.75]
+  to [0.10, 0.90], class win rate [0.35, 0.65] to [0.30, 0.70], level-50 Heirloom delve win rate [0.65, 0.98] to [0.65, 1.00]
+  (decisions 2 and 4). Offered and not built: a timed crit-immunity buff for tanks (measured as worth about 0.01 of tank win
+  rate even when permanent) and multitarget variants for rare classes; Ziggy has no objection to either if wanted for feel.
