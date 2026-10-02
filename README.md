@@ -5,7 +5,7 @@ the team on dungeon delves and expeditions, and watch the replay. Plain HTML5 an
 dependencies, a deterministic simulation whose replay is the source of truth. Norse setting: Asgard, Midgard and
 Helheim as Ragnarök nears. Open source, MIT, not monetised.
 
-Status: the first dungeon is playable (G4): roster, forge, runbook editor, delves with a replay player, saves in the browser with export and import. Balance is green (148 of 148, `evidence/G3.md`). Expeditions (G5) and the replay-file viewer (G6) are next.
+Status: the first dungeon is playable (G4): roster, forge, runbook editor, delves with a replay player, saves in the browser with export and import. Balance is green (148 of 148, `evidence/G3.md`). Expeditions (G5) are built and tested, but their balance needs Ziggy's numbers first (`reports/BLOCKED-G5.md`); the replay-file viewer and the deploy gate (G6) follow.
 
 Play it: `node tools/bundle.mjs --out dist` then open `dist/index.html` in a browser (it works from `file://`), or use the Pages preview once enabled. Nothing is sent anywhere; the game saves in your browser.
 

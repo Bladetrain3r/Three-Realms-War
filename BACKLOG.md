@@ -2,6 +2,9 @@
 
 Not a plan. Nothing here is built unless a gate or Ziggy says so. Ziggy's own words are quoted where they carry the intent.
 
+## Open from the G5 build
+- `reports/BLOCKED-G5.md`: expedition lethality against the bounds written first; seven build-time decisions to confirm.
+
 ## Done in the G4 playtest round (build after `d1e7a4d`)
 Rest action with gold cost and debt; recruit kit level = half the hero's level; "Delve N times"; Forge filter, sort and bulk salvage;
 "no effective change" where a star rounds away; portraits no longer stretched.
