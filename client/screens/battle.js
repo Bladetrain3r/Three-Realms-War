@@ -37,7 +37,21 @@ export function battle(ctx) {
         batch.runs.map((r, i) => h('option', { value: String(i), selected: batch.index === i }, `${i + 1}: ${r.summary.outcome === 1 ? 'won' : 'lost'}`)))));
   })() : null;
   const names = (ids) => ids.map((id) => store.save.heroes.find((x) => x.id === id)).filter(Boolean).map((x) => x.name).join(', ');
+  const floorSummary = () => {
+    const s = lb.summary;
+    clear(summary);
+    summary.append(h('h2', null, s.outcome === 1 ? `Floor ${s.floor} cleared` : 'The party was lost'),
+      s.outcome === 1 ? h('p', null, s.cleared ? 'The boss is down: the site is cleared.' : `${s.floors - s.floor} floor${s.floors - s.floor === 1 ? '' : 's'} remain. Descend, or retreat to the map.`) : h('p', { class: 'warn' }, 'Everyone who was not held back by a Thread is lost for good, and the pack with them.'));
+    if (s.rewards) summary.append(h('ul', { class: 'earned' }, h('li', null, `Added to the pack: ${s.rewards.xp} XP, ${s.rewards.hacksilver} hacksilver, ${s.rewards.materials} common materials${s.rewards.heart ? `, ${s.rewards.heart} heart` : ''}`), s.rewards.items ? h('li', null, `${s.rewards.items} item${s.rewards.items === 1 ? '' : 's'} found`) : null, s.rewards.threads ? h('li', null, `${s.rewards.threads} Thread of the Norns`) : null));
+    if (s.died.length) summary.append(h('p', { class: 'warn', 'data-testid': 'x-died' }, `Lost for good: ${s.died.join(', ')}`));
+    if (s.injured.length) summary.append(h('p', { class: 'warn' }, `Wounded and revived at 1 HP: ${names(s.injured)}`));
+    if (s.threaded.length) summary.append(h('p', null, `Held back from death by a Thread of the Norns: ${names(s.threaded)}`));
+    if (s.rescued) summary.append(h('p', null, 'The hall took in one new level-1 hero so you are never left without one.'));
+    if (s.lostGear) summary.append(h('p', { class: 'warn' }, `${s.lostGear} piece${s.lostGear === 1 ? '' : 's'} of gear were lost: the stash was full.`));
+    summary.append(h('p', { class: 'row-buttons' }, button('Back to the map', () => { location.hash = '#/expedition'; }, { id: 'to-map', class: 'primary' })));
+  };
   const showSummary = () => {
+    if (lb.kind === 'floor') return floorSummary();
     const s = lb.summary, after = store.save;
     clear(summary);
     summary.append(h('h2', null, s.outcome === 1 ? 'Delve won' : 'Delve lost'), h('p', null, `${s.cleared} of ${s.encounters} encounters cleared.`));

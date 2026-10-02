@@ -726,7 +726,7 @@ level-ups, injuries, and why it stopped.
 
 ## 12. Expeditions (built in G5; specified now)
 
-An expedition is a longer, riskier outing with permanent stakes.
+An expedition is a longer, riskier outing with permanent stakes. (The rules as built, including the gaps decided while building, are in Changes 0.7; the numbers are the table `tables.expedition` in `content/tables.json`.)
 
 ### 12.1 The map
 
@@ -1046,3 +1046,23 @@ Random choices use `deriveSeed(masterSeed, counter)` and then increment `counter
   old goldens, checked); the golden playthrough changed because recruits now get cheaper kits. Worked examples WE-34 and WE-35 added.
   **Parked by Ziggy until after STOP-3 (planning only then; nothing built):** weapon classes with trained ranks (Untrained -20% to Apex +20%),
   one unique ultimate skill per class and for bosses (limited-charge items?); see `BACKLOG.md`.
+- **0.7 (2026-10-02, G5 as built; clarifications of gaps in section 12, no number of the game changed except where marked):**
+  (a) **Floors are capped at 6** (`floorsMax`): 12.3 says "2 to 6" but `2 + idiv(dist, 4)` reaches 10 at the largest distance (32) the grid allows.
+  (b) **Walking home is free from the map, anywhere** (the design only says that running out of provisions sends the party home safely;
+  the same return is offered voluntarily, but not from inside a site, where the choices are descend or retreat). Unspent provisions are not refunded.
+  (c) **A site remembers its cleared floors**: retreating and coming back continues at the next floor, so a floor pays once. Entering
+  or descending a floor costs `floorCost` each time. (d) **Healing is `restHealBp` after every won encounter**, the last of a floor included
+  (12.4: "between encounters as in delves"), none while walking. (e) **Death saves** are drawn after each won encounter in hero-slot order, one
+  draw per fallen hero; a dead hero misses the rest of the floor; a survivor wakes at 1 HP with `reviveInjury` (2) delves of injury, fights the
+  next floors at half strength, and a Thread of the Norns replaces the draw (the hero is injured, the Thread is used up). A lost encounter kills
+  everyone a Thread does not hold; a Thread holder walks home alone and the expedition ends with the pack lost. (f) **The pack** holds xp,
+  hacksilver, materials, items (real ids), reputation and Thread drops; it is banked on a safe return (xp goes to the heroes who return);
+  the site boss floor adds the boss item, its heart, `repBoss` and the Thread chance; other encounters add an item with `drops.encounterBp`.
+  (g) While an expedition is under way the party, gear, runbooks, Threads, delves and rests are locked (`on_expedition`); recruiting and
+  stash work are not. (h) **If every hero dies the hall takes in one new level-1 hero** (free), so a save is never left with an empty roster.
+  (i) A dead hero's gear returns to the stash; if that would exceed the stash limit, the cheapest pieces of it are lost, only as many as needed.
+  (j) Replays: a floor is a replay of kind `floor` (inputs realm, level, boss, party, heroHp) verifiable like a delve; event opcode 14,
+  `DEATH_SAVE [14, slot, 0 revived | 1 died | 2 Thread]`, is added to format version 1. (k) The save's `expedition` key: realm, level, seed, provisions,
+  bought, position, `seen` (a 0/1 string, one per cell), party, hp (-1 = full), floors cleared per site, current site, pack, steps; the map is
+  regenerated from the seed and never stored. WE-24 to WE-26 are now checked by the sim. **Status: the balance bounds written first for
+  expeditions are NOT met by the design as written** (wipe rate 0.48 to 0.93 against 0.01 to 0.25; `evidence/G5.md`, `reports/BLOCKED-G5.md`).

@@ -20,7 +20,7 @@ test('client: every screen renders with no console error, at desktop and at 390 
     const { page, problems, context } = await openGame(browser, game.url, { width, height: 900 });
     const heroId = await page.evaluate(() => window.ThreeRealms.save().heroes[0].id);
     const seen = {};
-    for (const [hash, heading] of [['#/hall', /The Hall/], [`#/hero/${heroId}`, /\S/], ['#/forge', /The Forge/], ['#/delve', /The Delve Board/], ['#/settings', /Settings/], ['#/battle', /The Battle/]]) {
+    for (const [hash, heading] of [['#/hall', /The Hall/], [`#/hero/${heroId}`, /\S/], ['#/forge', /The Forge/], ['#/delve', /The Delve Board/], ['#/expedition', /Expedition/], ['#/settings', /Settings/], ['#/battle', /The Battle/]]) {
       await go(page, hash);
       seen[hash] = await page.textContent('#screen h1');
       assert.match(seen[hash], heading, `${hash} at ${width}px`);
@@ -310,6 +310,87 @@ test('client: the Forge filters, sorts, selects by rule and bulk-salvages exactl
   await page.click('[data-testid=confirm-salvage]');
   await sameSave(page, salvageMany(playtest, content, ids).save, 'bulk salvage');
   assert.match(await text(page, 'notice'), new RegExp(`Salvaged ${ids.length} item`));
+  assert.deepEqual(problems, []);
+  await context.close();
+});
+
+test('client: an expedition played through the page (set out, fog, walk, floors, bank) gives exactly the save the rules layer gives', async (t) => {
+  if (!need(t)) return;
+  const { startExpedition, move, enterFloor, returnHome, expeditionMap } = await import('../../sim/index.js');
+  const { runedSave, pathTo } = await import('../../checks/expedition-bot.mjs');
+  const start = runedSave(content, 20, 777, true); for (const h of start.heroes) h.level = 50; start.currency.hacksilver = 100000;
+  const { page, problems, context } = await openGame(browser, game.url);
+  await importSave(page, start);
+  await go(page, '#/expedition');
+  await page.selectOption('[data-testid=x-realm]', 'midgard'); await page.selectOption('[data-testid=x-level]', '20'); await page.fill('[data-testid=x-provisions]', '60'); await page.dispatchEvent('[data-testid=x-provisions]', 'change');
+  await page.click('[data-testid=x-start]');
+  let want = startExpedition(start, content, { realm: 'midgard', level: 20, provisions: 60 }).save;
+  await sameSave(page, want, 'set out');
+  const fogged = await page.locator('.cell.tx').count(); assert.ok(fogged > 150 && fogged < 280, `${fogged} unexplored cells`);
+  const ex = want.expedition, map = expeditionMap(ex, content);
+  const near = map.sites.map((s) => ({ s, p: pathTo(map, content, ex.x, ex.y, s.x, s.y) })).sort((a, b) => a.p.cost - b.p.cost || a.s.id - b.s.id)[0];
+  for (const [x, y] of near.p.steps) { await page.click(`[data-testid="cell-${x}-${y}"]`); want = move(want, content, x, y).save; }
+  await sameSave(page, want, 'walked to the site');
+  assert.ok((await page.locator('.cell.tx').count()) < fogged, 'walking reveals the fog');
+  for (let guard = 0; guard < 10; guard++) {
+    await page.click('[data-testid=x-floor]'); await page.waitForFunction(() => location.hash === '#/battle'); await settle(page);
+    const r = enterFloor(want, content); want = r.save;
+    await page.waitForFunction((h) => window.ThreeRealms.battleState() && window.ThreeRealms.battleState().hash === h, r.replay.hash);
+    await page.waitForFunction(() => window.ThreeRealms.battleState().cursor > 0); await page.click('[data-testid=skip]');
+    assert.match(await text(page, 'summary'), /cleared|lost/);
+    await sameSave(page, want, 'after a floor');
+    await page.click('[data-testid=to-map]'); await settle(page);
+    if (want.expedition.site === null) break;
+  }
+  await page.click('[data-testid=x-home]'); want = returnHome(want, content).save;
+  await sameSave(page, want, 'banked');
+  assert.match(await text(page, 'report'), /hacksilver/);
+  assert.deepEqual(problems, []);
+  await context.close();
+});
+
+test('client: a wiped expedition shows who did not come back, loses the pack and removes the dead from the roster', async (t) => {
+  if (!need(t)) return;
+  const { startExpedition, move, enterFloor, expeditionMap } = await import('../../sim/index.js');
+  const { runedSave, pathTo } = await import('../../checks/expedition-bot.mjs');
+  let chosen = null;
+  for (let seed = 1; seed <= 30 && !chosen; seed++) {
+    const s = runedSave(content, 3, seed, true); s.currency.hacksilver = 100000; s.unlocked.asgard = 50;
+    let cur = startExpedition(s, content, { realm: 'asgard', level: 50, provisions: 60 }).save; const map = expeditionMap(cur.expedition, content);
+    const near = map.sites.map((q) => ({ q, p: pathTo(map, content, cur.expedition.x, cur.expedition.y, q.x, q.y) })).sort((a, b) => a.p.cost - b.p.cost || a.q.id - b.q.id)[0];
+    for (const [x, y] of near.p.steps) cur = move(cur, content, x, y).save;
+    if (cur.expedition && enterFloor(cur, content).summary.outcome === 0) chosen = { s, near, map };
+  }
+  assert.ok(chosen, 'no wiping seed found');
+  const { page, problems, context } = await openGame(browser, game.url);
+  await importSave(page, chosen.s);
+  await go(page, '#/expedition');
+  await page.selectOption('[data-testid=x-realm]', 'asgard'); await page.selectOption('[data-testid=x-level]', '50'); await page.fill('[data-testid=x-provisions]', '60'); await page.dispatchEvent('[data-testid=x-provisions]', 'change');
+  await page.click('[data-testid=x-start]');
+  const ex = (await page.evaluate(() => window.ThreeRealms.save())).expedition, map = expeditionMap(ex, content);
+  const near = map.sites.map((q) => ({ q, p: pathTo(map, content, ex.x, ex.y, q.x, q.y) })).sort((a, b) => a.p.cost - b.p.cost || a.q.id - b.q.id)[0];
+  for (const [x, y] of near.p.steps) await page.click(`[data-testid="cell-${x}-${y}"]`);
+  await page.click('[data-testid=x-floor]'); await page.waitForFunction(() => location.hash === '#/battle'); await settle(page);
+  await page.waitForFunction(() => window.ThreeRealms.battleState() && window.ThreeRealms.battleState().cursor > 0); await page.click('[data-testid=skip]');
+  assert.match(await text(page, 'summary'), /The party was lost/); assert.match(await text(page, 'x-died'), /Lost for good: /);
+  const after = await page.evaluate(() => window.ThreeRealms.save());
+  assert.equal(after.expedition, null); assert.ok(after.heroes.length < chosen.s.heroes.length || after.heroes.every((h) => h.level === 1 || h.injury > 0), 'the dead are gone');
+  assert.equal(after.currency.hacksilver, chosen.s.currency.hacksilver - 600, 'the provisions are spent and nothing was banked');
+  await page.click('[data-testid=to-map]'); await settle(page);
+  assert.match(await text(page, 'report'), /did not come back/);
+  assert.deepEqual(problems, []);
+  await context.close();
+});
+
+test('client: the expedition map at 390 px scrolls inside its own box, not the page', async (t) => {
+  if (!need(t)) return;
+  const { startExpedition } = await import('../../sim/index.js'); const { runedSave } = await import('../../checks/expedition-bot.mjs');
+  const s = runedSave(content, 20, 5, true); s.currency.hacksilver = 100000;
+  const { page, problems, context } = await openGame(browser, game.url, { width: 390, height: 800 });
+  await importSave(page, startExpedition(s, content, { realm: 'midgard', level: 20, provisions: 20 }).save);
+  await go(page, '#/expedition');
+  const [sw, iw] = await page.evaluate(() => [document.documentElement.scrollWidth, innerWidth]); assert.ok(sw <= iw, `page ${sw} > ${iw}`);
+  const [mw, bw] = await page.evaluate(() => { const m = document.querySelector('.map-wrap'); return [m.scrollWidth, m.clientWidth]; }); assert.ok(mw > bw, 'the map is wider than its box and scrolls inside it');
   assert.deepEqual(problems, []);
   await context.close();
 });

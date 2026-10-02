@@ -1,11 +1,11 @@
 // The save in the browser: holds the current save, runs rules-layer actions (turning refusals into messages), autosaves to
 // localStorage when it can, and exports / imports through the same validator the tests use.
-import { newGame, playDelve, playDelves, rest, salvageMany, GameError, validateSave, canonical } from '../sim/index.js';
+import { newGame, playDelve, playDelves, rest, salvageMany, startExpedition, move as moveExp, enterFloor, retreat as retreatExp, returnHome, GameError, validateSave, canonical } from '../sim/index.js';
 
 export const SAVE_KEY = 'three-realms.save.v1';
 
 export function createStore({ content, saveSchema, build, storage = null, now = () => '', seed = () => 1 }) {
-  let save = null, problem = null, lastBattle = null, lastBatch = null;
+  let save = null, problem = null, lastBattle = null, lastBatch = null, lastReturn = null;
   const listeners = [];
   const persist = () => { if (!storage) return; try { storage.setItem(SAVE_KEY, canonical(save)); } catch (e) { problem = `could not write the save to browser storage (${e.name || 'error'}); export it to keep it`; } };
   const stamp = (s) => { s.meta = { savedAt: now(), build }; return s; };
@@ -36,6 +36,7 @@ export function createStore({ content, saveSchema, build, storage = null, now = 
     get problem() { return problem; },
     get lastBattle() { return lastBattle; },
     get lastBatch() { return lastBatch; },
+    get lastReturn() { return lastReturn; },
     clearProblem() { problem = null; },
     subscribe(f) { listeners.push(f); },
     // run a rules function (save, content, ...args) -> save'
@@ -58,6 +59,19 @@ export function createStore({ content, saveSchema, build, storage = null, now = 
       });
     },
     selectRun(i) { if (lastBatch && i >= 0 && i < lastBatch.runs.length) { lastBatch.index = i; lastBattle = { ...lastBattle, replay: lastBatch.runs[i].replay, summary: lastBatch.runs[i].summary }; } },
+    // expedition actions: each returns the rules layer's summary; a floor also keeps its replay for the battle screen
+    startExpedition(opts) { return wrap(() => { const out = startExpedition(save, content, opts); lastReturn = null; set(out.save); return out.summary; }); },
+    expMove(x, y) { return wrap(() => { const out = moveExp(save, content, x, y); if (out.summary.ended) lastReturn = { ...out.summary }; set(out.save); return out.summary; }); },
+    expRetreat() { return wrap(() => { const out = retreatExp(save, content); set(out.save); return out.summary; }); },
+    expHome() { return wrap(() => { const out = returnHome(save, content); lastReturn = { ...out.summary }; set(out.save); return out.summary; }); },
+    expFloor() {
+      return wrap(() => {
+        const before = save, out = enterFloor(save, content);
+        lastBatch = null; lastBattle = { replay: out.replay, summary: out.summary, before, kind: 'floor' };
+        if (out.summary.ended) lastReturn = { ...out.summary };
+        set(out.save); return out.summary;
+      });
+    },
     bulkSalvage(ids) { return wrap(() => { const out = salvageMany(save, content, ids); set(out.save); return out.summary; }); },
     rest() { return wrap(() => { const out = rest(save, content); set(out.save); return out.summary; }); },
     exportText() { return canonical(save); },
@@ -66,8 +80,8 @@ export function createStore({ content, saveSchema, build, storage = null, now = 
       try { parsed = JSON.parse(text); } catch (e) { return { ok: false, errors: [{ key: '(file)', message: 'not valid JSON' }] }; }
       const v = validateSave(parsed, content, saveSchema);
       if (!v.ok) return v;
-      lastBattle = null; lastBatch = null; set(parsed, false); return { ok: true };
+      lastBattle = null; lastBatch = null; lastReturn = null; set(parsed, false); return { ok: true };
     },
-    reset() { lastBattle = null; lastBatch = null; set(newGame(content, seed(), { savedAt: '', build })); },
+    reset() { lastBattle = null; lastBatch = null; lastReturn = null; set(newGame(content, seed(), { savedAt: '', build })); },
   };
 }

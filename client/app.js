@@ -8,9 +8,10 @@ import { forge } from './screens/forge.js';
 import { delveBoard } from './screens/delve.js';
 import { battle } from './screens/battle.js';
 import { settings } from './screens/settings.js';
+import { expedition } from './screens/expedition.js';
 
-const NAV = [['hall', 'Hall'], ['forge', 'Forge'], ['delve', 'Delve'], ['battle', 'Battle'], ['settings', 'Settings']];
-const SCREENS = { hall: (c) => hall(c), hero: (c, a) => hero(c, a), forge: (c) => forge(c), delve: (c) => delveBoard(c), battle: (c) => battle(c), settings: (c) => settings(c) };
+const NAV = [['hall', 'Hall'], ['forge', 'Forge'], ['delve', 'Delve'], ['expedition', 'Expedition'], ['battle', 'Battle'], ['settings', 'Settings']];
+const SCREENS = { hall: (c) => hall(c), hero: (c, a) => hero(c, a), forge: (c) => forge(c), delve: (c) => delveBoard(c), battle: (c) => battle(c), expedition: (c) => expedition(c), settings: (c) => settings(c) };
 const PREF_KEY = 'three-realms.prefs.v1';
 
 function makePrefs(storage) {
@@ -36,6 +37,11 @@ export function mountApp({ root, store, content, build, engineCheck, storage }) 
     rerender() { render(false); },
     attempt: (fn, ...a) => store.act(fn, ...a),
     run(fn, ...a) { const r = store.act(fn, ...a); if (!r.ok) ctx.say(r.message, 'bad'); return r; },
+    expStart(opts) { const r = store.startExpedition(opts); if (!r.ok) ctx.say(r.message, 'bad'); return r; },
+    expMove(x, y) { const r = store.expMove(x, y); if (!r.ok) ctx.say(r.message, 'bad'); else if (r.value.ended) { ctx.say('Out of provisions: the party walks home safely with the pack.', 'ok'); } return r; },
+    expRetreat() { const r = store.expRetreat(); if (!r.ok) ctx.say(r.message, 'bad'); return r; },
+    expHome() { const r = store.expHome(); if (!r.ok) ctx.say(r.message, 'bad'); else ctx.say('The pack is banked.', 'ok'); return r; },
+    expFloor() { const r = store.expFloor(); if (!r.ok) ctx.say(r.message, 'bad'); return r; },
     startBatch(opts, n) { const r = store.delves(opts, n); if (!r.ok) ctx.say(r.message, 'bad'); return r; },
     bulkSalvage(ids) { return store.bulkSalvage(ids); },
     rest() { const r = store.rest(); if (!r.ok) ctx.say(r.message, 'bad'); else ctx.say(`Rested: ${r.value.cost} hacksilver spent${r.value.healed.length ? `, ${r.value.healed.length} hero${r.value.healed.length === 1 ? '' : 'es'} recovered` : ''}.`, 'ok'); return r; },
@@ -61,6 +67,7 @@ export function mountApp({ root, store, content, build, engineCheck, storage }) 
     clear(nav);
     for (const [id, label] of NAV) nav.append(h('a', { href: `#/${id}`, 'aria-current': id === name || (name === 'hero' && id === 'hall') ? 'page' : null, 'data-testid': `nav-${id}` }, label));
     clear(screen);
+    if (s.expedition !== null && !['expedition', 'battle', 'settings'].includes(name)) screen.append(h('p', { class: 'away', 'data-testid': 'away' }, 'Your party is away on an expedition. ', h('a', { href: '#/expedition' }, 'Back to the map.')));
     try { screen.append(SCREENS[name](ctx, arg)); } catch (e) { console.error(e); screen.append(h('div', { class: 'screen' }, h('h1', null, 'Something went wrong'), h('p', { 'data-testid': 'screen-error' }, `This screen could not be drawn: ${e.message}`))); }
     screen.dataset.screen = name;
     if (fresh) { window.scrollTo(0, 0); } else window.scrollTo(0, y);

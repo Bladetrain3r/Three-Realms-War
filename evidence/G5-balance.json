@@ -1,0 +1,812 @@
+{
+  "thresholds": {
+    "file": "checks/balance.yaml",
+    "section": "expedition"
+  },
+  "perCell": 800,
+  "sets": [],
+  "cells": [
+    {
+      "level": 10,
+      "realm": "midgard",
+      "runs": 800,
+      "wiped": 509,
+      "banked": 291,
+      "starved": 0,
+      "embarked": 3200,
+      "died": 2259,
+      "saveDeaths": 909,
+      "saveHeroEncounters": 15016,
+      "packs": 291,
+      "bought": 16327,
+      "matBanked": 17061,
+      "xpBanked": 165331,
+      "silverBanked": 55681,
+      "items": 648,
+      "delveMat": 12198,
+      "delveXp": 101650,
+      "noSite": 0,
+      "provSpentOnBanked": 5029
+    },
+    {
+      "level": 10,
+      "realm": "asgard",
+      "runs": 800,
+      "wiped": 664,
+      "banked": 136,
+      "starved": 0,
+      "embarked": 3200,
+      "died": 2797,
+      "saveDeaths": 862,
+      "saveHeroEncounters": 11461,
+      "packs": 136,
+      "bought": 16218,
+      "matBanked": 6970,
+      "xpBanked": 69386,
+      "silverBanked": 23104,
+      "items": 290,
+      "delveMat": 5280,
+      "delveXp": 44000,
+      "noSite": 0,
+      "provSpentOnBanked": 2361
+    },
+    {
+      "level": 10,
+      "realm": "helheim",
+      "runs": 800,
+      "wiped": 392,
+      "banked": 408,
+      "starved": 0,
+      "embarked": 3200,
+      "died": 1866,
+      "saveDeaths": 843,
+      "saveHeroEncounters": 16409,
+      "packs": 408,
+      "bought": 16327,
+      "matBanked": 24690,
+      "xpBanked": 235736,
+      "silverBanked": 79242,
+      "items": 896,
+      "delveMat": 17118,
+      "delveXp": 142650,
+      "noSite": 0,
+      "provSpentOnBanked": 7262
+    },
+    {
+      "level": 20,
+      "realm": "midgard",
+      "runs": 800,
+      "wiped": 469,
+      "banked": 331,
+      "starved": 0,
+      "embarked": 3200,
+      "died": 2186,
+      "saveDeaths": 1010,
+      "saveHeroEncounters": 15738,
+      "packs": 331,
+      "bought": 16538,
+      "matBanked": 33248,
+      "xpBanked": 332180,
+      "silverBanked": 105069,
+      "items": 723,
+      "delveMat": 20898,
+      "delveXp": 208980,
+      "noSite": 0,
+      "provSpentOnBanked": 5886
+    },
+    {
+      "level": 20,
+      "realm": "asgard",
+      "runs": 800,
+      "wiped": 666,
+      "banked": 134,
+      "starved": 0,
+      "embarked": 3200,
+      "died": 2825,
+      "saveDeaths": 979,
+      "saveHeroEncounters": 11477,
+      "packs": 134,
+      "bought": 16271,
+      "matBanked": 11464,
+      "xpBanked": 114010,
+      "silverBanked": 35372,
+      "items": 257,
+      "delveMat": 7380,
+      "delveXp": 73800,
+      "noSite": 0,
+      "provSpentOnBanked": 2474
+    },
+    {
+      "level": 20,
+      "realm": "helheim",
+      "runs": 800,
+      "wiped": 386,
+      "banked": 414,
+      "starved": 0,
+      "embarked": 3200,
+      "died": 1920,
+      "saveDeaths": 951,
+      "saveHeroEncounters": 17069,
+      "packs": 414,
+      "bought": 16538,
+      "matBanked": 42682,
+      "xpBanked": 427216,
+      "silverBanked": 135118,
+      "items": 924,
+      "delveMat": 26559,
+      "delveXp": 265590,
+      "noSite": 0,
+      "provSpentOnBanked": 7438
+    },
+    {
+      "level": 30,
+      "realm": "midgard",
+      "runs": 800,
+      "wiped": 552,
+      "banked": 248,
+      "starved": 0,
+      "embarked": 3200,
+      "died": 2476,
+      "saveDeaths": 1060,
+      "saveHeroEncounters": 14690,
+      "packs": 248,
+      "bought": 16326,
+      "matBanked": 31635,
+      "xpBanked": 344745,
+      "silverBanked": 106495,
+      "items": 539,
+      "delveMat": 22295,
+      "delveXp": 222950,
+      "noSite": 0,
+      "provSpentOnBanked": 4409
+    },
+    {
+      "level": 30,
+      "realm": "asgard",
+      "runs": 800,
+      "wiped": 743,
+      "banked": 57,
+      "starved": 0,
+      "embarked": 3200,
+      "died": 3036,
+      "saveDeaths": 868,
+      "saveHeroEncounters": 10120,
+      "packs": 57,
+      "bought": 16406,
+      "matBanked": 5441,
+      "xpBanked": 59368,
+      "silverBanked": 17841,
+      "items": 86,
+      "delveMat": 4017,
+      "delveXp": 40170,
+      "noSite": 0,
+      "provSpentOnBanked": 1026
+    },
+    {
+      "level": 30,
+      "realm": "helheim",
+      "runs": 800,
+      "wiped": 481,
+      "banked": 319,
+      "starved": 0,
+      "embarked": 3200,
+      "died": 2263,
+      "saveDeaths": 1067,
+      "saveHeroEncounters": 15883,
+      "packs": 319,
+      "bought": 16326,
+      "matBanked": 41473,
+      "xpBanked": 451591,
+      "silverBanked": 139672,
+      "items": 706,
+      "delveMat": 28964,
+      "delveXp": 289640,
+      "noSite": 0,
+      "provSpentOnBanked": 5696
+    }
+  ],
+  "depth": [
+    {
+      "level": 10,
+      "shallow": {
+        "deaths": 936,
+        "heroEnc": 9134,
+        "n": 430
+      },
+      "deep": {
+        "deaths": 3134,
+        "heroEnc": 9640,
+        "n": 800
+      }
+    },
+    {
+      "level": 20,
+      "shallow": {
+        "deaths": 997,
+        "heroEnc": 9306,
+        "n": 443
+      },
+      "deep": {
+        "deaths": 3104,
+        "heroEnc": 11654,
+        "n": 799
+      }
+    },
+    {
+      "level": 30,
+      "shallow": {
+        "deaths": 1200,
+        "heroEnc": 8592,
+        "n": 435
+      },
+      "deep": {
+        "deaths": 3135,
+        "heroEnc": 12101,
+        "n": 799
+      }
+    }
+  ],
+  "checks": [
+    {
+      "id": "exp.midgard.L10.hero_death_per_embarked_hero",
+      "value": 0.7059,
+      "lo": 0.01,
+      "hi": 0.2,
+      "ok": false
+    },
+    {
+      "id": "exp.midgard.L10.wipe_rate",
+      "value": 0.6363,
+      "lo": 0.01,
+      "hi": 0.25,
+      "ok": false
+    },
+    {
+      "id": "exp.midgard.L10.hero_death_per_won_encounter",
+      "value": 0.0605,
+      "lo": 0.002,
+      "hi": 0.05,
+      "ok": false
+    },
+    {
+      "id": "exp.midgard.L10.starvation_rate",
+      "value": 0,
+      "lo": 0,
+      "hi": 0.1,
+      "ok": true
+    },
+    {
+      "id": "exp.midgard.L10.materials_per_encounter_vs_delve",
+      "value": 1.3987,
+      "lo": 1.15,
+      "hi": 2.5,
+      "ok": true
+    },
+    {
+      "id": "exp.midgard.L10.xp_per_encounter_vs_delve",
+      "value": 1.6265,
+      "lo": 1.15,
+      "hi": 2.5,
+      "ok": true
+    },
+    {
+      "id": "exp.midgard.L10.silver_return_on_provisions",
+      "value": 1.1072,
+      "lo": 0.5,
+      "hi": 3,
+      "ok": true
+    },
+    {
+      "id": "exp.midgard.L10.items_per_completed_expedition",
+      "value": 2.2268,
+      "lo": 1,
+      "hi": 12,
+      "ok": true
+    },
+    {
+      "id": "exp.asgard.L10.hero_death_per_embarked_hero",
+      "value": 0.8741,
+      "lo": 0.01,
+      "hi": 0.2,
+      "ok": false
+    },
+    {
+      "id": "exp.asgard.L10.wipe_rate",
+      "value": 0.83,
+      "lo": 0.01,
+      "hi": 0.25,
+      "ok": false
+    },
+    {
+      "id": "exp.asgard.L10.hero_death_per_won_encounter",
+      "value": 0.0752,
+      "lo": 0.002,
+      "hi": 0.05,
+      "ok": false
+    },
+    {
+      "id": "exp.asgard.L10.starvation_rate",
+      "value": 0,
+      "lo": 0,
+      "hi": 0.1,
+      "ok": true
+    },
+    {
+      "id": "exp.asgard.L10.materials_per_encounter_vs_delve",
+      "value": 1.3201,
+      "lo": 1.15,
+      "hi": 2.5,
+      "ok": true
+    },
+    {
+      "id": "exp.asgard.L10.xp_per_encounter_vs_delve",
+      "value": 1.577,
+      "lo": 1.15,
+      "hi": 2.5,
+      "ok": true
+    },
+    {
+      "id": "exp.asgard.L10.silver_return_on_provisions",
+      "value": 0.9786,
+      "lo": 0.5,
+      "hi": 3,
+      "ok": true
+    },
+    {
+      "id": "exp.asgard.L10.items_per_completed_expedition",
+      "value": 2.1324,
+      "lo": 1,
+      "hi": 12,
+      "ok": true
+    },
+    {
+      "id": "exp.helheim.L10.hero_death_per_embarked_hero",
+      "value": 0.5831,
+      "lo": 0.01,
+      "hi": 0.2,
+      "ok": false
+    },
+    {
+      "id": "exp.helheim.L10.wipe_rate",
+      "value": 0.49,
+      "lo": 0.01,
+      "hi": 0.25,
+      "ok": false
+    },
+    {
+      "id": "exp.helheim.L10.hero_death_per_won_encounter",
+      "value": 0.0514,
+      "lo": 0.002,
+      "hi": 0.05,
+      "ok": false
+    },
+    {
+      "id": "exp.helheim.L10.starvation_rate",
+      "value": 0,
+      "lo": 0,
+      "hi": 0.1,
+      "ok": true
+    },
+    {
+      "id": "exp.helheim.L10.materials_per_encounter_vs_delve",
+      "value": 1.4423,
+      "lo": 1.15,
+      "hi": 2.5,
+      "ok": true
+    },
+    {
+      "id": "exp.helheim.L10.xp_per_encounter_vs_delve",
+      "value": 1.6525,
+      "lo": 1.15,
+      "hi": 2.5,
+      "ok": true
+    },
+    {
+      "id": "exp.helheim.L10.silver_return_on_provisions",
+      "value": 1.0912,
+      "lo": 0.5,
+      "hi": 3,
+      "ok": true
+    },
+    {
+      "id": "exp.helheim.L10.items_per_completed_expedition",
+      "value": 2.1961,
+      "lo": 1,
+      "hi": 12,
+      "ok": true
+    },
+    {
+      "id": "exp.midgard.L20.hero_death_per_embarked_hero",
+      "value": 0.6831,
+      "lo": 0.01,
+      "hi": 0.2,
+      "ok": false
+    },
+    {
+      "id": "exp.midgard.L20.wipe_rate",
+      "value": 0.5863,
+      "lo": 0.01,
+      "hi": 0.25,
+      "ok": false
+    },
+    {
+      "id": "exp.midgard.L20.hero_death_per_won_encounter",
+      "value": 0.0642,
+      "lo": 0.002,
+      "hi": 0.05,
+      "ok": false
+    },
+    {
+      "id": "exp.midgard.L20.starvation_rate",
+      "value": 0,
+      "lo": 0,
+      "hi": 0.1,
+      "ok": true
+    },
+    {
+      "id": "exp.midgard.L20.materials_per_encounter_vs_delve",
+      "value": 1.591,
+      "lo": 1.15,
+      "hi": 2.5,
+      "ok": true
+    },
+    {
+      "id": "exp.midgard.L20.xp_per_encounter_vs_delve",
+      "value": 1.5895,
+      "lo": 1.15,
+      "hi": 2.5,
+      "ok": true
+    },
+    {
+      "id": "exp.midgard.L20.silver_return_on_provisions",
+      "value": 1.7851,
+      "lo": 0.5,
+      "hi": 3,
+      "ok": true
+    },
+    {
+      "id": "exp.midgard.L20.items_per_completed_expedition",
+      "value": 2.1843,
+      "lo": 1,
+      "hi": 12,
+      "ok": true
+    },
+    {
+      "id": "exp.asgard.L20.hero_death_per_embarked_hero",
+      "value": 0.8828,
+      "lo": 0.01,
+      "hi": 0.2,
+      "ok": false
+    },
+    {
+      "id": "exp.asgard.L20.wipe_rate",
+      "value": 0.8325,
+      "lo": 0.01,
+      "hi": 0.25,
+      "ok": false
+    },
+    {
+      "id": "exp.asgard.L20.hero_death_per_won_encounter",
+      "value": 0.0853,
+      "lo": 0.002,
+      "hi": 0.05,
+      "ok": false
+    },
+    {
+      "id": "exp.asgard.L20.starvation_rate",
+      "value": 0,
+      "lo": 0,
+      "hi": 0.1,
+      "ok": true
+    },
+    {
+      "id": "exp.asgard.L20.materials_per_encounter_vs_delve",
+      "value": 1.5534,
+      "lo": 1.15,
+      "hi": 2.5,
+      "ok": true
+    },
+    {
+      "id": "exp.asgard.L20.xp_per_encounter_vs_delve",
+      "value": 1.5449,
+      "lo": 1.15,
+      "hi": 2.5,
+      "ok": true
+    },
+    {
+      "id": "exp.asgard.L20.silver_return_on_provisions",
+      "value": 1.4297,
+      "lo": 0.5,
+      "hi": 3,
+      "ok": true
+    },
+    {
+      "id": "exp.asgard.L20.items_per_completed_expedition",
+      "value": 1.9179,
+      "lo": 1,
+      "hi": 12,
+      "ok": true
+    },
+    {
+      "id": "exp.helheim.L20.hero_death_per_embarked_hero",
+      "value": 0.6,
+      "lo": 0.01,
+      "hi": 0.2,
+      "ok": false
+    },
+    {
+      "id": "exp.helheim.L20.wipe_rate",
+      "value": 0.4825,
+      "lo": 0.01,
+      "hi": 0.25,
+      "ok": false
+    },
+    {
+      "id": "exp.helheim.L20.hero_death_per_won_encounter",
+      "value": 0.0557,
+      "lo": 0.002,
+      "hi": 0.05,
+      "ok": false
+    },
+    {
+      "id": "exp.helheim.L20.starvation_rate",
+      "value": 0,
+      "lo": 0,
+      "hi": 0.1,
+      "ok": true
+    },
+    {
+      "id": "exp.helheim.L20.materials_per_encounter_vs_delve",
+      "value": 1.6071,
+      "lo": 1.15,
+      "hi": 2.5,
+      "ok": true
+    },
+    {
+      "id": "exp.helheim.L20.xp_per_encounter_vs_delve",
+      "value": 1.6086,
+      "lo": 1.15,
+      "hi": 2.5,
+      "ok": true
+    },
+    {
+      "id": "exp.helheim.L20.silver_return_on_provisions",
+      "value": 1.8166,
+      "lo": 0.5,
+      "hi": 3,
+      "ok": true
+    },
+    {
+      "id": "exp.helheim.L20.items_per_completed_expedition",
+      "value": 2.2319,
+      "lo": 1,
+      "hi": 12,
+      "ok": true
+    },
+    {
+      "id": "exp.midgard.L30.hero_death_per_embarked_hero",
+      "value": 0.7738,
+      "lo": 0.01,
+      "hi": 0.2,
+      "ok": false
+    },
+    {
+      "id": "exp.midgard.L30.wipe_rate",
+      "value": 0.69,
+      "lo": 0.01,
+      "hi": 0.25,
+      "ok": false
+    },
+    {
+      "id": "exp.midgard.L30.hero_death_per_won_encounter",
+      "value": 0.0722,
+      "lo": 0.002,
+      "hi": 0.05,
+      "ok": false
+    },
+    {
+      "id": "exp.midgard.L30.starvation_rate",
+      "value": 0,
+      "lo": 0,
+      "hi": 0.1,
+      "ok": true
+    },
+    {
+      "id": "exp.midgard.L30.materials_per_encounter_vs_delve",
+      "value": 1.4189,
+      "lo": 1.15,
+      "hi": 2.5,
+      "ok": true
+    },
+    {
+      "id": "exp.midgard.L30.xp_per_encounter_vs_delve",
+      "value": 1.5463,
+      "lo": 1.15,
+      "hi": 2.5,
+      "ok": true
+    },
+    {
+      "id": "exp.midgard.L30.silver_return_on_provisions",
+      "value": 2.4154,
+      "lo": 0.5,
+      "hi": 3,
+      "ok": true
+    },
+    {
+      "id": "exp.midgard.L30.items_per_completed_expedition",
+      "value": 2.1734,
+      "lo": 1,
+      "hi": 12,
+      "ok": true
+    },
+    {
+      "id": "exp.asgard.L30.hero_death_per_embarked_hero",
+      "value": 0.9488,
+      "lo": 0.01,
+      "hi": 0.2,
+      "ok": false
+    },
+    {
+      "id": "exp.asgard.L30.wipe_rate",
+      "value": 0.9288,
+      "lo": 0.01,
+      "hi": 0.25,
+      "ok": false
+    },
+    {
+      "id": "exp.asgard.L30.hero_death_per_won_encounter",
+      "value": 0.0858,
+      "lo": 0.002,
+      "hi": 0.05,
+      "ok": false
+    },
+    {
+      "id": "exp.asgard.L30.starvation_rate",
+      "value": 0,
+      "lo": 0,
+      "hi": 0.1,
+      "ok": true
+    },
+    {
+      "id": "exp.asgard.L30.materials_per_encounter_vs_delve",
+      "value": 1.3545,
+      "lo": 1.15,
+      "hi": 2.5,
+      "ok": true
+    },
+    {
+      "id": "exp.asgard.L30.xp_per_encounter_vs_delve",
+      "value": 1.4779,
+      "lo": 1.15,
+      "hi": 2.5,
+      "ok": true
+    },
+    {
+      "id": "exp.asgard.L30.silver_return_on_provisions",
+      "value": 1.7389,
+      "lo": 0.5,
+      "hi": 3,
+      "ok": true
+    },
+    {
+      "id": "exp.asgard.L30.items_per_completed_expedition",
+      "value": 1.5088,
+      "lo": 1,
+      "hi": 12,
+      "ok": true
+    },
+    {
+      "id": "exp.helheim.L30.hero_death_per_embarked_hero",
+      "value": 0.7072,
+      "lo": 0.01,
+      "hi": 0.2,
+      "ok": false
+    },
+    {
+      "id": "exp.helheim.L30.wipe_rate",
+      "value": 0.6012,
+      "lo": 0.01,
+      "hi": 0.25,
+      "ok": false
+    },
+    {
+      "id": "exp.helheim.L30.hero_death_per_won_encounter",
+      "value": 0.0672,
+      "lo": 0.002,
+      "hi": 0.05,
+      "ok": false
+    },
+    {
+      "id": "exp.helheim.L30.starvation_rate",
+      "value": 0,
+      "lo": 0,
+      "hi": 0.1,
+      "ok": true
+    },
+    {
+      "id": "exp.helheim.L30.materials_per_encounter_vs_delve",
+      "value": 1.4319,
+      "lo": 1.15,
+      "hi": 2.5,
+      "ok": true
+    },
+    {
+      "id": "exp.helheim.L30.xp_per_encounter_vs_delve",
+      "value": 1.5591,
+      "lo": 1.15,
+      "hi": 2.5,
+      "ok": true
+    },
+    {
+      "id": "exp.helheim.L30.silver_return_on_provisions",
+      "value": 2.4521,
+      "lo": 0.5,
+      "hi": 3,
+      "ok": true
+    },
+    {
+      "id": "exp.helheim.L30.items_per_completed_expedition",
+      "value": 2.2132,
+      "lo": 1,
+      "hi": 12,
+      "ok": true
+    },
+    {
+      "id": "exp.L10.deep_over_shallow_death_ratio",
+      "value": 3.1725,
+      "lo": 1,
+      "hi": 100,
+      "ok": true
+    },
+    {
+      "id": "exp.L20.deep_over_shallow_death_ratio",
+      "value": 2.4861,
+      "lo": 1,
+      "hi": 100,
+      "ok": true
+    },
+    {
+      "id": "exp.L30.deep_over_shallow_death_ratio",
+      "value": 1.8549,
+      "lo": 1,
+      "hi": 100,
+      "ok": true
+    },
+    {
+      "id": "exp.floor_step_ratio",
+      "value": 1.1769,
+      "lo": 1.1,
+      "hi": 1.3,
+      "ok": true
+    }
+  ],
+  "failed": [
+    "exp.midgard.L10.hero_death_per_embarked_hero",
+    "exp.midgard.L10.wipe_rate",
+    "exp.midgard.L10.hero_death_per_won_encounter",
+    "exp.asgard.L10.hero_death_per_embarked_hero",
+    "exp.asgard.L10.wipe_rate",
+    "exp.asgard.L10.hero_death_per_won_encounter",
+    "exp.helheim.L10.hero_death_per_embarked_hero",
+    "exp.helheim.L10.wipe_rate",
+    "exp.helheim.L10.hero_death_per_won_encounter",
+    "exp.midgard.L20.hero_death_per_embarked_hero",
+    "exp.midgard.L20.wipe_rate",
+    "exp.midgard.L20.hero_death_per_won_encounter",
+    "exp.asgard.L20.hero_death_per_embarked_hero",
+    "exp.asgard.L20.wipe_rate",
+    "exp.asgard.L20.hero_death_per_won_encounter",
+    "exp.helheim.L20.hero_death_per_embarked_hero",
+    "exp.helheim.L20.wipe_rate",
+    "exp.helheim.L20.hero_death_per_won_encounter",
+    "exp.midgard.L30.hero_death_per_embarked_hero",
+    "exp.midgard.L30.wipe_rate",
+    "exp.midgard.L30.hero_death_per_won_encounter",
+    "exp.asgard.L30.hero_death_per_embarked_hero",
+    "exp.asgard.L30.wipe_rate",
+    "exp.asgard.L30.hero_death_per_won_encounter",
+    "exp.helheim.L30.hero_death_per_embarked_hero",
+    "exp.helheim.L30.wipe_rate",
+    "exp.helheim.L30.hero_death_per_won_encounter"
+  ]
+}
