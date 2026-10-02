@@ -36,16 +36,28 @@ export function mountApp({ root, store, content, build, engineCheck, storage }) 
     rerender() { render(false); },
     attempt: (fn, ...a) => store.act(fn, ...a),
     run(fn, ...a) { const r = store.act(fn, ...a); if (!r.ok) ctx.say(r.message, 'bad'); return r; },
+    startBatch(opts, n) { const r = store.delves(opts, n); if (!r.ok) ctx.say(r.message, 'bad'); return r; },
+    bulkSalvage(ids) { return store.bulkSalvage(ids); },
+    rest() { const r = store.rest(); if (!r.ok) ctx.say(r.message, 'bad'); else ctx.say(`Rested: ${r.value.cost} hacksilver spent${r.value.healed.length ? `, ${r.value.healed.length} hero${r.value.healed.length === 1 ? '' : 'es'} recovered` : ''}.`, 'ok'); return r; },
     start(opts) { const r = store.delve(opts); if (!r.ok) ctx.say(r.message, 'bad'); return r; },
     reducedMotion: () => prefs.get('reduced') || (typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches),
   };
 
   const parse = () => { const m = /^#\/([a-z]+)(?:\/(\d+))?/.exec(location.hash); return m && SCREENS[m[1]] ? { name: m[1], arg: m[2] } : { name: 'hall', arg: undefined }; };
+  // Removing a focused input fires its change and blur handlers in the middle of the removal; a handler that asks for another render
+  // must not start one inside this one (the nested render removed nodes the outer one was still removing). It is queued instead.
+  let drawing = false, again = null;
   function render(fresh) {
+    if (drawing) { again = again === null ? fresh : again && fresh; return; }
+    drawing = true;
+    try { draw(fresh); } finally { drawing = false; }
+    if (again !== null) { const f = again; again = null; render(f); }
+  }
+  function draw(fresh) {
     const { name, arg } = parse(), y = window.scrollY;
     if (fresh) { notice.textContent = ''; notice.className = ''; if (store.problem) { ctx.say(store.problem, 'bad'); store.clearProblem(); } }
     const s = store.save;
-    purse.textContent = `${s.currency.hacksilver} hacksilver · ${s.heroes.length} heroes · ${s.threads} Thread${s.threads === 1 ? '' : 's'}`;
+    purse.textContent = `${s.currency.hacksilver < 0 ? `${-s.currency.hacksilver} hacksilver in debt` : `${s.currency.hacksilver} hacksilver`} · ${s.heroes.length} heroes · ${s.threads} Thread${s.threads === 1 ? '' : 's'}`;
     clear(nav);
     for (const [id, label] of NAV) nav.append(h('a', { href: `#/${id}`, 'aria-current': id === name || (name === 'hero' && id === 'hall') ? 'page' : null, 'data-testid': `nav-${id}` }, label));
     clear(screen);

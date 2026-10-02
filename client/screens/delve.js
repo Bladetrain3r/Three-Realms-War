@@ -3,8 +3,10 @@ import { h } from '../dom.js';
 import { panel, button, realmTag } from '../ui.js';
 import { Art } from '../art/index.js';
 import { injuryText } from '../format.js';
+import { restCost } from '../../sim/index.js';
 
-let chosen = { realm: 'midgard', level: 1 }, forced = new Set();
+let chosen = { realm: 'midgard', level: 1 }, forced = new Set(), count = 1;
+const COUNTS = [1, 3, 5, 10, 25, 50];
 
 export function delveBoard(ctx) {
   const { store, content } = ctx, save = store.save;
@@ -30,13 +32,20 @@ export function delveBoard(ctx) {
   const blocked = party.filter((x) => x.injury > 0 && !forced.has(x.id));
 
   const go = () => {
-    const r = ctx.start({ realm: chosen.realm, level: chosen.level, force: [...forced] });
+    const opts = { realm: chosen.realm, level: chosen.level, force: [...forced] };
+    const r = count > 1 ? ctx.startBatch(opts, count) : ctx.start(opts);
     if (r.ok) location.hash = '#/battle';
   };
+  const rc = restCost(save, content), anyHurt = save.heroes.some((x) => x.injury > 0);
+  const restWhy = save.currency.hacksilver <= 0 ? (save.currency.hacksilver < 0 ? `you owe ${-save.currency.hacksilver} hacksilver; earn it back in a delve` : 'you have no hacksilver') : !anyHurt ? 'nobody is injured' : '';
+  const countSel = h('select', { 'aria-label': 'how many delves', 'data-testid': 'count', onchange: (e) => { count = Number(e.target.value); ctx.rerender(); } }, COUNTS.map((n) => h('option', { value: String(n), selected: count === n }, n === 1 ? 'once' : `${n} times`)));
   return h('div', { class: 'screen delve' }, h('h1', null, 'The Delve Board'),
     panel('Realm', realms),
     panel('Level and party', h('p', null, h('label', null, 'Delve level ', levelSel), ' ', realmTag(content, chosen.realm), ` — ${content.realmById[chosen.realm].dungeon}`),
       h('ol', { class: 'party-list' }, rows),
-      blocked.length ? h('p', { class: 'warn', 'data-testid': 'blocked' }, `${blocked.map((x) => x.name).join(', ')} ${blocked.length === 1 ? 'is' : 'are'} injured. Rest by sitting out delves, or tick the box to send at half strength.`) : null,
-      h('p', null, button('Descend', go, { class: 'primary', id: 'descend', disabled: blocked.length > 0, title: blocked.length ? 'an injured hero is in the party' : '' }), h('small', null, ' The result is decided the moment you go; the battle screen plays it back.'))));
+      blocked.length ? h('p', { class: 'warn', 'data-testid': 'blocked' }, `${blocked.map((x) => x.name).join(', ')} ${blocked.length === 1 ? 'is' : 'are'} injured. Rest by sitting out delves, pay for a rest, or tick the box to send at half strength.`) : null,
+      h('p', null, h('label', null, 'Delve ', countSel), ' ', button(count > 1 ? `Descend \u00d7${count}` : 'Descend', go, { class: 'primary', id: 'descend', disabled: blocked.length > 0, title: blocked.length ? 'an injured hero is in the party' : '' }),
+        h('small', null, count > 1 ? ' The batch stops at a loss or an injury. Every run can be watched afterwards.' : ' The result is decided the moment you go; the battle screen plays it back.')),
+      h('p', null, button(`Rest the roster (${rc.cost} hacksilver)`, () => ctx.rest(), { id: 'rest', disabled: Boolean(restWhy), title: restWhy || `${rc.healthy} fit at 10 and ${rc.wounded} injured at 30; every injury counter drops by one` }),
+        h('small', null, restWhy ? ` ${restWhy}.` : ` ${rc.healthy} fit \u00d7 10 + ${rc.wounded} injured \u00d7 30; every injury counter drops by one. You can overspend into debt, but cannot rest or recruit while in debt.`))));
 }

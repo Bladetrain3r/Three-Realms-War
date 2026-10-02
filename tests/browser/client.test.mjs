@@ -1,7 +1,9 @@
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { content } from '../helpers/content.mjs';
-import { newGame, playDelve, canonical } from '../../sim/index.js';
+import { readFileSync } from 'node:fs';
+import { newGame, playDelve, playDelves, rest, salvageMany, canonical } from '../../sim/index.js';
+import { matching } from '../../client/forge-filter.js';
 import { buildGame, launch, openGame, go, settle } from './game-page.mjs';
 
 let browser = null, game = null;
@@ -233,7 +235,81 @@ test('client: an upgrade attempt shows the old and the new bonus lines in the sa
   await importSave(page, start);
   await go(page, '#/forge'); await page.click(`[data-testid="item-${id}"]`); await page.click('[data-testid=upgrade]');
   const before = await text(page, 'lines-before'), now = await text(page, 'lines-now');
-  for (const s of [before, now]) { assert.doesNotMatch(s, /_PCT|CRITDMG|CRIT\b/, s); assert.match(s, /\+\d+ MIT; (\+[\d.]+% [A-Za-z ]+(, )?)+/, s); }
+  for (const s of [before, now]) { assert.doesNotMatch(s, /_PCT|CRITDMG|CRIT\b/, s); assert.match(s, /\+\d+ MIT( \(no effective change from the star\))?; (\+[\d.]+% [A-Za-z ]+(, )?)+/, s); }
+  assert.match(now, /no effective change/, 'a star on a level-1 weapon (+6 MIT) rounds away and the page says so');
   assert.match(before, /\+8% VIG/, 'the old line is shown at the old star: raw 800 at star 0');
+  await context.close();
+});
+
+const playtest = JSON.parse(readFileSync(new URL('../fixtures/playtest-2026-10-02.json', import.meta.url), 'utf8'));
+const stateOf = (page) => page.evaluate(() => window.ThreeRealms.exportText());
+const sameSave = async (page, want, what) => assert.equal(withoutMeta(await stateOf(page)), withoutMeta(canonical(want)), what);
+
+test('client: resting the roster costs 10 per hero and 30 per injured hero, can go into debt, and then rest and recruiting are refused (Hall and Delve board)', async (t) => {
+  if (!need(t)) return;
+  const start = structuredClone(playtest); start.heroes[0].injury = 2; start.heroes[3].injury = 1; start.currency.hacksilver = 40;
+  const { page, problems, context } = await openGame(browser, game.url);
+  await importSave(page, start);
+  await go(page, '#/hall'); assert.match(await page.getAttribute('[data-testid=rest]', 'title') || '', /^$/); await page.click('[data-testid=rest]');
+  let want = rest(start, content).save; await sameSave(page, want, 'rest from the Hall');
+  assert.equal(want.currency.hacksilver, 40 - (2 * 30 + 6 * 10), 'two injured at 30, six fit at 10, from 40');
+  assert.match(await text(page, 'purse'), /80 hacksilver in debt/);
+  assert.equal(await page.isDisabled('[data-testid=rest]'), true);
+  assert.match(await page.getAttribute('[data-testid=rest]', 'title'), /you owe 80 hacksilver/);
+  assert.match(await page.getAttribute('[data-testid=do-recruit-hunter]', 'title'), /you owe 80 hacksilver/);
+  await go(page, '#/delve'); assert.equal(await page.isDisabled('[data-testid=rest]'), true);
+  assert.deepEqual(problems, []);
+  await context.close();
+});
+
+test('client: "Delve N times" gives exactly the saves and replays of playDelves, stops where it says it stops, and every run can be watched', async (t) => {
+  if (!need(t)) return;
+  const start = newGame(content, 424242, { savedAt: '', build: 'client-test' });
+  for (const h of start.heroes) h.level = 40;
+  const { page, problems, context } = await openGame(browser, game.url);
+  await importSave(page, start);
+  await go(page, '#/delve'); await page.selectOption('[data-testid=count]', '5'); await page.click('[data-testid=descend]');
+  await page.waitForFunction(() => location.hash === '#/battle'); await settle(page);
+  const want = playDelves(start, content, { realm: 'midgard', level: 1 }, 5);
+  await sameSave(page, want.save, 'five delves');
+  const st = await page.evaluate(() => window.ThreeRealms.battleState());
+  assert.equal(st.hash, want.runs.at(-1).replay.hash, 'the last run is shown first');
+  assert.match(await text(page, 'batch-summary'), new RegExp(`${want.totals.wins} won`));
+  assert.equal(await page.locator('[data-testid=run-select] option').count(), want.runs.length);
+  await page.selectOption('[data-testid=run-select]', '0'); await settle(page);
+  await page.waitForFunction((h) => window.ThreeRealms.battleState() && window.ThreeRealms.battleState().hash === h, want.runs[0].replay.hash);
+  assert.deepEqual(problems, []);
+  await context.close();
+});
+
+test('client: the Forge filters, sorts, selects by rule and bulk-salvages exactly as the rules layer does, after a confirmation', async (t) => {
+  if (!need(t)) return;
+  const { page, problems, context } = await openGame(browser, game.url);
+  await importSave(page, playtest);
+  await go(page, '#/forge');
+  const shown = () => page.locator('ul[data-testid=item-list] li').count();
+  assert.equal(await shown(), 68);
+  const wornSet0 = new Set(playtest.heroes.flatMap((x) => Object.values(x.slots)));
+  await page.selectOption('[data-testid=f-owner]', 'stash'); assert.equal(await shown(), playtest.items.filter((i) => !wornSet0.has(i.id)).length);
+  const wornSet = new Set(playtest.heroes.flatMap((x) => Object.values(x.slots)));
+  await page.selectOption('[data-testid=f-tier]', 'runed'); assert.equal(await shown(), playtest.items.filter((i) => i.tier === 'runed' && !wornSet.has(i.id)).length, 'runed items in the stash');
+  await page.selectOption('[data-testid=f-tier]', 'any');
+  await page.selectOption('[data-testid=f-sort]', 'ilvl'); await page.check('[data-testid=f-desc]');
+  const firstLevel = await page.locator('ul[data-testid=item-list] li button').first().textContent();
+  assert.match(firstLevel, / L18 /, 'highest level first');
+  // select by rule: stash, up to Fine, level 10 or less, star 0, keep set pieces
+  await page.click('[data-testid=bulk-preview]', { trial: true }).catch(() => {});
+  await page.evaluate(() => { document.querySelector('details.bulk').open = true; });
+  await page.fill('[data-testid=r-level]', '10'); await page.dispatchEvent('[data-testid=r-level]', 'change');
+  await page.evaluate(() => { document.querySelector('details.bulk').open = true; });
+  await page.click('[data-testid=select-matching]');
+  const ids = matching(playtest, { maxTier: 'fine', maxLevel: 10, maxStar: 0, noSet: true });
+  assert.match(await text(page, 'bulk-preview'), new RegExp(`^${ids.length} selected`));
+  await page.click('[data-testid=salvage-selected]');
+  await sameSave(page, playtest, 'asking for confirmation changes nothing');
+  await page.click('[data-testid=confirm-salvage]');
+  await sameSave(page, salvageMany(playtest, content, ids).save, 'bulk salvage');
+  assert.match(await text(page, 'notice'), new RegExp(`Salvaged ${ids.length} item`));
+  assert.deepEqual(problems, []);
   await context.close();
 });

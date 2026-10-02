@@ -707,6 +707,23 @@ use. The intended shape (the balance gate measures it, G3): a first upgrade with
 upgrades costing many delves' worth of one realm's materials, and a rare-heart bottleneck on the last two stars so that
 boss clearing is the long-run pace. Absence costs nothing: no decay, no events that expire.
 
+### 11.6 Resting the roster (added in 0.6, Ziggy's numbers)
+
+Idle time can be bought. One **rest** counts as a delve's worth of idle time for everybody: every injury counter drops by 1. It
+costs 10 hacksilver for each hero and **30 for each injured hero** (30 replaces the 10, it is not added to it). The balance may
+go negative (debt). While the balance is **0 or below**, resting and recruiting are refused ("you owe N hacksilver"); delving is
+still allowed, since it is how silver is earned back. A rest with nobody injured is refused. A rest gives no experience.
+
+[WE-34] a roster of 4 with 2 injured rests, with 1000 hacksilver (2 x 10 + 2 x 30): hacksilver spent, hacksilver left => 80, 920
+
+### 11.7 Delving several times (added in 0.6, Ziggy's request)
+
+The delve board may run the same realm and level up to 50 times in a row (`playDelves`). Each run is an ordinary delve with the next seed
+of the save's stream, applied before the next begins. The batch stops after the run that lost, and after any run that leaves a party
+hero injured (including one forced in), so the player decides about forcing. The first run refuses exactly as a single delve does. The
+result is every run's replay (any can be watched) plus totals: delves, wins, xp, silver, materials, reputation, items found and dropped,
+level-ups, injuries, and why it stopped.
+
 ## 12. Expeditions (built in G5; specified now)
 
 An expedition is a longer, riskier outing with permanent stakes.
@@ -906,7 +923,11 @@ Random choices use `deriveSeed(masterSeed, counter)` and then increment `counter
   Plain item-level-1 kit of its realm; party = those four; `hacksilver` 0; every realm unlocked at 1. Every new hero (also a recruit)
   begins with the class's **starter runbook** from `content/starter_runbooks.json`, which the player edits freely.
 - **Recruit.** The class must exist; a rare class needs its realm's reputation at *Known*; the roster holds at most 24; the cost is
-  `recruitCost(recruitLevel(topLevel))` hacksilver (7.5); the recruit arrives with a full Plain kit at item level equal to its level.
+  `recruitCost(recruitLevel(topLevel))` hacksilver (7.5); the recruit arrives with a full Plain kit at item level `max(1, idiv(level, 2))`, half its level (`recruitKitLevel`, 0.6), because a recruit's level can sit well above the dungeon level it will be sent to.
+
+[WE-35] the kit item level of a recruit at level 15, and at level 1 => 7, 1
+- **Rest.** `rest(save, content)` (11.6): every injury counter drops by 1, `restCost` hacksilver is spent (the balance may go negative); refused when the
+  balance is 0 or below (`in_debt`, as is recruiting) or when nobody is injured.
 - **Dismiss.** Gear returns to the stash; an assigned Thread of the Norns returns to the count; the party closes over the gap; the last
   hero cannot be dismissed.
 - **Equip.** The item must fit the slot and be at most `hero level + 5`; an item worn by another hero moves; `null` unequips.
@@ -1012,3 +1033,16 @@ Random choices use `deriveSeed(masterSeed, counter)` and then increment `counter
   `#265030`, because `#3f7a46` on the shaded panel colour measured 3.98:1 and the rule is 4.5:1 (`tests/unit/contrast.test.mjs`).
   (e) The battle screen also lists every unit's hit points and statuses as plain text beside the canvas (its on-canvas text is small on a
   phone, and a text list is what a screen reader can use).
+- **0.6 (2026-10-02, Ziggy's decisions after playing the STOP-2 preview; each a design change, logged here):** (1) **Rest** (new 11.6): one rest takes
+  one off every injury counter and costs 10 hacksilver per hero, 30 per injured hero; the balance may go negative; at 0 or below, resting
+  and recruiting are refused, delving is not (it is the only way to earn the silver back; Ziggy's words were "won't be able to do
+  anything until you've got positive gold balance", which I read this way to avoid a deadlock, and have asked). Content: `tables.injury.restCost`
+  10 and `restCostWounded` 30; the save format allows `hacksilver` down to -1,000,000,000. (2) **Recruit kit level** (7.5, 19): a recruit's
+  starting Plain kit is at `max(1, idiv(level, 2))` (content `tables.recruit.kitLevelDen` 2), not at the hero's level, because a recruit
+  can arrive far above the dungeon level. (3) **Delve several times** (new 11.7): up to 50 runs of the same board, stopping at a loss or an
+  injury. (4) Forge, display only: filters (owner, rarity, slot, realm), sorting, bulk salvage by selection or by rule, and the
+  words "no effective change" where a star adds less than 1 to a main stat. No formula changed; star gains still round down (8.1).
+  Content hash, the engine-check hash and the replay goldens changed because content changed (events and outcomes are identical to the
+  old goldens, checked); the golden playthrough changed because recruits now get cheaper kits. Worked examples WE-34 and WE-35 added.
+  **Parked by Ziggy until after STOP-3 (planning only then; nothing built):** weapon classes with trained ranks (Untrained -20% to Apex +20%),
+  one unique ultimate skill per class and for bosses (limited-charge items?); see `BACKLOG.md`.

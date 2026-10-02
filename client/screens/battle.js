@@ -3,7 +3,7 @@ import { h, clear, download } from '../dom.js';
 import { panel, button } from '../ui.js';
 import { BattleView } from '../battle-view.js';
 import { serializeReplay } from '../../sim/index.js';
-import { itemLine } from '../format.js';
+import { itemLine, matName } from '../format.js';
 
 export function battle(ctx) {
   const { store, content } = ctx, lb = store.lastBattle;
@@ -24,6 +24,18 @@ export function battle(ctx) {
   const view = new BattleView(canvas, lb.replay, content, { reduced, bg });
   ctx.battle = view;
 
+  const batch = store.lastBatch;
+  const batchPanel = batch && batch.runs.length > 1 ? (() => {
+    const t = batch.totals, why = { done: `all ${batch.requested} delves were run`, lost: 'it stopped after a lost delve', injury: 'it stopped because a party hero is injured' }[batch.stopped];
+    const mats = Object.entries(t.materials).map(([id, n]) => `${n} ${matName(id)}`).join(', ');
+    return panel(`Batch: ${t.delves} of ${batch.requested} delves`, h('p', { 'data-testid': 'batch-summary' }, `${t.wins} won; ${why}.`),
+      h('ul', { class: 'earned' }, h('li', null, `${t.xp} XP to each party member in total`), h('li', null, `${t.hacksilver} hacksilver`), mats ? h('li', null, mats) : null, h('li', null, `${t.reputation} reputation`),
+        t.items ? h('li', null, `${t.items} item${t.items === 1 ? '' : 's'} found`) : null, t.droppedItems ? h('li', { class: 'warn' }, `${t.droppedItems} lost: the stash was full`) : null, t.threads ? h('li', null, `${t.threads} Thread of the Norns`) : null,
+        t.unlocked ? h('li', null, `Level ${t.unlocked.level} of ${content.realmById[t.unlocked.realm].name} is now open`) : null),
+      t.levelUps.length ? h('p', null, 'Level ups: ', t.levelUps.map((l) => `${l.name} ${l.from}\u2192${l.to}`).join(', ')) : null,
+      h('label', null, 'Watch run ', h('select', { 'data-testid': 'run-select', onchange: (e) => { store.selectRun(Number(e.target.value)); ctx.rerender(); } },
+        batch.runs.map((r, i) => h('option', { value: String(i), selected: batch.index === i }, `${i + 1}: ${r.summary.outcome === 1 ? 'won' : 'lost'}`)))));
+  })() : null;
   const names = (ids) => ids.map((id) => store.save.heroes.find((x) => x.id === id)).filter(Boolean).map((x) => x.name).join(', ');
   const showSummary = () => {
     const s = lb.summary, after = store.save;
@@ -71,6 +83,6 @@ export function battle(ctx) {
     requestAnimationFrame(frame); view.draw(view.clock); view.onChange();
   });
   return h('div', { class: 'screen battle' }, h('h1', null, `${content.realmById[lb.replay.inputs.realm].dungeon} — level ${lb.replay.inputs.level}`),
-    stage, units, status, controls, summary, panel('Log', log),
+    batchPanel, stage, units, status, controls, summary, panel('Log', log),
     h('p', { class: 'hint hash', 'data-testid': 'replay-hash' }, `Replay hash ${lb.replay.hash}`));
 }

@@ -232,10 +232,22 @@
           "type": "integer",
           "minimum": 0,
           "maximum": 100
+        },
+        "restCost": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
+        },
+        "restCostWounded": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
         }
       },
       "required": [
-        "delves"
+        "delves",
+        "restCost",
+        "restCostWounded"
       ],
       "additionalProperties": false
     },
@@ -281,6 +293,11 @@
           "minItems": 1,
           "maxItems": 4,
           "uniqueItems": true
+        },
+        "kitLevelDen": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
         }
       },
       "required": [
@@ -290,7 +307,8 @@
         "costPerLevel",
         "rareMul",
         "rosterMax",
-        "startingRoster"
+        "startingRoster",
+        "kitLevelDen"
       ],
       "additionalProperties": false
     },

@@ -39,7 +39,9 @@
     "braceTurns": 1
   },
   "injury": {
-    "delves": 2
+    "delves": 2,
+    "restCost": 10,
+    "restCostWounded": 30
   },
   "recruit": {
     "levelNum": 3,
@@ -53,7 +55,8 @@
       "huscarl",
       "stormcaller",
       "hearthkeeper"
-    ]
+    ],
+    "kitLevelDen": 2
   },
   "delve": {
     "minEncounters": 3,

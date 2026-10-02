@@ -1,8 +1,8 @@
 // Hall: the party in formation, the whole roster, and recruiting.
 import { h } from '../dom.js';
 import { panel, button, heroPortrait, bar, realmTag } from '../ui.js';
-import { setParty, recruit } from '../../sim/index.js';
-import { recruitLevel, recruitCost } from '../../sim/progress.js';
+import { setParty, recruit, restCost } from '../../sim/index.js';
+import { recruitLevel, recruitCost, recruitKitLevel } from '../../sim/progress.js';
 import { topLevel } from '../../sim/game.js';
 import { injuryText } from '../format.js';
 import { xpToNext } from '../../sim/progress.js';
@@ -43,7 +43,7 @@ export function hall(ctx) {
     const locked = cls.rarity === 'rare' && save.reputation[cls.realm] < rep;
     const full = save.heroes.length >= content.tables.recruit.rosterMax;
     const poor = save.currency.hacksilver < cost;
-    const why = locked ? `needs ${rep} reputation in ${content.realmById[cls.realm].name} (you have ${save.reputation[cls.realm]})` : full ? 'the roster is full' : poor ? `costs ${cost} hacksilver (you have ${save.currency.hacksilver})` : '';
+    const why = save.currency.hacksilver < 0 ? `you owe ${-save.currency.hacksilver} hacksilver; earn it back in a delve` : locked ? `needs ${rep} reputation in ${content.realmById[cls.realm].name} (you have ${save.reputation[cls.realm]})` : full ? 'the roster is full' : poor ? `costs ${cost} hacksilver (you have ${save.currency.hacksilver})` : '';
     return h('article', { class: 'hero-card', 'data-testid': `recruit-${cls.id}` }, heroPortrait(cls, 72),
       h('div', { class: 'body' }, h('h3', null, cls.name), h('p', null, `${cls.role} · ${cls.row} row · ${cls.attack}`, ' ', realmTag(content, cls.realm)),
         h('p', null, `Level ${lvl} · ${cost} hacksilver${cls.rarity === 'rare' ? ' · rare' : ''}`),
@@ -51,9 +51,14 @@ export function hall(ctx) {
         why ? h('small', { class: 'why' }, why) : null));
   }));
 
+  const rc = restCost(save, content), hurt = save.heroes.filter((x) => x.injury > 0).length;
+  const restWhy = save.currency.hacksilver <= 0 ? (save.currency.hacksilver < 0 ? `you owe ${-save.currency.hacksilver} hacksilver; earn it back in a delve` : 'you have no hacksilver') : !hurt ? 'nobody is injured' : '';
+  const restPanel = panel('Rest', h('p', { class: 'hint' }, `Idle time costs ${content.tables.injury.restCost} hacksilver per hero, ${content.tables.injury.restCostWounded} per injured hero. One rest takes one off every injury counter. Right now: ${rc.cost} hacksilver.${save.currency.hacksilver < 0 ? ` You are ${-save.currency.hacksilver} in debt.` : ''}`),
+    button(`Rest the roster (${rc.cost})`, () => ctx.rest(), { id: 'rest', disabled: Boolean(restWhy), title: restWhy }), restWhy ? h('small', { class: 'why' }, restWhy) : null);
   return h('div', { class: 'screen hall' },
     h('h1', null, 'The Hall'),
     panel('Party', h('p', { class: 'hint' }, 'Slots 1 and 2 stand in the front row, 3 and 4 in the back. Up to four heroes.'), partyList),
     panel(`Roster (${save.heroes.length} of ${content.tables.recruit.rosterMax})`, bench),
-    panel('Recruit', h('p', { class: 'hint' }, `New recruits arrive at level ${lvl} with a Plain kit. You have ${save.currency.hacksilver} hacksilver.`), recruits));
+    restPanel,
+    panel('Recruit', h('p', { class: 'hint' }, `New recruits arrive at level ${lvl} with a Plain kit at level ${recruitKitLevel(lvl, content.tables.recruit)}. You have ${save.currency.hacksilver} hacksilver.`), recruits));
 }

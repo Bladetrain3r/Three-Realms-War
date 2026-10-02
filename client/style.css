@@ -95,3 +95,7 @@ table { border-collapse: collapse; width: 100%; } th, td { text-align: left; pad
   .equip select { min-width: 0; }
 }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+
+.filters { display: flex; flex-wrap: wrap; gap: .3rem .9rem; align-items: center; margin: .3rem 0; } .filters select { max-width: 11rem; }
+.items li { display: flex; align-items: center; } .items li .pick { flex: none; margin: 0 .4rem; width: 1.2rem; height: 1.2rem; } .items li button { flex: 1; }
+.bulk { margin-top: .6rem; border: 2px solid var(--walnut); padding: .3rem .6rem; background: var(--vellum); } .bulk summary { cursor: pointer; font-variant: small-caps; font-weight: bold; }

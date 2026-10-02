@@ -39,3 +39,10 @@ export function heroSheet(hero, save, content) {
 }
 export function injuryText(h) { return h.injury > 0 ? `injured, ${h.injury} more delve${h.injury === 1 ? '' : 's'}` : 'fit'; }
 export const matName = (id) => id.replace(/_/g, ' ');
+// What one more star does to the main stats: the text, and whether it changes anything at all. Values are whole numbers, so on a
+// low-level item a 5% gain rounds away; the player is told rather than left to wonder.
+export function starStep(it, content) {
+  const now = itemMainText(it, content), next = itemMainText({ ...it, star: it.star + 1 }, content);
+  return { now, next, same: now === next };
+}
+export const NO_CHANGE = 'no effective change';

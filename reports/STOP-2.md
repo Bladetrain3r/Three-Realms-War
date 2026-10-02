@@ -62,3 +62,16 @@ Not in it yet, by plan: the Expedition map (G5), loading a replay file (G6), sou
 The generated regional map, grid exploration, procedural dungeons, permanent loss of a team, reward curves in bounds written into
 `checks/balance.yaml` before the run (GATES.md). I will start by writing those bounds and DESIGN's expedition section changes as questions
 if any formula cannot be made to balance.
+
+## 7. Ziggy's answers (2026-10-02, after playing the preview)
+
+1. **Rest action:** yes, 10 hacksilver per hero and 30 per injured hero; debt allowed, but nothing can be done until the balance is positive.
+2. **Star gains:** show "no effective change" when the increment is under 1.
+3. **Art:** serviceable, theme fits, "more than good enough for the early alpha"; option (a), go on. SFX and a simple procedural music system
+   wanted later.
+4. **Pages:** enabled by Ziggy from the branch.
+5. Requests built in the playtest round: "Delve X times", recruit kit at half the hero's level, Forge filter / sort / multiselect and
+   conditional salvage. Future features (weapon classes, ultimates) parked until after STOP-3. All in `BACKLOG.md` and DESIGN 0.6.
+
+Open from this round: how to read "won't be able to do anything" while in debt (I blocked rest and recruiting, not delving, so silver can be
+earned back; if you meant forge upgrades too, say so), and whether "30 per injured hero" replaces the 10 (I read it as replacing).

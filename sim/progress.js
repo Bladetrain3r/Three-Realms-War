@@ -9,6 +9,11 @@ export function recruitLevel(topLevel, r) {
   return Math.max(1, idiv(topLevel * r.levelNum, r.levelDen));
 }
 
+// A recruit's starting kit is built at half the hero's level (at least 1): a recruit can arrive above the dungeon level.
+export function recruitKitLevel(level, r) {
+  return Math.max(1, idiv(level, r.kitLevelDen));
+}
+
 export function recruitCost(level, rare, r) {
   const base = r.costBase + r.costPerLevel * level;
   return rare ? base * r.rareMul : base;

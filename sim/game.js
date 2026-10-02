@@ -3,7 +3,7 @@
 // seeded stream derived from the save's own counter.
 import { deriveSeed, createRng } from './prng.js';
 import { GameError } from './gameerror.js';
-import { recruitLevel, recruitCost } from './progress.js';
+import { recruitLevel, recruitCost, recruitKitLevel } from './progress.js';
 import { validateRunbook } from './runbook.js';
 import { kitOf, canEquip } from './hero.js';
 
@@ -105,10 +105,11 @@ export function recruit(save, content, classId) {
   }
   if (save.heroes.length >= r.rosterMax) throw new GameError('roster_full', `the roster holds at most ${r.rosterMax} heroes`);
   const level = recruitLevel(topLevel(save), r), cost = recruitCost(level, cls.rarity === 'rare', r);
+  if (save.currency.hacksilver < 0) throw new GameError('in_debt', `you owe ${-save.currency.hacksilver} hacksilver; earn it back in a delve before recruiting`);
   if (save.currency.hacksilver < cost) throw new GameError('cannot_afford', `recruiting ${cls.name} costs ${cost} hacksilver (you have ${save.currency.hacksilver})`);
   const next = clone(save);
   next.currency.hacksilver -= cost;
-  addHero(next, content, classId, level, level);
+  addHero(next, content, classId, level, recruitKitLevel(level, r));
   return next;
 }
 
