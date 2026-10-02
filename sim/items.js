@@ -63,7 +63,7 @@ export function generateItem(rng, { ilvl, realm, boss, setAllowed }, content) {
   const tierDef = content.tierById[tier];
   let set = null;
   if (tierDef.setAllowed && setAllowed && rng.range(BP) < drops.setTagBp) set = content.realmById[realm].set;
-  return { id: 0, slot, kind, tier, ilvl, realm, set, star: 0, lines: rollLines(rng, tierDef.lines, content), held: null, mulligan: 1 };
+  return { id: 0, slot, kind, tier, ilvl, realm, set, star: 0, lines: rollLines(rng, tierDef.lines, content), held: null, heldStar: null, mulligan: 1 };
 }
 
 // 8.4: cost of one attempt.
@@ -82,18 +82,18 @@ export function attemptUpgrade(item, rng, content) {
   if (item.star >= tierDef.maxStar) throw new RangeError('item is at its maximum star');
   const success = rng.range(BP) < content.items.starSuccessBp[item.star];
   const lines = rollLines(rng, tierDef.lines, content);
-  return { ...item, star: item.star + (success ? 1 : 0), lines, held: item.lines, mulligan: success ? 1 : item.mulligan };
+  return { ...item, star: item.star + (success ? 1 : 0), lines, held: item.lines, heldStar: item.star, mulligan: success ? 1 : item.mulligan };
 }
 
 export function acceptUpgrade(item) {
   if (item.held === null) throw new Error('no attempt to accept');
-  return { ...item, held: null };
+  return { ...item, held: null, heldStar: null };
 }
 
 export function useMulligan(item) {
   if (item.held === null) throw new Error('no attempt to undo');
   if (item.mulligan < 1) throw new Error('the mulligan for this star is spent');
-  return { ...item, lines: item.held, held: null, mulligan: 0 };
+  return { ...item, lines: item.held, held: null, heldStar: null, mulligan: 0 };
 }
 
 // 8.6: common materials returned by salvage.

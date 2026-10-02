@@ -30,7 +30,7 @@ export function makeHero(ctx, classId, level, tierName, id = 1) {
     let n = 100 * id;
     for (const slot of content.items.slotOrder) {
       n++;
-      items[n] = { id: n, slot, kind: slot === 'weapon' ? kind : null, tier, ilvl: level, realm: cls.realm, set: null, star, lines: [], held: null, mulligan: 1 };
+      items[n] = { id: n, slot, kind: slot === 'weapon' ? kind : null, tier, ilvl: level, realm: cls.realm, set: null, star, lines: [], held: null, heldStar: null, mulligan: 1 };
       slots[slot] = n;
     }
   }

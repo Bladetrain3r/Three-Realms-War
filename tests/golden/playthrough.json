@@ -1,0 +1,20 @@
+{
+  "steps": 300,
+  "botSeed": 555,
+  "masterSeed": 20261002,
+  "finalSaveHash": "2e1dc0a5d81cc84f5966978ba20f06a49112714931566d16131c4f14e0f37fdc",
+  "counter": 166,
+  "heroes": 14,
+  "items": 143,
+  "wins": 65,
+  "losses": 44,
+  "ok": {
+    "party": 18,
+    "delve": 109,
+    "upgrade": 43,
+    "equip": 53,
+    "runbook": 15,
+    "salvage": 10,
+    "recruit": 10
+  }
+}

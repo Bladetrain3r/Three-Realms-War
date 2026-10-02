@@ -1,0 +1,438 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "three-realms-save (version 1)",
+  "type": "object",
+  "properties": {
+    "format": {
+      "const": "three-realms-save"
+    },
+    "version": {
+      "const": 1
+    },
+    "meta": {
+      "type": "object",
+      "properties": {
+        "savedAt": {
+          "type": "string",
+          "maxLength": 64
+        },
+        "build": {
+          "type": "string",
+          "maxLength": 64
+        }
+      },
+      "required": [
+        "savedAt",
+        "build"
+      ],
+      "additionalProperties": false
+    },
+    "rng": {
+      "type": "object",
+      "properties": {
+        "masterSeed": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "counter": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        }
+      },
+      "required": [
+        "masterSeed",
+        "counter"
+      ],
+      "additionalProperties": false
+    },
+    "nextId": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1000000000
+    },
+    "currency": {
+      "type": "object",
+      "properties": {
+        "hacksilver": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        }
+      },
+      "required": [
+        "hacksilver"
+      ],
+      "additionalProperties": false
+    },
+    "materials": {
+      "type": "object",
+      "properties": {
+        "forge_iron": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        },
+        "ember_heart": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        },
+        "sky_silver": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        },
+        "storm_heart": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        },
+        "grave_rime": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        },
+        "rime_heart": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000
+        }
+      },
+      "required": [
+        "forge_iron",
+        "ember_heart",
+        "sky_silver",
+        "storm_heart",
+        "grave_rime",
+        "rime_heart"
+      ],
+      "additionalProperties": false
+    },
+    "reputation": {
+      "type": "object",
+      "properties": {
+        "midgard": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "asgard": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "helheim": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        }
+      },
+      "required": [
+        "midgard",
+        "asgard",
+        "helheim"
+      ],
+      "additionalProperties": false
+    },
+    "unlocked": {
+      "type": "object",
+      "properties": {
+        "midgard": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 50
+        },
+        "asgard": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 50
+        },
+        "helheim": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 50
+        }
+      },
+      "required": [
+        "midgard",
+        "asgard",
+        "helheim"
+      ],
+      "additionalProperties": false
+    },
+    "heroes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000000000
+          },
+          "class": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "level": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "xp": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000000000
+          },
+          "injury": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10
+          },
+          "slots": {
+            "type": "object",
+            "properties": {
+              "weapon": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 1,
+                "maximum": 1000000000
+              },
+              "armour": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 1,
+                "maximum": 1000000000
+              },
+              "helm": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 1,
+                "maximum": 1000000000
+              },
+              "charm": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 1,
+                "maximum": 1000000000
+              }
+            },
+            "required": [
+              "weapon",
+              "armour",
+              "helm",
+              "charm"
+            ],
+            "additionalProperties": false
+          },
+          "thread": {
+            "type": "boolean"
+          },
+          "runbook": {
+            "type": "object",
+            "properties": {
+              "v": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 1
+              },
+              "rules": {
+                "type": "array",
+                "maxItems": 8,
+                "items": {
+                  "type": "object"
+                }
+              }
+            },
+            "required": [
+              "v",
+              "rules"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "id",
+          "class",
+          "name",
+          "level",
+          "xp",
+          "injury",
+          "slots",
+          "thread",
+          "runbook"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "maxItems": 24
+    },
+    "party": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 1000000000
+      },
+      "minItems": 1,
+      "maxItems": 4
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000000000
+          },
+          "slot": {
+            "enum": [
+              "weapon",
+              "armour",
+              "helm",
+              "charm"
+            ]
+          },
+          "kind": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^(MIT|ARC)$"
+          },
+          "tier": {
+            "enum": [
+              "plain",
+              "fine",
+              "runed",
+              "heirloom"
+            ]
+          },
+          "ilvl": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "realm": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "set": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "star": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 5
+          },
+          "lines": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 100000
+              },
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "maxItems": 3
+          },
+          "held": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 100000
+              },
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "maxItems": 3
+          },
+          "heldStar": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 5
+          },
+          "mulligan": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1
+          }
+        },
+        "required": [
+          "id",
+          "slot",
+          "kind",
+          "tier",
+          "ilvl",
+          "realm",
+          "set",
+          "star",
+          "lines",
+          "held",
+          "heldStar",
+          "mulligan"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 400
+    },
+    "threads": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1000
+    },
+    "expedition": {
+      "type": "null"
+    }
+  },
+  "required": [
+    "format",
+    "version",
+    "meta",
+    "rng",
+    "nextId",
+    "currency",
+    "materials",
+    "reputation",
+    "unlocked",
+    "heroes",
+    "party",
+    "items",
+    "threads",
+    "expedition"
+  ],
+  "additionalProperties": false
+}

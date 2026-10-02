@@ -42,6 +42,7 @@ const RULES = [
 // Allowed only in these files, which were reviewed: canonical JSON sorts keys; the validators walk parsed external JSON
 // and only report errors (their key order is the file's, never an input to the simulation).
 const OBJECT_ITERATION_OK = ['canon.js', 'runbook.js', 'schema.js', 'contentcheck.js'];
+// (game.js and the other rules files iterate arrays and the content's realm list only, never object keys.)
 // .sort( is allowed only where the comparator is a reviewed total order.
 const SORT_OK = ['canon.js', 'combat.js'];
 

@@ -9,6 +9,17 @@ export function canEquip(hero, item, content) {
   return item.ilvl <= hero.level + content.items.levelSlack;
 }
 
+// The skills a hero may put in a runbook: the class's own, plus the skill of any set worn in full (DESIGN.md 8.5).
+export function kitOf(hero, itemsById, content) {
+  const cls = content.heroById[hero.class], counts = Object.create(null), skills = cls.skills.slice();
+  for (const slot of content.items.slotOrder) {
+    const it = hero.slots[slot] === null || hero.slots[slot] === undefined ? null : itemsById[hero.slots[slot]];
+    if (it && it.set) counts[it.set] = (counts[it.set] || 0) + 1;
+  }
+  for (const set of content.items.sets) if ((counts[set.id] || 0) >= 4) skills.push(set.four.skill);
+  return skills;
+}
+
 // itemsById: plain object keyed by item id. opts.forced: an injured hero made to fight (stats halved).
 export function buildHeroUnit(hero, itemsById, content, opts = {}) {
   const t = content.tables.stats, cls = content.heroById[hero.class], realm = content.realmById[cls.realm];

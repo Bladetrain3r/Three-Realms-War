@@ -33,7 +33,7 @@ export function econ(ctx) {
   out.upgradeSuccess = {};
   for (let s = 0; s < 5; s++) {
     let ok = 0;
-    const base = { id: 0, slot: 'helm', kind: null, tier: 'heirloom', ilvl: 10, realm: 'midgard', set: null, star: s, lines: [], held: null, mulligan: 1 };
+    const base = { id: 0, slot: 'helm', kind: null, tier: 'heirloom', ilvl: 10, realm: 'midgard', set: null, star: s, lines: [], held: null, heldStar: null, mulligan: 1 };
     for (let i = 0; i < N; i++) if (attemptUpgrade(base, rng, content).star > s) ok++;
     out.upgradeSuccess[`star${s}`] = { observed: r6(ok / N), table: P[s] };
   }
