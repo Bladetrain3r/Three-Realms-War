@@ -4,7 +4,7 @@ import { panel, kv, button } from '../ui.js';
 import { upgradeAttempt, acceptAttempt, undoAttempt, salvage, buyThread } from '../../sim/index.js';
 import { wornIds } from '../../sim/game.js';
 import { upgradeCost, salvageValue } from '../../sim/items.js';
-import { itemLine, itemTitle, itemMainText, itemLineTexts, itemSetText, pct, stars, matName } from '../format.js';
+import { itemLine, itemTitle, itemMainText, itemLineTexts, itemSetText, pct, stars, matName, linesTextAt, itemMainTextAt } from '../format.js';
 
 let selected = null, filter = 'all';
 
@@ -28,9 +28,12 @@ export function forge(ctx) {
     const why = it.held !== null ? 'accept or undo the pending attempt first' : it.star >= tier.maxStar ? `a ${tier.name} item stops at ${tier.maxStar} stars`
       : have < cost.common || haveRare < cost.rare ? `needs ${cost.common} ${matName(realm.material)}${cost.rare ? ` and ${cost.rare} ${matName(realm.rareMaterial)}` : ''} (you have ${have}${cost.rare ? ` and ${haveRare}` : ''})` : '';
     const pending = it.held !== null ? h('div', { class: 'pending', 'data-testid': 'pending' }, h('h3', null, it.star > it.heldStar ? `Success: ${stars(it.heldStar, tier.maxStar)} → ${stars(it.star, tier.maxStar)}` : 'No star gained'),
-      h('p', null, 'Bonus lines were rerolled.'), h('p', null, 'Before: ', it.held.length ? it.held.map(([k, raw]) => `${raw / 100}% ${content.items.lines[k].id}`).join(', ') : 'none (a Plain item has no lines)'), h('p', null, 'Now: ', itemLineTexts(it, content).join(', ') || 'none'),
+      h('p', null, 'Every attempt rerolls the bonus lines (kinds and values). The star result stands either way.'),
+      h('dl', { class: 'kv' }, h('dt', null, `Before (${stars(it.heldStar, tier.maxStar)})`), h('dd', { 'data-testid': 'lines-before' }, `${itemMainTextAt(it, it.heldStar, content)}; ${linesTextAt(it.held, it.heldStar, content).join(', ') || 'no bonus lines'}`),
+        h('dt', null, `Now (${stars(it.star, tier.maxStar)})`), h('dd', { 'data-testid': 'lines-now' }, `${itemMainText(it, content)}; ${itemLineTexts(it, content).join(', ') || 'no bonus lines'}`)),
+      it.star === it.heldStar && it.lines.length === 0 ? h('p', { class: 'hint' }, 'A Plain item has no bonus lines to reroll; only the star can change.') : null,
       h('div', { class: 'row-buttons' }, button('Keep this', () => ctx.run(acceptAttempt, it.id), { id: 'accept' }),
-        button('Undo (mulligan)', () => ctx.run(undoAttempt, it.id), { disabled: it.mulligan < 1, title: it.mulligan < 1 ? 'the mulligan for this star is spent' : 'restore the old lines; the materials are not refunded', id: 'undo' }))) : null;
+        button('Undo: restore the old lines', () => ctx.run(undoAttempt, it.id), { disabled: it.mulligan < 1, title: it.mulligan < 1 ? 'the mulligan for this star is spent' : 'the mulligan: put the old bonus lines back (the star stays; the materials are not refunded)', id: 'undo' }))) : null;
     detail = h('div', { class: 'item-detail', 'data-testid': 'item-detail' },
       h('h3', null, itemTitle(it, content)),
       kv([['Item level', it.ilvl], ['Stars', `${stars(it.star, tier.maxStar)} (${it.star} of ${tier.maxStar})`], ['Main', itemMainText(it, content)], ['Bonus lines', itemLineTexts(it, content).join(', ') || 'none'], ['Set', itemSetText(it, content) || 'none'],

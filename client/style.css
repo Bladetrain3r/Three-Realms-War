@@ -51,7 +51,7 @@ input[type="checkbox"], input[type="radio"] { width: 1.2rem; height: 1.2rem; acc
 .hero-card { display: flex; gap: .6rem; padding: .5rem; border: 3px solid var(--walnut); background: var(--vellum); }
 .hero-card.injured { background: var(--hatch-url) var(--vellum); }
 .hero-card h3 { margin: .1rem 0; } .hero-card p { margin: .15rem 0; }
-.portrait { flex: none; background: var(--vellum-shade); border: 2px solid var(--walnut); }
+.portrait { flex: none; align-self: flex-start; height: auto; background: var(--vellum-shade); border: 2px solid var(--walnut); }
 .bar { height: .7rem; background: var(--vellum-shade); border: 2px solid var(--walnut); margin: .2rem 0; } .bar i { display: block; height: 100%; background: var(--umber); }
 .realm::before { content: ''; display: inline-block; width: .7rem; height: .7rem; margin-right: .3rem; border: 2px solid var(--walnut); }
 .realm.midgard::before { background: var(--midgard); border-radius: 0; } .realm.asgard::before { background: var(--asgard); transform: rotate(45deg) scale(.8); } .realm.helheim::before { background: var(--helheim); border-radius: 50%; }

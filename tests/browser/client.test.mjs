@@ -211,3 +211,29 @@ test('client: recruiting, benching, adding to the party and dismissing in the br
   assert.deepEqual(problems, []);
   await context.close();
 });
+
+test('client: portraits keep their aspect ratio in every card (they were stretched in the party cards), at desktop and at 390 px', async (t) => {
+  if (!need(t)) return;
+  for (const width of [1280, 390]) {
+    const { page, context } = await openGame(browser, game.url, { width, height: 900 });
+    await go(page, '#/hall');
+    const bad = await page.evaluate(() => [...document.querySelectorAll('canvas.portrait')].map((c) => { const r = c.getBoundingClientRect(); return { want: c.height / c.width, got: r.height / r.width }; }).filter((x) => Math.abs(x.want - x.got) > 0.02));
+    assert.deepEqual(bad, [], `stretched portraits at ${width}px`);
+    assert.ok((await page.locator('canvas.portrait').count()) > 4);
+    await context.close();
+  }
+});
+
+test('client: an upgrade attempt shows the old and the new bonus lines in the same units, and the main stat at both stars', async (t) => {
+  if (!need(t)) return;
+  const start = newGame(content, 99, { savedAt: '', build: 'client-test' });
+  for (const k of Object.keys(start.materials)) start.materials[k] = 999;
+  const id = start.items[0].id; start.items = start.items.map((i) => (i.id === id ? { ...i, tier: 'fine', lines: [[0, 800]] } : i));
+  const { page, context } = await openGame(browser, game.url);
+  await importSave(page, start);
+  await go(page, '#/forge'); await page.click(`[data-testid="item-${id}"]`); await page.click('[data-testid=upgrade]');
+  const before = await text(page, 'lines-before'), now = await text(page, 'lines-now');
+  for (const s of [before, now]) { assert.doesNotMatch(s, /_PCT|CRITDMG|CRIT\b/, s); assert.match(s, /\+\d+ MIT; (\+[\d.]+% [A-Za-z ]+(, )?)+/, s); }
+  assert.match(before, /\+8% VIG/, 'the old line is shown at the old star: raw 800 at star 0');
+  await context.close();
+});

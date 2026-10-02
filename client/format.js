@@ -17,9 +17,13 @@ export function itemMainText(it, content) {
   if (m.resist) parts.push(`+${pct(m.resist)} ${content.realmById[it.realm].element} resist`);
   return parts.join(', ');
 }
-export function itemLineTexts(it, content) {
-  return it.lines.map(([k, raw]) => { const def = content.items.lines[k]; return `+${pct(lineValue(raw, it.star, content.items))} ${LINE_NAME[def.id]}`; });
+// Bonus lines as the player reads them: the value in effect at `star` (the stored raw roll scaled by the star, DESIGN 8.3).
+export function linesTextAt(lines, star, content) {
+  return lines.map(([k, raw]) => `+${pct(lineValue(raw, star, content.items))} ${LINE_NAME[content.items.lines[k].id]}`);
 }
+export const itemLineTexts = (it, content) => linesTextAt(it.lines, it.star, content);
+// The main stats of the item as it stood at `star`.
+export const itemMainTextAt = (it, star, content) => itemMainText({ ...it, star }, content);
 export function itemSetText(it, content) { return it.set ? content.setById[it.set].name : ''; }
 export function itemLine(it, content) {
   const tier = content.tierById[it.tier];
