@@ -8,7 +8,7 @@
 - **Locally, no server:** `node tools/bundle.mjs --out dist`, then open `dist/index.html` in a browser (it runs from `file://`).
 - **Deployed preview:** `.github/workflows/pages.yml` builds `dist/` and publishes it with GitHub Pages on a push to `main` or to this
   branch. **I cannot turn Pages on** (it is a repository setting, and the card says never to change settings): in the repository,
-  Settings > Pages > Source: "GitHub Actions". After that the link will be `https://bladetrain3r.github.io/three-realms-war/` (my
+  Settings > Pages > Source: "GitHub Actions". After that the link will be `https://bladetrain3r.github.io/Three-Realms-War/` (my
   inference from the owner and repository names; I could not check it). If the deploy is refused for the branch, the Pages environment's
   branch rule (Settings > Environments > github-pages) needs this branch added, or merge first.
 - The game saves in your browser after every action. Settings has export, import and reset. Settings > About shows the on-device
