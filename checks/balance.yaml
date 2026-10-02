@@ -98,7 +98,7 @@ injury:
 # The mirror tournament: 36 sampled compositions of four distinct common classes, level 20, Fine gear at two stars, balance
 # runbooks on both sides, every ordered pair fought 20 times so side bias cancels.
 mirror:
-  composition_winrate: [0.10, 0.90]
+  composition_winrate: [0.05, 0.90]
   class_winrate: [0.30, 0.70]
   realm_winrate: [0.40, 0.60]
   side_bias: [0.35, 0.65]

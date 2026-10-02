@@ -120,5 +120,6 @@ Recorded as: **decisions 1 to 4 approved as recommended**, applied as DESIGN 0.4
 in `checks/balance.yaml` with this answer as their authority). Result: **147 of 148 checks in bounds**, byte-identical reruns. The
 tank crit-immunity knob was measured first and **not built**: even permanent immunity moves tank class win rates by about 0.01
 (0.491 to 0.502 and 0.568 to 0.583), so it would be a feel feature, not a balance one; it remains on offer.
-**One check is left open:** the composition `rime_mender + shieldwarden + skyrider + volva` wins 0.056 against the new floor of 0.10;
-that needs a decision (see the G3 evidence and the question put to Ziggy).
+**One check was left open** (the composition `rime_mender + shieldwarden + skyrider + volva` at 0.056 against the new floor of 0.10)
+and Ziggy closed it the same day: loosen the floor to 0.05 ("I don't mind some weak and strong combos, that's half the fun of meta"). The
+alternative, raising Hex, Frostbite and Dive by 25%, was measured and not taken. **Final: 148 of 148 in bounds** (DESIGN 0.4.1).

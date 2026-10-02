@@ -934,3 +934,9 @@ replay round trip; replay hash equal in Node and the browser.
   to [0.10, 0.90], class win rate [0.35, 0.65] to [0.30, 0.70], level-50 Heirloom delve win rate [0.65, 0.98] to [0.65, 1.00]
   (decisions 2 and 4). Offered and not built: a timed crit-immunity buff for tanks (measured as worth about 0.01 of tank win
   rate even when permanent) and multitarget variants for rare classes; Ziggy has no objection to either if wanted for feel.
+- **0.4.1 (2026-10-02, Ziggy, in answer to the last open balance check):** the mirror composition floor is loosened again, to
+  [0.05, 0.90] (it was [0.25, 0.75] as first committed and [0.10, 0.90] in 0.4). One composition (`rime_mender + shieldwarden +
+  skyrider + volva`, 0.056) is accepted as a weak team by design; Ziggy: "I don't mind some weak and strong combos, that's half the
+  fun of meta". The alternative offered, raising Hex, Frostbite and Dive by 25%, was measured (mirror 0 of 53 out) and not taken.
+  No hero number changed. Net change to `checks/balance.yaml` since its first commit: three bounds (composition [0.05, 0.90], class
+  [0.30, 0.70], level-50 Heirloom [0.65, 1.00]), each with Ziggy's word.

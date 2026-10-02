@@ -987,252 +987,252 @@
     {
       "id": "mirror.composition.draugr_knight+einherjar+ghoul_reaver+huscarl",
       "value": 0.723571,
-      "lo": 0.1,
+      "lo": 0.05,
       "hi": 0.9,
       "ok": true
     },
     {
       "id": "mirror.composition.draugr_knight+ghoul_reaver+hunter+shieldwarden",
       "value": 0.538571,
-      "lo": 0.1,
+      "lo": 0.05,
       "hi": 0.9,
       "ok": true
     },
     {
       "id": "mirror.composition.hearthkeeper+hunter+stormcaller+volva",
       "value": 0.437857,
-      "lo": 0.1,
+      "lo": 0.05,
       "hi": 0.9,
       "ok": true
     },
     {
       "id": "mirror.composition.draugr_knight+einherjar+shieldwarden+stormcaller",
       "value": 0.87,
-      "lo": 0.1,
+      "lo": 0.05,
       "hi": 0.9,
       "ok": true
     },
     {
       "id": "mirror.composition.hearthkeeper+hunter+skyrider+stormcaller",
       "value": 0.422143,
-      "lo": 0.1,
+      "lo": 0.05,
       "hi": 0.9,
       "ok": true
     },
     {
       "id": "mirror.composition.draugr_knight+einherjar+hunter+shieldwarden",
       "value": 0.641429,
-      "lo": 0.1,
+      "lo": 0.05,
       "hi": 0.9,
       "ok": true
     },
     {
       "id": "mirror.composition.ghoul_reaver+hearthkeeper+skald+volva",
       "value": 0.620714,
-      "lo": 0.1,
+      "lo": 0.05,
       "hi": 0.9,
       "ok": true
     },
     {
       "id": "mirror.composition.ghoul_reaver+rime_mender+skald+skyrider",
       "value": 0.457143,
-      "lo": 0.1,
+      "lo": 0.05,
       "hi": 0.9,
       "ok": true
     },
     {
       "id": "mirror.composition.draugr_knight+ghoul_reaver+rime_mender+shieldwarden",
       "value": 0.461429,
-      "lo": 0.1,
+      "lo": 0.05,
       "hi": 0.9,
       "ok": true
     },
     {
       "id": "mirror.composition.einherjar+hearthkeeper+rime_mender+stormcaller",
       "value": 0.714286,
-      "lo": 0.1,
+      "lo": 0.05,
       "hi": 0.9,
       "ok": true
     },
     {
       "id": "mirror.composition.einherjar+hearthkeeper+rime_mender+volva",
       "value": 0.496429,
-      "lo": 0.1,
+      "lo": 0.05,
       "hi": 0.9,
       "ok": true
     },
     {
       "id": "mirror.composition.ghoul_reaver+hearthkeeper+huscarl+volva",
       "value": 0.330714,
-      "lo": 0.1,
+      "lo": 0.05,
       "hi": 0.9,
       "ok": true
     },
     {
       "id": "mirror.composition.hunter+huscarl+skyrider+stormcaller",
       "value": 0.365,
-      "lo": 0.1,
+      "lo": 0.05,
       "hi": 0.9,
       "ok": true
     },
     {
       "id": "mirror.composition.draugr_knight+ghoul_reaver+hearthkeeper+shieldwarden",
       "value": 0.69,
-      "lo": 0.1,
+      "lo": 0.05,
       "hi": 0.9,
       "ok": true
     },
     {
       "id": "mirror.composition.ghoul_reaver+hearthkeeper+hunter+skald",
       "value": 0.670714,
-      "lo": 0.1,
+      "lo": 0.05,
       "hi": 0.9,
       "ok": true
     },
     {
       "id": "mirror.composition.einherjar+ghoul_reaver+rime_mender+skyrider",
       "value": 0.240714,
-      "lo": 0.1,
+      "lo": 0.05,
       "hi": 0.9,
       "ok": true
     },
     {
       "id": "mirror.composition.hearthkeeper+huscarl+rime_mender+shieldwarden",
       "value": 0.41,
-      "lo": 0.1,
+      "lo": 0.05,
       "hi": 0.9,
       "ok": true
     },
     {
       "id": "mirror.composition.einherjar+hunter+rime_mender+volva",
       "value": 0.218571,
-      "lo": 0.1,
+      "lo": 0.05,
       "hi": 0.9,
       "ok": true
     },
     {
       "id": "mirror.composition.huscarl+rime_mender+skald+volva",
       "value": 0.396429,
-      "lo": 0.1,
+      "lo": 0.05,
       "hi": 0.9,
       "ok": true
     },
     {
       "id": "mirror.composition.draugr_knight+ghoul_reaver+hearthkeeper+volva",
       "value": 0.477143,
-      "lo": 0.1,
+      "lo": 0.05,
       "hi": 0.9,
       "ok": true
     },
     {
       "id": "mirror.composition.draugr_knight+einherjar+hunter+skald",
       "value": 0.717143,
-      "lo": 0.1,
+      "lo": 0.05,
       "hi": 0.9,
       "ok": true
     },
     {
       "id": "mirror.composition.hearthkeeper+rime_mender+skald+skyrider",
       "value": 0.45,
-      "lo": 0.1,
+      "lo": 0.05,
       "hi": 0.9,
       "ok": true
     },
     {
       "id": "mirror.composition.draugr_knight+hearthkeeper+huscarl+skald",
       "value": 0.677857,
-      "lo": 0.1,
+      "lo": 0.05,
       "hi": 0.9,
       "ok": true
     },
     {
       "id": "mirror.composition.einherjar+huscarl+rime_mender+stormcaller",
       "value": 0.706429,
-      "lo": 0.1,
+      "lo": 0.05,
       "hi": 0.9,
       "ok": true
     },
     {
       "id": "mirror.composition.ghoul_reaver+hunter+shieldwarden+skyrider",
       "value": 0.218571,
-      "lo": 0.1,
+      "lo": 0.05,
       "hi": 0.9,
       "ok": true
     },
     {
       "id": "mirror.composition.einherjar+ghoul_reaver+skald+skyrider",
       "value": 0.415,
-      "lo": 0.1,
+      "lo": 0.05,
       "hi": 0.9,
       "ok": true
     },
     {
       "id": "mirror.composition.einherjar+hearthkeeper+huscarl+shieldwarden",
       "value": 0.655,
-      "lo": 0.1,
+      "lo": 0.05,
       "hi": 0.9,
       "ok": true
     },
     {
       "id": "mirror.composition.draugr_knight+hunter+rime_mender+shieldwarden",
       "value": 0.21,
-      "lo": 0.1,
+      "lo": 0.05,
       "hi": 0.9,
       "ok": true
     },
     {
       "id": "mirror.composition.einherjar+hunter+skald+volva",
       "value": 0.493571,
-      "lo": 0.1,
+      "lo": 0.05,
       "hi": 0.9,
       "ok": true
     },
     {
       "id": "mirror.composition.einherjar+hearthkeeper+skyrider+volva",
       "value": 0.285,
-      "lo": 0.1,
+      "lo": 0.05,
       "hi": 0.9,
       "ok": true
     },
     {
       "id": "mirror.composition.draugr_knight+einherjar+hearthkeeper+skald",
       "value": 0.863571,
-      "lo": 0.1,
+      "lo": 0.05,
       "hi": 0.9,
       "ok": true
     },
     {
       "id": "mirror.composition.draugr_knight+hunter+huscarl+shieldwarden",
       "value": 0.405,
-      "lo": 0.1,
+      "lo": 0.05,
       "hi": 0.9,
       "ok": true
     },
     {
       "id": "mirror.composition.rime_mender+shieldwarden+skyrider+volva",
       "value": 0.056429,
-      "lo": 0.1,
+      "lo": 0.05,
       "hi": 0.9,
-      "ok": false
+      "ok": true
     },
     {
       "id": "mirror.composition.draugr_knight+rime_mender+skyrider+volva",
       "value": 0.102857,
-      "lo": 0.1,
+      "lo": 0.05,
       "hi": 0.9,
       "ok": true
     },
     {
       "id": "mirror.composition.einherjar+hearthkeeper+huscarl+stormcaller",
       "value": 0.792143,
-      "lo": 0.1,
+      "lo": 0.05,
       "hi": 0.9,
       "ok": true
     },
     {
       "id": "mirror.composition.ghoul_reaver+hearthkeeper+shieldwarden+stormcaller",
       "value": 0.737143,
-      "lo": 0.1,
+      "lo": 0.05,
       "hi": 0.9,
       "ok": true
     },
@@ -1566,7 +1566,5 @@
       "ok": true
     }
   ],
-  "failed": [
-    "mirror.composition.rime_mender+shieldwarden+skyrider+volva"
-  ]
+  "failed": []
 }
