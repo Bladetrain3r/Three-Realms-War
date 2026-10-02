@@ -848,43 +848,100 @@ when a run produces it (G1 for the sim, G4 for the client), with the command tha
 | Shipped bundle (everything the page loads, uncompressed) | <= 400 KB | G4/G6 test |
 | Save document | <= 512 KB | schema test |
 
-## 16. Art style guide
+## 16. Art style guide (replaced in 0.5; direction from Ziggy, 2026-10-02)
 
-All art is procedural or hand-written vector, drawn by the client on Canvas 2D. No images, fonts or files are fetched.
+**Two registers, both made at run time, from code and a seed: no image, font or file is shipped or fetched.**
 
-- **Shape language.** Flat fills, one darker edge colour, a 2 px outline, one lighter highlight band. Heroes are built from
-  four primitives: circle (head), trapezoid (torso), rectangle (legs), and a class mark (a small drawn rune: strokes only,
-  no font glyphs). Enemies share the grammar with tilted proportions per archetype (guards wide, strikers narrow).
-- **Palette.** Tokens, all with contrast tested against `ink`:
+- **Scenes, portraits and the battle: oil paint on rough vellum.** A warm, uneven vellum ground (low-frequency stains, fine grain,
+  a few fibres, a darker deckled edge). Figures and backdrops are painted as many short, translucent, slightly mis-registered
+  brush strokes that follow the form, with a darker underpainting, a mid layer and a few thick lighter dabs for impasto highlights.
+  Edges are soft and imperfect; nothing is a hard vector line. Heroes are built from simple volumes (head, shoulders, torso, arms
+  and the class's prop) so that 15 hero classes and 36 monsters can be told apart by silhouette and a colour accent, not by detail.
+- **Menus and information screens: woodcut.** Near-black walnut ink on the same vellum: heavy outlines, parallel hatching for
+  shade, carved-edge borders with a knotwork corner, bold serif capitals with a cut-out feel. Buttons are inked blocks that
+  invert on hover and focus. Numbers stay in a plain monospace for legibility.
+- **Procedural and deterministic.** Textures and sprites come from the sim's PRNG family (`splitmix32`/`sfc32`) seeded by a constant
+  per thing (a class id, a monster id, a screen name), never `Math.random`, so a screenshot is reproducible and a test can compare.
+  Each is painted once into an offscreen canvas and then reused, so a frame is a handful of `drawImage` calls.
+- **Palette tokens** (text on vellum must reach WCAG contrast 4.5:1, tested):
 
 | Token | Hex | Use |
 |---|---|---|
-| ink | `#14161c` | background |
-| panel | `#20242e` | panels |
-| text | `#e8e6df` | text |
-| muted | `#8b93a3` | secondary text |
-| midgard | `#e0662f` | Midgard (ember) with `#6fa05a` (moss) as the accent |
-| asgard | `#e3b341` | Asgard (gold) with `#5aa9e6` (sky) as the accent |
-| helheim | `#7fd4d0` | Helheim (rime) with `#9aa0aa` (ash) as the accent |
-| hp / hurt / heal | `#c9544a` / `#f2f2f2` / `#6fbf73` | combat feedback |
+| vellum | `#e9dcb9` | the ground |
+| vellum-shade | `#cdb98a` | stains, panel fills |
+| walnut | `#2a1d12` | ink, text, woodcut lines |
+| umber | `#5b3a1e` | secondary text, underpainting |
+| midgard | `#b8442a` with verdigris `#4f7a5a` | Midgard pigments |
+| asgard | `#c8962e` with ultramarine `#2f5d9e` | Asgard pigments |
+| helheim | `#4d8c88` with ash `#8a8c8f` | Helheim pigments |
+| hp / hurt / heal | `#9e2b25` / `#fff6e0` / `#3f7a46` | combat feedback |
 
-- **Layout.** Logical canvas 1920 x 1080, scaled to the window; the DOM carries forms, tables and menus; the canvas carries
-  the battle and the map. It works at 390 px width (single column; the battle canvas letterboxes).
-- **Type.** The system font stack (`system-ui`, monospace for numbers). Numbers are tabular and right-aligned.
-- **Motion.** A hit is a 120 ms flash and a floating number; a replay can be played at 1x, 4x or skipped to the end.
+- **Layout.** The DOM carries menus, forms and tables (accessible, selectable, testable) and works at 390 px width in one column; the
+  canvas carries the battle and later the map, at a logical 1920 x 1080 scaled to its box.
+- **Type.** System font stacks only (a serif stack for woodcut headings, monospace for numbers). Numbers tabular and right-aligned.
+- **Motion.** A hit is a short flash and a floating number; replays play at 1x, 4x or skip to the end; `prefers-reduced-motion`
+  turns animation off and shows the log.
 - **Colour is never the only signal.** Statuses carry a letter badge; elements carry a shape.
 
 ## 17. Screens (scope for G4)
 
-Hall (roster, party formation, recruit), Hero (equipment, stats, runbook editor), Forge (upgrade with the mulligan),
-Delve board (realm, level, start), Battle (the replay player), Settings (export, import, reset). The Expedition map and the
-Replay viewer for files arrive in G5 and G6.
+Hall (roster, party formation, recruiting), Hero (stats, equipment, runbook form editor with raw JSON import), Forge (upgrade with the
+mulligan, salvage), Delve board (realm, level, forced injured, start), Battle (the replay player and a text log), Settings (export,
+import, reset, about). The Expedition map and the replay-file viewer arrive in G5 and G6.
 
 ## 18. Tests this design requires
 
 Determinism over 1,000 seeds; no banned calls in `sim/`; every `[WE-nn]` example reproduced by the sim; every table in
 this file cross-checked against `content/`; runbook validator against `E01` to `E09`; save export/import round trip;
-replay round trip; replay hash equal in Node and the browser.
+replay round trip; replay hash equal in Node and the browser; every screen renders in a headless browser; the page runs from
+`file://`; the rules layer keeps the save invariants over long random play.
+
+## 19. The rules layer (`sim/game.js`)
+
+Every change to a save is a pure function `(save, content, ...) -> save'` or throws `GameError(code, message)`; the client holds no rule.
+Random choices use `deriveSeed(masterSeed, counter)` and then increment `counter`, so a save plus the same actions replays identically.
+
+- **New game.** `masterSeed` from the caller (the client takes it from `crypto.getRandomValues`; tests pass one). Four heroes at level 1
+  (7.5) in slots Shieldwarden, Huscarl, Hearthkeeper, Stormcaller; names drawn from `names.json` without repeats; each wears a full
+  Plain item-level-1 kit of its realm; party = those four; `hacksilver` 0; every realm unlocked at 1. Every new hero (also a recruit)
+  begins with the class's **starter runbook** from `content/starter_runbooks.json`, which the player edits freely.
+- **Recruit.** The class must exist; a rare class needs its realm's reputation at *Known*; the roster holds at most 24; the cost is
+  `recruitCost(recruitLevel(topLevel))` hacksilver (7.5); the recruit arrives with a full Plain kit at item level equal to its level.
+- **Dismiss.** Gear returns to the stash; an assigned Thread of the Norns returns to the count; the party closes over the gap; the last
+  hero cannot be dismissed.
+- **Equip.** The item must fit the slot and be at most `hero level + 5`; an item worn by another hero moves; `null` unequips.
+- **Party.** One to four distinct heroes, in slot order. An injured hero may be placed but a delve refuses to start unless the player
+  names them in `force` (then they fight at half stats and the counter does not drop that delve).
+- **Runbook.** Saved only if `validateRunbook` accepts it against the hero's kit (class skills plus skills granted by worn sets).
+- **Delve.** Level `1 .. unlocked[realm]`. The seed is derived from the counter. `setAllowed` is true at *Trusted* reputation. The
+  result is applied as below, win or loss.
+  - *Heroes.* Participants gain the delve's xp; every benched hero who is not injured gains `restXpBp` of it; levels rise while xp
+    reaches `xp_to_next` (xp stays 0 at the cap). Heroes at 0 HP at the end become injured for `injury.delves`; an injured hero who
+    sat the delve out loses 1 from the counter (never below 0); a forced hero's counter is unchanged unless they went down again.
+  - *Stores.* Materials, hacksilver and reputation are added; the unlock rises by 1 on a win at the highest unlocked level (cap 50);
+    dropped items join the stash with new ids; a full stash (100) loses the extra drops and says how many; Threads join the count.
+- **Upgrade.** One attempt costs the materials of `upgradeCost` (common of the item's realm; a heart of that realm from star 3). It
+  needs no pending attempt, a star below the tier's maximum and enough stock. The result is held until the player accepts it or uses the
+  single mulligan (8.4). Each attempt consumes one counter step.
+- **Salvage.** An item not worn by anyone returns `salvageValue` common materials of its realm.
+- **Threads.** A Thread is assigned to one hero at a time (at most one each) or unassigned; at *Honoured* a Thread can be bought for
+  `threadHearts` hearts of that realm.
+- **Save validity.** `validateSave(save, content)` checks the schema (`content/schema/save.schema.json`) and these invariants with named
+  refusals: unique ids, worn items exist and fit and are worn once, party members exist, stock never negative, thread count equals assigned
+  plus unassigned, injury within bounds, level within the cap. Import refuses with the key path and the reason.
+
+## 20. The client
+
+- **No runtime dependency; modules, then one file.** The client is plain ES modules under `client/`, sharing `sim/`. Browsers do not load
+  module scripts from `file://`, which SPEC requires, so `tools/bundle.mjs` (dependency-free) inlines the module graph, the content
+  and the schemas into one classic script, `dist/game.js`, beside `dist/index.html`. The same `dist/` is what Pages publishes.
+- **State.** One store holds the save; every action calls the rules layer, validates, then writes the save to `localStorage` under
+  `three-realms-save` (a failing or full storage degrades to in-memory with a visible warning). Export is a file download of the canonical
+  JSON; import accepts a file or pasted text.
+- **Battle.** The player never re-simulates: it plays the replay's event log. HP, statuses, floating numbers and the text log are all
+  derived from the events alone (G1 test), so a replay file from another machine plays the same.
+- **Tests.** Browser tests drive the real page through its DOM (`data-testid` attributes); a read-only `window.ThreeRealms` exposes the
+  current save and last replay for assertions, and nothing else.
 
 ## Changes
 
@@ -940,3 +997,10 @@ replay round trip; replay hash equal in Node and the browser.
   fun of meta". The alternative offered, raising Hex, Frostbite and Dive by 25%, was measured (mirror 0 of 53 out) and not taken.
   No hero number changed. Net change to `checks/balance.yaml` since its first commit: three bounds (composition [0.05, 0.90], class
   [0.30, 0.70], level-50 Heirloom [0.65, 1.00]), each with Ziggy's word.
+- **0.5 (2026-10-02, G4 design; the art direction is Ziggy's, the rest follows from SPEC and the card):** section 16 is replaced (oil
+  paint on rough vellum for scenes and portraits, woodcut for menus and information screens, all procedural and seeded, new palette);
+  section 17 gains recruiting, salvage and a raw-JSON runbook import; new section 19 specifies the rules layer (`sim/game.js`) and the
+  save invariants; new section 20 specifies the client, including the dependency-free bundler that makes `file://` work. A starter
+  runbook per class becomes content (`content/starter_runbooks.json`, the runbooks the G3 harness already used), so a new hero is not
+  limited to basic attacks. Details decided here and not in the earlier sections: the new-game kit and party order, recruits arrive with
+  a free Plain kit, a full stash drops extra loot visibly, `hacksilver` starts at 0.
