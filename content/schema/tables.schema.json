@@ -573,6 +573,188 @@
         "unlockCap"
       ],
       "additionalProperties": false
+    },
+    "expedition": {
+      "type": "object",
+      "properties": {
+        "width": {
+          "type": "integer",
+          "minimum": 8,
+          "maximum": 64
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 8,
+          "maximum": 64
+        },
+        "latticeW": {
+          "type": "integer",
+          "minimum": 2,
+          "maximum": 16
+        },
+        "latticeH": {
+          "type": "integer",
+          "minimum": 2,
+          "maximum": 16
+        },
+        "jitter": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "waterBelow": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 255
+        },
+        "forestFrom": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 255
+        },
+        "hillsFrom": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 255
+        },
+        "peakFrom": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 256
+        },
+        "moveCostPlain": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9
+        },
+        "moveCostForest": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9
+        },
+        "moveCostHills": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9
+        },
+        "sitesMin": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "sitesMax": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "siteSpacing": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "startSpacing": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "revealRadius": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "provisionCost": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "provisionMax": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "floorCost": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "siteLevelDiv": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "floorsBase": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "floorsDiv": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "encountersPerFloor": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 6
+        },
+        "distBp": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
+        },
+        "floorBp": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 20000
+        },
+        "deathSaveBp": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
+        },
+        "reviveInjury": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "floorsMax": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        }
+      },
+      "required": [
+        "width",
+        "height",
+        "latticeW",
+        "latticeH",
+        "jitter",
+        "waterBelow",
+        "forestFrom",
+        "hillsFrom",
+        "peakFrom",
+        "moveCostPlain",
+        "moveCostForest",
+        "moveCostHills",
+        "sitesMin",
+        "sitesMax",
+        "siteSpacing",
+        "startSpacing",
+        "revealRadius",
+        "provisionCost",
+        "provisionMax",
+        "floorCost",
+        "siteLevelDiv",
+        "floorsBase",
+        "floorsDiv",
+        "encountersPerFloor",
+        "distBp",
+        "floorBp",
+        "deathSaveBp",
+        "reviveInjury",
+        "floorsMax"
+      ],
+      "additionalProperties": false
     }
   },
   "required": [
@@ -582,7 +764,8 @@
     "injury",
     "recruit",
     "delve",
-    "progress"
+    "progress",
+    "expedition"
   ],
   "additionalProperties": false
 }

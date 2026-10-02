@@ -2,6 +2,7 @@
 import { validateAgainst, pathKey } from './schema.js';
 import { validateRunbook } from './runbook.js';
 import { kitOf, canEquip } from './hero.js';
+import { mapFromSeed, WATER, PEAK } from './mapgen.js';
 
 export function validateSave(save, content, schema) {
   const errors = validateAgainst(save, schema);
@@ -65,6 +66,27 @@ export function validateSave(save, content, schema) {
   if (save.items.filter((it) => worn[it.id] === undefined).length > content.items.stashMax) bad(['items'], `the stash holds at most ${content.items.stashMax} items`);
   for (const r of content.realms) {
     if (save.unlocked[r.id] > content.tables.progress.unlockCap) bad(['unlocked', r.id], `at most ${content.tables.progress.unlockCap}`);
+  }
+  if (save.expedition !== null) {
+    const ex = save.expedition, x = content.tables.expedition, p = ['expedition'];
+    if (!content.realmById[ex.realm]) return { ok: false, errors: [...errors, { key: 'expedition.realm', message: `unknown realm "${ex.realm}"` }] };
+    if (ex.level > save.unlocked[ex.realm]) bad([...p, 'level'], `the realm is open only to level ${save.unlocked[ex.realm]}`);
+    if (ex.provisions > x.provisionMax) bad([...p, 'provisions'], `at most ${x.provisionMax}`);
+    if (ex.seen.length !== x.width * x.height) bad([...p, 'seen'], `must have ${x.width * x.height} cells (has ${ex.seen.length})`);
+    else {
+      const map = mapFromSeed(ex.seed, ex.level, x);
+      if (ex.x >= x.width || ex.y >= x.height || map.terrain[ex.y * x.width + ex.x] === WATER || map.terrain[ex.y * x.width + ex.x] === PEAK) bad([...p, 'x'], 'the party stands on water, a peak or off the map');
+      if (ex.floors.length !== map.sites.length) bad([...p, 'floors'], `needs one entry per site (${map.sites.length})`);
+      else ex.floors.forEach((f, i) => { if (f > map.sites[i].floors) bad([...p, 'floors', i], `site ${i} has only ${map.sites[i].floors} floors`); });
+      if (ex.site !== null && (ex.site >= map.sites.length || map.sites[ex.site].x !== ex.x || map.sites[ex.site].y !== ex.y)) bad([...p, 'site'], 'the party is inside a site it is not standing on');
+    }
+    if (ex.party.length !== ex.hp.length) bad([...p, 'hp'], 'needs one entry per expedition hero');
+    if (JSON.stringify(ex.party) !== JSON.stringify(save.party)) bad([...p, 'party'], 'the expedition party must be the save party, in the same order');
+    ex.party.forEach((id, i) => { if (!heroIds.includes(id)) bad([...p, 'party', i], `hero ${id} does not exist`); });
+    ex.pack.items.forEach((it, i) => {
+      if (it.id >= save.nextId) bad([...p, 'pack', 'items', i, 'id'], `id ${it.id} is not below nextId ${save.nextId}`);
+      if (byId[it.id] !== undefined || ex.pack.items.findIndex((y) => y.id === it.id) !== i) bad([...p, 'pack', 'items', i, 'id'], `duplicate item id ${it.id}`);
+    });
   }
   return { ok: errors.length === 0, errors };
 }

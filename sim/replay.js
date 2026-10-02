@@ -1,6 +1,7 @@
 // The replay: inputs plus event log, canonical form and hash (DESIGN.md section 14).
 import { canonical, hashOf } from './canon.js';
 import { resolveDelve } from './delve.js';
+import { resolveFloor } from './floor.js';
 
 export const FORMAT = 'three-realms-replay';
 export const VERSION = 1;
@@ -34,6 +35,18 @@ export function createReplay(input, content) {
   return doc;
 }
 
+// A floor of an expedition site (DESIGN.md 12): the same document shape, kind 'floor', inputs { realm, level, boss, party, heroHp }.
+export function createFloorReplay(input, content) {
+  const out = resolveFloor(input, content);
+  const doc = {
+    format: FORMAT, v: VERSION, kind: 'floor', contentHash: contentHashOf(content), seed: input.seed,
+    inputs: { realm: input.realm, level: input.level, boss: input.boss, party: input.party, heroHp: input.heroHp },
+    tables: { skills: out.skills, statuses: content.statuses.map((x) => x.id) }, plan: out.plan, events: out.events, result: out.result,
+  };
+  doc.hash = hashOf(doc);
+  return doc;
+}
+
 export const serializeReplay = (doc) => canonical(doc);
 
 const REQUIRED = ['format', 'v', 'kind', 'contentHash', 'seed', 'inputs', 'tables', 'plan', 'events', 'result', 'hash'];
@@ -62,7 +75,7 @@ export function verifyReplay(doc, content) {
     reasons.push('content mismatch: this build\'s content differs from the content the replay was made with');
     return { ok: false, resimulated: false, reasons };
   }
-  const out = resolveDelve({ ...doc.inputs, seed: doc.seed }, content);
+  const out = doc.kind === 'floor' ? resolveFloor({ ...doc.inputs, seed: doc.seed }, content) : resolveDelve({ ...doc.inputs, seed: doc.seed }, content);
   const at = firstDifference(out.events, doc.events);
   if (at >= 0) reasons.push(`events differ from a fresh simulation at index ${at}`);
   if (canonical(out.result) !== canonical(doc.result)) reasons.push('result differs from a fresh simulation');

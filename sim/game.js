@@ -49,6 +49,17 @@ function checkStash(before, after, content) {
   return after;
 }
 
+// While an expedition is under way the party, their gear, runbooks and Threads are locked, and so are delves and rests.
+export function assertFree(save, what) {
+  if (save.expedition !== null) throw new GameError('on_expedition', `${what} is not possible while an expedition is under way`);
+}
+// An item worn by a hero who is out on the expedition cannot be upgraded or salvaged.
+export function assertNotAway(save, itemId, what) {
+  if (save.expedition === null) return;
+  const away = wornIds(save)[itemId];
+  if (away !== undefined && save.expedition.party.includes(away)) throw new GameError('on_expedition', `${what}: that item is worn by a hero away on the expedition`);
+}
+
 export const topLevel = (save) => save.heroes.reduce((m, h) => (h.level > m ? h.level : m), 1);
 
 // The next seed in this save's stream. Mutates the (already cloned) save.
@@ -74,7 +85,7 @@ function pickName(save, content, realm) {
 }
 
 // Adds a hero with a full Plain kit at `ilvl`. Mutates the cloned save.
-function addHero(save, content, classId, level, ilvl) {
+export function addHero(save, content, classId, level, ilvl) {
   const cls = content.heroById[classId], slots = {};
   for (const slot of content.items.slotOrder) {
     const kind = slot === 'weapon' ? (cls.attack === 'magic' ? 'ARC' : 'MIT') : null;
@@ -114,6 +125,7 @@ export function recruit(save, content, classId) {
 }
 
 export function dismiss(save, content, heroId) {
+  assertFree(save, 'dismissing a hero');
   const next = clone(save), h = findHero(next, heroId);
   if (next.heroes.length <= 1) throw new GameError('last_hero', 'the last hero cannot be dismissed');
   if (h.thread) next.threads++;
@@ -124,6 +136,7 @@ export function dismiss(save, content, heroId) {
 }
 
 export function equip(save, content, heroId, slot, itemId) {
+  assertFree(save, 'changing equipment');
   const next = clone(save), h = findHero(next, heroId);
   if (!content.items.slotOrder.includes(slot)) throw new GameError('bad_slot', `there is no slot "${slot}"`);
   if (itemId === null) { h.slots[slot] = null; return checkStash(save, next, content); }
@@ -136,6 +149,7 @@ export function equip(save, content, heroId, slot, itemId) {
 }
 
 export function setParty(save, content, ids) {
+  assertFree(save, 'changing the party');
   if (!Array.isArray(ids) || ids.length < 1 || ids.length > 4) throw new GameError('party_size', 'a party has one to four heroes');
   if (ids.some((id, i) => ids.indexOf(id) !== i)) throw new GameError('party_dup', 'a hero can be in the party only once');
   const next = clone(save);
@@ -145,6 +159,7 @@ export function setParty(save, content, ids) {
 }
 
 export function setRunbook(save, content, heroId, runbook) {
+  assertFree(save, 'editing a runbook');
   const next = clone(save), h = findHero(next, heroId);
   const rb = typeof runbook === 'string' ? runbook : JSON.stringify(runbook);
   const v = validateRunbook(rb, kitOf(h, itemsById(next), content), content);
@@ -154,6 +169,7 @@ export function setRunbook(save, content, heroId, runbook) {
 }
 
 export function assignThread(save, content, heroId) {
+  assertFree(save, 'binding a Thread');
   const next = clone(save), h = findHero(next, heroId);
   if (h.thread) throw new GameError('thread_has', `${h.name} already holds a Thread of the Norns`);
   if (next.threads < 1) throw new GameError('thread_none', 'you have no Thread of the Norns to assign');
@@ -162,6 +178,7 @@ export function assignThread(save, content, heroId) {
 }
 
 export function unassignThread(save, content, heroId) {
+  assertFree(save, 'releasing a Thread');
   const next = clone(save), h = findHero(next, heroId);
   if (!h.thread) throw new GameError('thread_none', `${h.name} holds no Thread of the Norns`);
   h.thread = false; next.threads++;

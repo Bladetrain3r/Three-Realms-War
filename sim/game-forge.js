@@ -2,13 +2,14 @@
 import { createRng } from './prng.js';
 import { GameError } from './gameerror.js';
 import { attemptUpgrade, acceptUpgrade, useMulligan, upgradeCost, salvageValue } from './items.js';
-import { clone, findItem, nextSeed, wornIds } from './game.js';
+import { clone, findItem, nextSeed, wornIds, assertNotAway } from './game.js';
 
 function replaceItem(save, item) {
   save.items = save.items.map((x) => (x.id === item.id ? item : x));
 }
 
 export function upgradeAttempt(save, content, itemId) {
+  assertNotAway(save, itemId, 'upgradeAttempt');
   const next = clone(save), item = findItem(next, itemId), realm = content.realmById[item.realm], tier = content.tierById[item.tier];
   if (item.held !== null) throw new GameError('upgrade_pending', 'accept or undo the previous attempt first');
   if (item.star >= tier.maxStar) throw new GameError('upgrade_max', `a ${tier.name} item stops at ${tier.maxStar} stars`);
@@ -22,6 +23,7 @@ export function upgradeAttempt(save, content, itemId) {
 }
 
 export function acceptAttempt(save, content, itemId) {
+  assertNotAway(save, itemId, 'acceptAttempt');
   const next = clone(save), item = findItem(next, itemId);
   if (item.held === null) throw new GameError('no_pending', 'there is no attempt to accept');
   replaceItem(next, acceptUpgrade(item));
@@ -29,6 +31,7 @@ export function acceptAttempt(save, content, itemId) {
 }
 
 export function undoAttempt(save, content, itemId) {
+  assertNotAway(save, itemId, 'undoAttempt');
   const next = clone(save), item = findItem(next, itemId);
   if (item.held === null) throw new GameError('no_pending', 'there is no attempt to undo');
   if (item.mulligan < 1) throw new GameError('mulligan_spent', 'the mulligan for this star is already spent');
@@ -37,6 +40,7 @@ export function undoAttempt(save, content, itemId) {
 }
 
 export function salvage(save, content, itemId) {
+  assertNotAway(save, itemId, 'salvage');
   const next = clone(save), item = findItem(next, itemId);
   if (wornIds(next)[itemId] !== undefined) throw new GameError('item_worn', 'take the item off first');
   next.materials[content.realmById[item.realm].material] += salvageValue(item);
@@ -48,6 +52,7 @@ export function salvage(save, content, itemId) {
 // Returns { save, summary: { count, materials: { <id>: n } } }.
 export function salvageMany(save, content, ids) {
   if (!Array.isArray(ids) || ids.length === 0) throw new GameError('nothing_selected', 'no items are selected');
+  for (const id of ids) assertNotAway(save, id, 'salvage');
   const next = clone(save), worn = wornIds(next), gain = {};
   ids.forEach((id, i) => {
     if (ids.indexOf(id) !== i) throw new GameError('item_twice', `item ${id} is listed twice`);

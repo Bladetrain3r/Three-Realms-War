@@ -4,9 +4,9 @@ import { GameError } from './gameerror.js';
 import { buildHeroUnit } from './hero.js';
 import { createReplay } from './replay.js';
 import { xpToNext } from './progress.js';
-import { clone, findHero, itemsById, nextSeed, stashCount } from './game.js';
+import { clone, findHero, itemsById, nextSeed, stashCount, assertFree } from './game.js';
 
-function gainXp(hero, xp, content) {
+export function gainXp(hero, xp, content) {
   const cap = content.tables.stats.levelCap, p = content.tables.progress, from = hero.level;
   hero.xp += xp;
   while (hero.level < cap && hero.xp >= xpToNext(hero.level, p)) { hero.xp -= xpToNext(hero.level, p); hero.level++; }
@@ -50,6 +50,7 @@ export function applyDelveResult(save, content, replay, partyIds) {
 
 // Plays a delve with the save's party. force: ids of injured heroes the player chooses to send anyway (half stats).
 export function playDelve(save, content, { realm, level, force = [] }) {
+  assertFree(save, 'a delve');
   const next = clone(save), r = content.realmById[realm];
   if (!r) throw new GameError('unknown_realm', `there is no realm "${realm}"`);
   if (!Number.isInteger(level) || level < 1 || level > next.unlocked[realm]) throw new GameError('level_locked', `${r.name} is open up to level ${next.unlocked[realm]}`);

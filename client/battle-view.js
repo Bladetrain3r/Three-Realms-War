@@ -3,8 +3,9 @@
 import { Art } from './art/index.js';
 import { initState, applyEvent, applyAll } from './replay-state.js';
 
-export const W = 1920, H = 1080;
-const DUR = { 0: 800, 1: 450, 2: 150, 3: 500, 4: 550, 5: 550, 6: 280, 7: 380, 8: 0, 9: 550, 10: 450, 11: 900, 12: 650, 13: 0 };
+export const W = 1920;
+export const H = 1080;
+const DUR = { 0: 800, 1: 450, 2: 150, 3: 500, 4: 550, 5: 550, 6: 280, 7: 380, 8: 0, 9: 550, 10: 450, 11: 900, 12: 650, 13: 0, 14: 700 };
 const BADGE = { burn: ['B', '#c8562a'], chill: ['C', '#4d8c88'], shock: ['S', '#c8962e'], mark: ['M', '#9e2b25'], bulwark: ['W', '#2f5d9e'], fury: ['F', '#b8442a'], mend: ['R', '#3f7a46'] };
 const feet = (u) => { const lane = u.slot % 2, front = u.slot < 2, x = (front ? 740 : 470) + (lane ? 150 : 0), y = lane ? 940 : 690; return { x: u.side === 'hero' ? x : W - x, y, s: lane ? 1.08 : 1 }; };
 
@@ -62,6 +63,7 @@ export class BattleView {
     else if (c.kind === 'heal') add({ type: 'float', unit: c.dst, text: `+${c.amount}`, color: '#8fdc9a', dur: 900 / sp });
     else if (c.kind === 'tick') add({ type: 'float', unit: c.unit, text: `${c.heal ? '+' : '-'}${c.amount}`, color: c.heal ? '#8fdc9a' : '#ff9a6a', dur: 800 / sp });
     else if (c.kind === 'status') add({ type: 'float', unit: c.dst, text: c.status, color: '#e9dcb9', small: true, dur: 800 / sp });
+    else if (c.kind === 'death_save') add({ type: 'float', unit: c.unit, text: c.result === 1 ? 'lost for good' : c.result === 2 ? 'the Thread holds' : 'lives', color: c.result === 1 ? '#ff9a8a' : '#e9dcb9', small: true, dur: 1100 / sp });
     else if (c.kind === 'down') add({ type: 'fall', unit: c.unit, dur: 500 / sp });
     else if (c.kind === 'skip') add({ type: 'float', unit: c.unit, text: 'skipped', color: '#e9dcb9', small: true, dur: 700 / sp });
     else if (c.kind === 'enc_start') add({ type: 'banner', text: `Encounter ${c.index + 1}`, dur: 900 / sp });

@@ -15,7 +15,9 @@ import { heroBase, withAffinity, enemyScaled, enemyBase, finalStat } from '../..
 import { itemMain, lineValue, rollLines, upgradeCost, salvageValue } from '../../sim/items.js';
 import { buildHeroUnit } from '../../sim/hero.js';
 import { xpToNext, recruitLevel, recruitKitLevel, encounterRewards } from '../../sim/progress.js';
-import { newGame, rest } from '../../sim/index.js';
+import { newGame, rest, scaleReward, deathSaveKills } from '../../sim/index.js';
+import { moveCost, PLAIN, FOREST, HILLS } from '../../sim/mapgen.js';
+const XP = content.tables.expedition;
 import { mulbp as mbp } from '../../sim/arith.js';
 
 const utf8 = (s) => new TextEncoder().encode(s);
@@ -47,6 +49,9 @@ export const registry = {
   'WE-21': () => [1, 20, 49].map((L) => xpToNext(L, content.tables.progress)),
   'WE-22': () => { const p = content.tables.progress; let xp = 0, mat = 0, sv = 0; for (let i = 0; i < 4; i++) { const e = encounterRewards(20, i === 3, p); xp += e.xp; mat += e.materials; sv += e.hacksilver; } return [xp, mbp(xp, p.restXpBp), mat, sv]; },
   'WE-23': () => [recruitLevel(26, content.tables.recruit), recruitLevel(1, content.tables.recruit)],
+  'WE-24': () => [4 * moveCost(PLAIN, XP) + moveCost(FOREST, XP) + moveCost(HILLS, XP), 20 + idiv(11, XP.siteLevelDiv), 10000 + XP.distBp * 11],
+  'WE-25': () => [scaleReward(10, 11, 3, XP)],
+  'WE-26': () => [Number(deathSaveKills(3999, XP)), Number(deathSaveKills(4000, XP))],
   'WE-34': () => { const sv = newGame(content, 1, { savedAt: '', build: 't' }); sv.currency.hacksilver = 1000; sv.heroes[0].injury = 2; sv.heroes[1].injury = 1; const r = rest(sv, content); return [1000 - r.save.currency.hacksilver, r.save.currency.hacksilver]; },
   'WE-35': () => [recruitKitLevel(15, content.tables.recruit), recruitKitLevel(1, content.tables.recruit)],
   'WE-33': () => [salvageValue(item({ tier: 'runed', ilvl: 26 }))],
@@ -67,7 +72,7 @@ export const registry = {
 
 const documented = documentedExamples();
 // Expedition examples are implemented with the expedition code in G5; listed here so none can be forgotten silently.
-export const pendingForG5 = ['WE-24', 'WE-25', 'WE-26'];
+export const pendingForG5 = [];
 
 test('design examples: DESIGN.md carries 35 tagged worked examples', () => {
   assert.equal(documented.size, 35);
@@ -79,7 +84,7 @@ test('design examples: every documented example is checked by the sim, or is exp
   assert.deepEqual(missing, [], `no sim check for: ${missing.join(', ')}`);
   const unknown = Object.keys(registry).filter((id) => !documented.has(id));
   assert.deepEqual(unknown, [], `registry names examples DESIGN.md does not contain: ${unknown.join(', ')}`);
-  assert.equal(Object.keys(registry).length, 32);
+  assert.equal(Object.keys(registry).length, 35);
 });
 
 for (const [id, fn] of Object.entries(registry)) {

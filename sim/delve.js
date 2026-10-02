@@ -36,30 +36,32 @@ function place(slots, row) {
   return -1;
 }
 
+// One encounter's enemies, drawn from rng in a fixed order: the boss first (boss kind), then each add (band, monster, affixes).
+// kind: 'first' | 'middle' | 'boss' (selects the band weights and the head count).
+export function generateEncounter(rng, { realm, level, kind }, content) {
+  const d = content.tables.delve, monsters = content.roster.filter((m) => m.realm === realm), isBoss = kind === 'boss';
+  const slots = [null, null, null, null];
+  if (isBoss) {
+    const boss = content.bossById[content.realmById[realm].boss];
+    slots[place(slots, 'front')] = buildMonster(boss, level + content.tables.enemy.bossLevelBonus, content, { boss: true });
+  }
+  const count = isBoss ? d.bossAdds : kind === 'first' ? d.firstEnemies : d.otherEnemies;
+  for (let i = 0; i < count; i++) {
+    const band = pickBand(rng, d.bandWeights[kind]);
+    const inBand = monsters.filter((m) => m.band === band);
+    const row = inBand[rng.range(inBand.length)];
+    const affixes = rollAffixes(rng, level, content);
+    slots[place(slots, rowOf(row, content, false))] = buildMonster(row, level, content, { affixes });
+  }
+  const enemies = [];
+  slots.forEach((def, slot) => { if (def) enemies.push({ ...def, slot }); });
+  return enemies;
+}
+
 // The whole plan is drawn up front: encounter count, then each encounter's enemies.
 export function generateDelve(rng, { realm, level }, content) {
-  const d = content.tables.delve, n = d.minEncounters + rng.range(d.encounterSpan);
-  const monsters = content.roster.filter((m) => m.realm === realm);
-  const encounters = [];
-  for (let k = 0; k < n; k++) {
-    const isBoss = k === n - 1, kind = k === 0 ? 'first' : isBoss ? 'boss' : 'middle';
-    const slots = [null, null, null, null];
-    if (isBoss) {
-      const boss = content.bossById[content.realmById[realm].boss];
-      slots[place(slots, 'front')] = buildMonster(boss, level + content.tables.enemy.bossLevelBonus, content, { boss: true });
-    }
-    const count = isBoss ? d.bossAdds : k === 0 ? d.firstEnemies : d.otherEnemies;
-    for (let i = 0; i < count; i++) {
-      const band = pickBand(rng, d.bandWeights[kind]);
-      const inBand = monsters.filter((m) => m.band === band);
-      const row = inBand[rng.range(inBand.length)];
-      const affixes = rollAffixes(rng, level, content);
-      slots[place(slots, rowOf(row, content, false))] = buildMonster(row, level, content, { affixes });
-    }
-    const enemies = [];
-    slots.forEach((def, slot) => { if (def) enemies.push({ ...def, slot }); });
-    encounters.push(enemies);
-  }
+  const d = content.tables.delve, n = d.minEncounters + rng.range(d.encounterSpan), encounters = [];
+  for (let k = 0; k < n; k++) encounters.push(generateEncounter(rng, { realm, level, kind: k === 0 ? 'first' : k === n - 1 ? 'boss' : 'middle' }, content));
   return encounters;
 }
 
