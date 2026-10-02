@@ -1,24 +1,14 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, readdirSync, existsSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { repoPath } from '../helpers/design.mjs';
 import { content } from '../helpers/content.mjs';
 import { standardInput } from '../helpers/scenario.mjs';
 import { startServer } from './serve.mjs';
+import { findChromium } from './chromium.mjs';
 import { createReplay, contentHashOf } from '../../sim/replay.js';
 import { sha256Hex } from '../../sim/sha256.js';
 import { canonical, hashOf } from '../../sim/canon.js';
-
-function findChromium() {
-  if (process.env.CHROMIUM_PATH && existsSync(process.env.CHROMIUM_PATH)) return process.env.CHROMIUM_PATH;
-  const base = process.env.PLAYWRIGHT_BROWSERS_PATH || '/opt/pw-browsers';
-  if (!existsSync(base)) return null;
-  for (const d of readdirSync(base).filter((x) => x.startsWith('chromium-')).sort().reverse()) {
-    const p = `${base}/${d}/chrome-linux/chrome`;
-    if (existsSync(p)) return p;
-  }
-  return null;
-}
 
 test('browser: replay hashes in headless Chromium equal Node\'s and the committed golden hashes', async (t) => {
   const exe = findChromium();
