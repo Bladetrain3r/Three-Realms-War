@@ -49,8 +49,8 @@ for (const n of names) {
   if (!GALLERY[n]) { // sections added by later modules live on window.Gallery
     await page.evaluate((k) => window.Gallery && window.Gallery[k] && window.Gallery[k](), n);
   } else await page.evaluate(`(${GALLERY[n].toString()})()`);
-  const buf = await page.locator('#root').screenshot();
-  writeFileSync(join(out, `${n}.png`), buf); console.log('wrote', join(out, `${n}.png`));
+  const buf = await page.locator('#root').screenshot({ type: 'jpeg', quality: 85 });
+  writeFileSync(join(out, `art-${n}.jpg`), buf); console.log('wrote', join(out, `art-${n}.jpg`));
 }
 await browser.close();
 if (problems.length) { console.error(problems.join('\n')); process.exit(1); }

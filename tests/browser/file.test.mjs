@@ -23,7 +23,10 @@ test('browser: the built game runs from file:// with no server, no console error
     const tr = await page.evaluate(() => window.ThreeRealms);
     assert.equal(tr.error, undefined);
     assert.equal(tr.engineCheck.ok, true, JSON.stringify(tr.engineCheck));
-    assert.match(await page.textContent('#status'), /15 classes, 36 monsters loaded\. Engine check passed/);
+    assert.match(await page.textContent('#screen h1'), /The Hall/);
+    await page.goto(`${page.url().split('#')[0]}#/settings`);
+    assert.match(await page.textContent('#screen'), /15 classes, 36 monsters, 3 realms/);
+    assert.match(await page.textContent('#screen'), /Engine check\s*passed/);
     assert.equal(new URL(page.url()).protocol, 'file:');
   } finally { await browser.close(); }
 });

@@ -1,0 +1,213 @@
+import { test, before, after } from 'node:test';
+import assert from 'node:assert/strict';
+import { content } from '../helpers/content.mjs';
+import { newGame, playDelve, canonical } from '../../sim/index.js';
+import { buildGame, launch, openGame, go, settle } from './game-page.mjs';
+
+let browser = null, game = null;
+before(async () => { browser = await launch(); if (browser) game = buildGame('client-test'); });
+after(async () => { if (browser) await browser.close(); });
+const need = (t) => { if (!browser) { t.skip('no Chromium found'); return false; } return true; };
+const text = (page, id) => page.textContent(`[data-testid="${id}"]`);
+const importSave = async (page, saveObj) => { await go(page, '#/settings'); await page.fill('[data-testid=import-text]', canonical(saveObj)); await page.click('[data-testid=import]'); };
+const withoutMeta = (txt) => { const o = JSON.parse(txt); delete o.meta; return canonical(o); };
+
+test('client: every screen renders with no console error, at desktop and at 390 px, with no sideways scroll', async (t) => {
+  if (!need(t)) return;
+  for (const width of [1280, 390]) {
+    const { page, problems, context } = await openGame(browser, game.url, { width, height: 900 });
+    const heroId = await page.evaluate(() => window.ThreeRealms.save().heroes[0].id);
+    const seen = {};
+    for (const [hash, heading] of [['#/hall', /The Hall/], [`#/hero/${heroId}`, /\S/], ['#/forge', /The Forge/], ['#/delve', /The Delve Board/], ['#/settings', /Settings/], ['#/battle', /The Battle/]]) {
+      await go(page, hash);
+      seen[hash] = await page.textContent('#screen h1');
+      assert.match(seen[hash], heading, `${hash} at ${width}px`);
+      const [sw, iw] = await page.evaluate(() => [document.documentElement.scrollWidth, innerWidth]);
+      assert.ok(sw <= iw, `${hash} at ${width}px scrolls sideways (${sw} > ${iw})`);
+    }
+    await go(page, '#/delve'); await page.click('[data-testid=descend]'); await page.waitForFunction(() => location.hash === '#/battle'); await settle(page);
+    await page.waitForFunction(() => window.ThreeRealms.battleState() && window.ThreeRealms.battleState().cursor > 5);
+    const [sw, iw] = await page.evaluate(() => [document.documentElement.scrollWidth, innerWidth]);
+    assert.ok(sw <= iw, `battle at ${width}px scrolls sideways`);
+    assert.deepEqual(problems, [], `console problems at ${width}px`);
+    await context.close();
+  }
+});
+
+test('client: the replay a browser plays has the same hash as Node for the same save, and the saves after it agree', async (t) => {
+  if (!need(t)) return;
+  const start = newGame(content, 424242, { savedAt: '', build: 'client-test' });
+  const { page, problems, context } = await openGame(browser, game.url);
+  await importSave(page, start);
+  await go(page, '#/delve'); await page.click('[data-testid=descend]'); await page.waitForFunction(() => location.hash === '#/battle'); await settle(page);
+  const st = await page.evaluate(() => window.ThreeRealms.battleState());
+  const node = playDelve(start, content, { realm: 'midgard', level: 1 });
+  assert.equal(st.hash, node.replay.hash, 'browser and Node replay hashes differ');
+  assert.equal(st.events, node.replay.events.length);
+  assert.equal(withoutMeta(await page.evaluate(() => window.ThreeRealms.exportText())), withoutMeta(canonical(node.save)));
+  // a second delve on the result (a different counter, so a different seed) also agrees
+  assert.ok(!node.save.heroes.some((h) => h.injury > 0), 'this seed is chosen so that nobody is injured after the first delve');
+  await go(page, '#/delve'); await page.click('[data-testid=descend]');
+  await page.waitForFunction(() => location.hash === '#/battle'); await settle(page);
+  const again = playDelve(node.save, content, { realm: 'midgard', level: 1 });
+  assert.equal((await page.evaluate(() => window.ThreeRealms.battleState())).hash, again.replay.hash, 'the second delve differs');
+  assert.notEqual(again.replay.hash, node.replay.hash);
+  assert.deepEqual(problems, []);
+  await context.close();
+});
+
+test('client: a skipped replay ends with the outcome and the log the replay carries; the summary names what was earned', async (t) => {
+  if (!need(t)) return;
+  const { page, context } = await openGame(browser, game.url);
+  await go(page, '#/delve'); await page.click('[data-testid=descend]'); await page.waitForFunction(() => location.hash === '#/battle'); await settle(page);
+  await page.waitForFunction(() => window.ThreeRealms.battleState() && window.ThreeRealms.battleState().cursor > 0);
+  await page.click('[data-testid=skip]');
+  const st = await page.evaluate(() => window.ThreeRealms.battleState());
+  assert.equal(st.done, true); assert.equal(st.over, true);
+  assert.ok((await text(page, 'summary')).match(/Delve (won|lost)/));
+  assert.ok((await page.locator('[data-testid=log] li').count()) === st.log);
+  await context.close();
+});
+
+test('client: the runbook editor refuses invalid runbooks and says why; valid ones save and survive a reload', async (t) => {
+  if (!need(t)) return;
+  const { page, problems, context } = await openGame(browser, game.url);
+  const hero = await page.evaluate(() => window.ThreeRealms.save().heroes[0]);
+  await go(page, `#/hero/${hero.id}`);
+  await page.click('[data-testid=runbook] summary');
+  const refuse = async (json, expectText) => {
+    await page.fill('[data-testid=runbook-json]', typeof json === 'string' ? json : JSON.stringify(json));
+    await page.click('[data-testid=apply-json]');
+    const msg = await text(page, 'runbook-msg');
+    assert.match(msg, /Refused/); assert.match(msg, expectText, msg);
+    assert.deepEqual(await page.evaluate((id) => window.ThreeRealms.save().heroes.find((h) => h.id === id).runbook, hero.id), hero.runbook, 'a refused runbook must not change the save');
+  };
+  await refuse('{not json', /not valid JSON/);
+  await refuse({ v: 1, rules: [{ when: [{ c: 'always' }], do: { a: 'skill', skill: 'cleave' }, target: null }] }, /not in this hero's kit/); // cleave belongs to the Huscarl
+  await refuse({ v: 1, rules: [{ when: [{ c: 'self_hp_below', pct: 55 }], do: { a: 'basic' }, target: 'lowest_hp' }] }, /integer from 10 to 90 in steps of 10/);
+  await refuse({ v: 1, rules: Array.from({ length: 9 }, () => ({ when: [{ c: 'always' }], do: { a: 'basic' }, target: 'lowest_hp' })) }, /more than 8 rules/);
+  await refuse({ v: 1, rules: [{ when: [{ c: 'always' }], do: { a: 'brace' }, target: 'lowest_hp' }] }, /takes no target selector/);
+  // the form: change the first rule's threshold and save
+  await go(page, `#/hero/${hero.id}`);
+  await page.selectOption('[data-testid="arg-0-0-pct"]', '70');
+  await page.click('[data-testid=save-runbook]');
+  await page.waitForFunction((id) => window.ThreeRealms.save().heroes.find((h) => h.id === id).runbook.rules[0].when[0].pct === 70, hero.id);
+  await page.reload(); await page.waitForFunction(() => window.ThreeRealms && window.ThreeRealms.ready); await settle(page);
+  assert.equal(await page.evaluate((id) => window.ThreeRealms.save().heroes.find((h) => h.id === id).runbook.rules[0].when[0].pct, hero.id), 70, 'the saved runbook did not survive a reload (browser storage)');
+  assert.deepEqual(problems, []);
+  await context.close();
+});
+
+test('client: export then import restores the same save; a damaged save is refused with the key and the reason, and nothing changes', async (t) => {
+  if (!need(t)) return;
+  const { page, context } = await openGame(browser, game.url);
+  await go(page, '#/delve'); await page.click('[data-testid=descend]'); await page.waitForFunction(() => location.hash === '#/battle'); await settle(page);
+  await page.waitForFunction(() => window.ThreeRealms.battleState() && window.ThreeRealms.battleState().cursor > 0); await page.click('[data-testid=skip]');
+  await go(page, '#/settings');
+  await page.click('[data-testid=show-export]');
+  const exported = await page.inputValue('[data-testid=export-text]');
+  assert.equal(exported, await page.evaluate(() => window.ThreeRealms.exportText()));
+  await page.click('[data-testid=reset]'); await page.click('[data-testid=confirm-reset]');
+  assert.notEqual(await page.evaluate(() => window.ThreeRealms.exportText()), exported, 'reset should start a different game');
+  await go(page, '#/settings');
+  await page.fill('[data-testid=import-text]', exported); await page.click('[data-testid=import]');
+  assert.equal(await page.evaluate(() => window.ThreeRealms.exportText()), exported, 'import did not restore the exported save byte for byte');
+  const bad = JSON.parse(exported); bad.heroes[0].level = 999;
+  await go(page, '#/settings');
+  await page.fill('[data-testid=import-text]', JSON.stringify(bad)); await page.click('[data-testid=import]');
+  assert.match(await text(page, 'import-msg'), /refused/);
+  assert.match(await text(page, 'import-msg'), /heroes\.0\.level|level/);
+  assert.equal(await page.evaluate(() => window.ThreeRealms.exportText()), exported, 'a refused import must leave the save alone');
+  await page.fill('[data-testid=import-text]', 'nope'); await page.click('[data-testid=import]');
+  assert.match(await text(page, 'import-msg'), /not valid JSON/);
+  await context.close();
+});
+
+test('client: the hall refuses what the rules refuse and says why (cannot afford, locked, full party)', async (t) => {
+  if (!need(t)) return;
+  const { page, context } = await openGame(browser, game.url);
+  await go(page, '#/hall');
+  assert.equal(await page.isDisabled('[data-testid=do-recruit-hunter]'), true);
+  assert.match(await page.getAttribute('[data-testid=do-recruit-hunter]', 'title'), /costs 120 hacksilver \(you have 0\)/);
+  assert.match(await page.getAttribute('[data-testid=do-recruit-berserker]', 'title'), /needs 50 reputation in Midgard/);
+  await go(page, '#/delve');
+  // an injured hero blocks the descent until forced
+  const bad = await page.evaluate(() => { const s = window.ThreeRealms.save(); s.heroes[0].injury = 2; return JSON.stringify(s); });
+  await importSave(page, JSON.parse(bad));
+  await go(page, '#/delve');
+  assert.equal(await page.isDisabled('[data-testid=descend]'), true);
+  await page.check(`[data-testid="force-${JSON.parse(bad).heroes[0].id}"]`);
+  assert.equal(await page.isDisabled('[data-testid=descend]'), false);
+  await page.click('[data-testid=descend]'); await page.waitForFunction(() => location.hash === '#/battle'); await settle(page);
+  const st = await page.evaluate(() => window.ThreeRealms.battleState());
+  assert.deepEqual(st.injured, [true, false, false, false], 'the forced hero fights injured, the rest do not');
+  assert.deepEqual([st.realm, st.level], ['midgard', 1]);
+  await context.close();
+});
+
+test('client budgets: shipped bytes <= 400 KB, heap <= 256 MB after every screen and a replay, battle frame p95 <= 16.7 ms at 1920 x 1080 (DESIGN 15)', async (t) => {
+  if (!need(t)) return;
+  const total = Object.values(game.bytes).reduce((a, b) => a + b, 0);
+  assert.ok(total <= 400 * 1024, `shipped ${total} bytes`);
+  const { page, context } = await openGame(browser, game.url, { width: 1920, height: 1080 });
+  for (const h of ['#/hall', '#/forge', '#/delve', '#/settings']) await go(page, h);
+  await go(page, '#/delve'); await page.click('[data-testid=descend]'); await page.waitForFunction(() => location.hash === '#/battle'); await settle(page);
+  await page.waitForFunction(() => window.ThreeRealms.battleState() && window.ThreeRealms.battleState().cursor > 20); await page.click('[data-testid=skip]');
+  const frames = await page.evaluate(() => window.ThreeRealms.timeFrames(200)), s = [...frames].sort((a, b) => a - b), p95 = s[Math.floor(s.length * 0.95)];
+  const heap = await page.evaluate(() => performance.memory.usedJSHeapSize);
+  assert.ok(p95 <= 16.7, `p95 frame ${p95.toFixed(2)} ms`);
+  assert.ok(heap <= 256 * 1024 * 1024, `heap ${heap}`);
+  await context.close();
+});
+
+test('client: the Forge upgrade flow in the browser gives exactly the save the rules layer gives (attempt, then keep or undo), and equipment changes go through the same rules', async (t) => {
+  if (!need(t)) return;
+  const { upgradeAttempt, acceptAttempt, undoAttempt, equip } = await import('../../sim/index.js');
+  const start = newGame(content, 31337, { savedAt: '', build: 'client-test' });
+  for (const k of Object.keys(start.materials)) start.materials[k] = 50;
+  const itemId = start.items[0].id, { page, problems, context } = await openGame(browser, game.url);
+  await importSave(page, start);
+  await go(page, '#/forge'); await page.click(`[data-testid="item-${itemId}"]`);
+  await page.click('[data-testid=upgrade]');
+  let want = upgradeAttempt(start, content, itemId);
+  assert.equal(withoutMeta(await page.evaluate(() => window.ThreeRealms.exportText())), withoutMeta(canonical(want)), 'attempt');
+  assert.match(await text(page, 'pending'), /Success|No star gained/);
+  assert.equal(await page.isDisabled('[data-testid=upgrade]'), true, 'a pending attempt blocks another');
+  await page.click('[data-testid=undo]');
+  want = undoAttempt(want, content, itemId);
+  assert.equal(withoutMeta(await page.evaluate(() => window.ThreeRealms.exportText())), withoutMeta(canonical(want)), 'undo');
+  await page.click('[data-testid=upgrade]'); want = upgradeAttempt(want, content, itemId);
+  const pend = await page.evaluate((id) => window.ThreeRealms.save().items.find((x) => x.id === id).mulligan, itemId);
+  if (pend < 1) assert.equal(await page.isDisabled('[data-testid=undo]'), true, 'a spent mulligan cannot be used again');
+  await page.click('[data-testid=accept]'); want = acceptAttempt(want, content, itemId);
+  assert.equal(withoutMeta(await page.evaluate(() => window.ThreeRealms.exportText())), withoutMeta(canonical(want)), 'accept');
+  // equipment: take the helm off via the hero screen
+  const hero = start.heroes[0];
+  await go(page, `#/hero/${hero.id}`); await page.selectOption('[data-testid=slot-helm]', '');
+  want = equip(want, content, hero.id, 'helm', null);
+  assert.equal(withoutMeta(await page.evaluate(() => window.ThreeRealms.exportText())), withoutMeta(canonical(want)), 'unequip');
+  assert.deepEqual(problems, []);
+  await context.close();
+});
+
+test('client: recruiting, benching, adding to the party and dismissing in the browser match the rules layer', async (t) => {
+  if (!need(t)) return;
+  const { recruit, setParty, dismiss } = await import('../../sim/index.js');
+  const start = newGame(content, 555, { savedAt: '', build: 'client-test' });
+  start.currency.hacksilver = 1000;
+  const { page, problems, context } = await openGame(browser, game.url);
+  await importSave(page, start);
+  await go(page, '#/hall'); await page.click('[data-testid=do-recruit-hunter]');
+  let want = recruit(start, content, 'hunter');
+  const same = async (what) => assert.equal(withoutMeta(await page.evaluate(() => window.ThreeRealms.exportText())), withoutMeta(canonical(want)), what);
+  await same('recruit');
+  const newId = want.heroes[want.heroes.length - 1].id;
+  await page.click(`[data-testid="bench-${start.party[3]}"]`); want = setParty(want, content, start.party.slice(0, 3)); await same('bench');
+  await page.click(`[data-testid="add-${newId}"]`); want = setParty(want, content, [...start.party.slice(0, 3), newId]); await same('add to party');
+  await page.click(`[data-testid="left-${newId}"]`); want = setParty(want, content, [start.party[0], start.party[1], newId, start.party[2]]); await same('reorder');
+  await go(page, `#/hero/${newId}`); await page.click('[data-testid=dismiss]'); await same('dismiss asks first (nothing changes)');
+  await page.click('[data-testid=confirm-dismiss]'); want = dismiss(want, content, newId); await same('dismiss');
+  assert.equal(await page.evaluate(() => location.hash), '#/hall');
+  assert.deepEqual(problems, []);
+  await context.close();
+});

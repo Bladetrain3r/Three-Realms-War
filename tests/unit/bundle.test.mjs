@@ -74,3 +74,8 @@ test('bundle: the real sim, bundled, gives the same replay hashes as the native 
     __inputs.map((i) => SIM.createReplay(i, content).hash);`, sb);
   assert.deepEqual(hashes, golden.replays.slice(0, 8).map((g) => g.hash));
 });
+
+test('bundle: importing a name the other module does not export is an error naming both, not a silent undefined (found when a client screen imported wornIds from the wrong module)', () => {
+  const root = fixture({ 'x.js': 'export const a = 1;\n', 'main.js': "import { a, b } from './x.js';\nexport const v = a;\n" });
+  assert.throws(() => runBundle(root, 'main.js'), /main\.js.*does not export "b"/);
+});

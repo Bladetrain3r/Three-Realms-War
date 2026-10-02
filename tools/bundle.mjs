@@ -26,7 +26,7 @@ function transform(id, src) {
   const spec = (s) => { deps.push(s); return JSON.stringify(s); };
   let out = src;
   out = out.replace(REEXPORT, (_, list, s) => { const q = spec(s); for (const [from, to] of pairs(list)) tail.push(`exports.${to} = __req(__resolve(${JSON.stringify(id)}, ${q})).${from};`); return ''; });
-  out = out.replace(NAMED, (_, list, s) => `const { ${pairs(list).map(([a, b]) => (a === b ? a : `${a}: ${b}`)).join(', ')} } = __req(__resolve(${JSON.stringify(id)}, ${spec(s)}));`);
+  out = out.replace(NAMED, (_, list, s) => `const { ${pairs(list).map(([a, b]) => (a === b ? a : `${a}: ${b}`)).join(', ')} } = __named(__req(__resolve(${JSON.stringify(id)}, ${spec(s)})), ${JSON.stringify(pairs(list).map(([a]) => a))}, ${JSON.stringify(id)});`);
   out = out.replace(NS, (_, name, s) => `const ${name} = __req(__resolve(${JSON.stringify(id)}, ${spec(s)}));`);
   out = out.replace(SIDE, (_, s) => `__req(__resolve(${JSON.stringify(id)}, ${spec(s)}));`);
   out = out.replace(EXPORT_LIST, (_, list) => { for (const [a, b] of pairs(list)) tail.push(`exports.${b} = ${a};`); return ''; });
@@ -56,6 +56,7 @@ export function bundle(entry, { root = ROOT, virtuals = {}, globalName = null } 
 'use strict';
 const __defs = Object.create(null), __cache = Object.create(null);
 const __resolve = (from, s) => { if (!s.startsWith('.')) return s; const out = []; for (const p of (from.split('/').slice(0, -1).join('/') + '/' + s).split('/')) { if (p === '..') out.pop(); else if (p !== '.' && p !== '') out.push(p); } return out.join('/'); };
+const __named = (o, names, where) => { for (const n of names) if (!(n in o)) throw new SyntaxError(where + ': the module it imports from does not export "' + n + '"'); return o; };
 function __req(id) { if (__cache[id]) return __cache[id].exports; const m = { exports: {} }; __cache[id] = m; __defs[id](m.exports, __req, __resolve); return m.exports; }
 ${defs}
 const __main = __req(${JSON.stringify(entry)});

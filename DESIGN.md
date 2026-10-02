@@ -772,7 +772,7 @@ a save with a higher `version` than the build is refused, a lower one is migrate
   "party": [1, 2, 3, 4],
   "items": [
     { "id": 5, "slot": "weapon", "kind": "MIT", "tier": "plain", "ilvl": 1, "realm": "midgard", "set": null,
-      "star": 0, "lines": [], "held": null, "mulligan": 1 }
+      "star": 0, "lines": [], "held": null, "heldStar": null, "mulligan": 1 }
   ],
   "threads": 0,
   "expedition": null
@@ -902,7 +902,7 @@ Every change to a save is a pure function `(save, content, ...) -> save'` or thr
 Random choices use `deriveSeed(masterSeed, counter)` and then increment `counter`, so a save plus the same actions replays identically.
 
 - **New game.** `masterSeed` from the caller (the client takes it from `crypto.getRandomValues`; tests pass one). Four heroes at level 1
-  (7.5) in slots Shieldwarden, Huscarl, Hearthkeeper, Stormcaller; names drawn from `names.json` without repeats; each wears a full
+  (7.5) in slots Shieldwarden, Huscarl, Stormcaller, Hearthkeeper (the order of `tables.recruit.startingRoster`); names drawn from `names.json` without repeats; each wears a full
   Plain item-level-1 kit of its realm; party = those four; `hacksilver` 0; every realm unlocked at 1. Every new hero (also a recruit)
   begins with the class's **starter runbook** from `content/starter_runbooks.json`, which the player edits freely.
 - **Recruit.** The class must exist; a rare class needs its realm's reputation at *Known*; the roster holds at most 24; the cost is
@@ -936,7 +936,7 @@ Random choices use `deriveSeed(masterSeed, counter)` and then increment `counter
   module scripts from `file://`, which SPEC requires, so `tools/bundle.mjs` (dependency-free) inlines the module graph, the content
   and the schemas into one classic script, `dist/game.js`, beside `dist/index.html`. The same `dist/` is what Pages publishes.
 - **State.** One store holds the save; every action calls the rules layer, validates, then writes the save to `localStorage` under
-  `three-realms-save` (a failing or full storage degrades to in-memory with a visible warning). Export is a file download of the canonical
+  `three-realms.save.v1` (a failing or full storage degrades to in-memory with a visible warning). Export is a file download of the canonical
   JSON; import accepts a file or pasted text.
 - **Battle.** The player never re-simulates: it plays the replay's event log. HP, statuses, floating numbers and the text log are all
   derived from the events alone (G1 test), so a replay file from another machine plays the same.
@@ -1004,3 +1004,11 @@ Random choices use `deriveSeed(masterSeed, counter)` and then increment `counter
   runbook per class becomes content (`content/starter_runbooks.json`, the runbooks the G3 harness already used), so a new hero is not
   limited to basic attacks. Details decided here and not in the earlier sections: the new-game kit and party order, recruits arrive with
   a free Plain kit, a full stash drops extra loot visibly, `hacksilver` starts at 0.
+- **0.5.1 (2026-10-02, G4 as built; wording and one text colour, no number of the game changed):** (a) section 19 listed the starting party as
+  Shieldwarden, Huscarl, Hearthkeeper, Stormcaller; the code and `tables.recruit.startingRoster` have Shieldwarden, Huscarl, Stormcaller,
+  Hearthkeeper, and the text now says so. (b) The save example in section 13 gains the `heldStar` field the rules layer added (the star
+  count to restore if an upgrade attempt is undone). (c) The browser storage key is `three-realms.save.v1` (section 20 said
+  `three-realms-save`). (d) Section 16: the `heal` token `#3f7a46` is kept for bars on the canvas; message text on vellum uses the darker
+  `#265030`, because `#3f7a46` on the shaded panel colour measured 3.98:1 and the rule is 4.5:1 (`tests/unit/contrast.test.mjs`).
+  (e) The battle screen also lists every unit's hit points and statuses as plain text beside the canvas (its on-canvas text is small on a
+  phone, and a text list is what a screen reader can use).
