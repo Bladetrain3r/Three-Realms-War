@@ -1,0 +1,48 @@
+{
+ "command": "node checks/measure-art.mjs",
+ "chromium": "/opt/pw-browsers/chromium-1194/chrome-linux/chrome",
+ "unit": "ms, cold cache, headless Chromium (software rendering)",
+ "heroSprites": {
+  "n": 15,
+  "min": 24.9,
+  "median": 33.8,
+  "max": 72.7,
+  "total": 586
+ },
+ "monsterSprites": {
+  "n": 36,
+  "min": 10.3,
+  "median": 38.8,
+  "max": 285.7,
+  "total": 3209.3
+ },
+ "bossSprites": {
+  "n": 3,
+  "min": 219.4,
+  "median": 385.2,
+  "max": 388,
+  "total": 992.6
+ },
+ "backdrops": {
+  "n": 3,
+  "min": 289.7,
+  "median": 326.9,
+  "max": 386.5,
+  "total": 1003.1
+ },
+ "vellumSheet1920x1080": {
+  "n": 1,
+  "min": 100.1,
+  "median": 100.1,
+  "max": 100.1,
+  "total": 100.1
+ },
+ "woodcutTiles": {
+  "n": 1,
+  "min": 48.6,
+  "median": 48.6,
+  "max": 48.6,
+  "total": 48.6
+ },
+ "allAssetsTotalMs": 5940
+}

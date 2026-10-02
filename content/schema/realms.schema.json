@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "realms.json",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]*$"
+      },
+      "name": {
+        "type": "string",
+        "minLength": 1
+      },
+      "element": {
+        "enum": [
+          "fire",
+          "frost",
+          "lightning"
+        ]
+      },
+      "weakTo": {
+        "enum": [
+          "fire",
+          "frost",
+          "lightning"
+        ]
+      },
+      "affinityStats": {
+        "type": "array",
+        "items": {
+          "enum": [
+            "VIG",
+            "MIT",
+            "ARC",
+            "GRD",
+            "WRD",
+            "SPD"
+          ]
+        },
+        "minItems": 2,
+        "maxItems": 2,
+        "uniqueItems": true
+      },
+      "dungeon": {
+        "type": "string",
+        "minLength": 1
+      },
+      "material": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]*$"
+      },
+      "rareMaterial": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]*$"
+      },
+      "boss": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]*$"
+      },
+      "set": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]*$"
+      },
+      "realmRider": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "chance": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10000
+          },
+          "duration": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10
+          }
+        },
+        "required": [
+          "status",
+          "chance",
+          "duration"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "required": [
+      "id",
+      "name",
+      "element",
+      "weakTo",
+      "affinityStats",
+      "dungeon",
+      "material",
+      "rareMaterial",
+      "boss",
+      "set",
+      "realmRider"
+    ],
+    "additionalProperties": false
+  },
+  "minItems": 3,
+  "maxItems": 3
+}

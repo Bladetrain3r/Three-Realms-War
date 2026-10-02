@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "skills.json",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]*$"
+      },
+      "name": {
+        "type": "string",
+        "minLength": 1
+      },
+      "type": {
+        "enum": [
+          "physical",
+          "magic",
+          "heal",
+          "utility",
+          "best"
+        ]
+      },
+      "range": {
+        "enum": [
+          "melee",
+          "ranged",
+          "self"
+        ]
+      },
+      "target": {
+        "enum": [
+          "enemy",
+          "all_enemies",
+          "ally",
+          "all_allies",
+          "self"
+        ]
+      },
+      "power": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 100000
+      },
+      "element": {
+        "enum": [
+          "none",
+          "fire",
+          "frost",
+          "lightning",
+          "realm"
+        ]
+      },
+      "cooldown": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 10
+      },
+      "riders": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]*$"
+            },
+            "chance": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 20000
+            },
+            "duration": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 10
+            },
+            "on": {
+              "enum": [
+                "target",
+                "self"
+              ]
+            }
+          },
+          "required": [
+            "status",
+            "chance",
+            "duration",
+            "on"
+          ],
+          "additionalProperties": false
+        },
+        "minItems": 0,
+        "maxItems": 4
+      },
+      "owner": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]*$"
+      },
+      "lifestealBp": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 10000
+      },
+      "realmRider": {
+        "type": "boolean"
+      },
+      "healBelowBp": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 10000
+      }
+    },
+    "required": [
+      "id",
+      "name",
+      "type",
+      "range",
+      "target",
+      "power",
+      "element",
+      "cooldown",
+      "riders",
+      "owner"
+    ],
+    "additionalProperties": false
+  },
+  "minItems": 1,
+  "maxItems": 1000
+}

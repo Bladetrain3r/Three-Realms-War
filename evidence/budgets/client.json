@@ -1,0 +1,24 @@
+{
+ "command": "node checks/measure-client.mjs",
+ "chromium": "headless, software rendering, viewport 1920x1080",
+ "problems": [],
+ "bundleBytes": {
+  "game.js": 304130,
+  "index.html": 453,
+  "style.css": 10252
+ },
+ "bundleTotalBytes": 314835,
+ "jsHeapBytesAfterAllScreensAndAReplay": 4569683,
+ "drawMsPerBattleFrame": {
+  "n": 300,
+  "median": 4.4,
+  "p95": 7.3,
+  "max": 9.8
+ },
+ "rafIntervalMsWhilePlaying4x": {
+  "n": 120,
+  "median": 16.7,
+  "p95": 16.7,
+  "max": 16.8
+ }
+}

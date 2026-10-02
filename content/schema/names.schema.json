@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "names.json",
+  "type": "object",
+  "properties": {
+    "midgard": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 5,
+      "maxItems": 100,
+      "uniqueItems": true
+    },
+    "asgard": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 5,
+      "maxItems": 100,
+      "uniqueItems": true
+    },
+    "helheim": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 5,
+      "maxItems": 100,
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "midgard",
+    "asgard",
+    "helheim"
+  ],
+  "additionalProperties": false
+}

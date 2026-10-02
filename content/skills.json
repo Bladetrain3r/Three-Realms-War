@@ -1,0 +1,1061 @@
+[
+  {
+    "id": "hold_the_line",
+    "name": "Hold the Line",
+    "type": "utility",
+    "range": "self",
+    "target": "self",
+    "power": 0,
+    "element": "none",
+    "cooldown": 4,
+    "riders": [
+      {
+        "status": "bulwark",
+        "chance": 10000,
+        "duration": 3,
+        "on": "self"
+      }
+    ],
+    "owner": "shieldwarden"
+  },
+  {
+    "id": "shield_bash",
+    "name": "Shield Bash",
+    "type": "physical",
+    "range": "melee",
+    "target": "enemy",
+    "power": 24000,
+    "element": "none",
+    "cooldown": 3,
+    "riders": [
+      {
+        "status": "shock",
+        "chance": 2500,
+        "duration": 1,
+        "on": "target"
+      }
+    ],
+    "owner": "shieldwarden"
+  },
+  {
+    "id": "cleave",
+    "name": "Cleave",
+    "type": "physical",
+    "range": "melee",
+    "target": "all_enemies",
+    "power": 5250,
+    "element": "none",
+    "cooldown": 4,
+    "riders": [],
+    "owner": "huscarl"
+  },
+  {
+    "id": "hearth_strike",
+    "name": "Hearth Strike",
+    "type": "physical",
+    "range": "melee",
+    "target": "enemy",
+    "power": 16000,
+    "element": "fire",
+    "cooldown": 3,
+    "riders": [
+      {
+        "status": "burn",
+        "chance": 4000,
+        "duration": 3,
+        "on": "target"
+      }
+    ],
+    "owner": "huscarl"
+  },
+  {
+    "id": "pinning_shot",
+    "name": "Pinning Shot",
+    "type": "physical",
+    "range": "ranged",
+    "target": "enemy",
+    "power": 13000,
+    "element": "none",
+    "cooldown": 3,
+    "riders": [
+      {
+        "status": "chill",
+        "chance": 5000,
+        "duration": 2,
+        "on": "target"
+      }
+    ],
+    "owner": "hunter"
+  },
+  {
+    "id": "volley",
+    "name": "Volley",
+    "type": "physical",
+    "range": "ranged",
+    "target": "all_enemies",
+    "power": 4550,
+    "element": "none",
+    "cooldown": 4,
+    "riders": [],
+    "owner": "hunter"
+  },
+  {
+    "id": "hearth_light",
+    "name": "Hearth Light",
+    "type": "heal",
+    "range": "ranged",
+    "target": "ally",
+    "power": 12000,
+    "element": "none",
+    "cooldown": 2,
+    "riders": [],
+    "owner": "hearthkeeper"
+  },
+  {
+    "id": "warm_embers",
+    "name": "Warm Embers",
+    "type": "utility",
+    "range": "ranged",
+    "target": "all_allies",
+    "power": 0,
+    "element": "none",
+    "cooldown": 5,
+    "riders": [
+      {
+        "status": "mend",
+        "chance": 10000,
+        "duration": 3,
+        "on": "target"
+      }
+    ],
+    "owner": "hearthkeeper"
+  },
+  {
+    "id": "frenzy",
+    "name": "Frenzy",
+    "type": "utility",
+    "range": "self",
+    "target": "self",
+    "power": 0,
+    "element": "none",
+    "cooldown": 4,
+    "riders": [
+      {
+        "status": "fury",
+        "chance": 10000,
+        "duration": 3,
+        "on": "self"
+      }
+    ],
+    "owner": "berserker"
+  },
+  {
+    "id": "rend",
+    "name": "Rend",
+    "type": "physical",
+    "range": "melee",
+    "target": "enemy",
+    "power": 18000,
+    "element": "none",
+    "cooldown": 3,
+    "riders": [
+      {
+        "status": "mark",
+        "chance": 6000,
+        "duration": 3,
+        "on": "target"
+      }
+    ],
+    "owner": "berserker"
+  },
+  {
+    "id": "maul",
+    "name": "Maul",
+    "type": "physical",
+    "range": "melee",
+    "target": "enemy",
+    "power": 26000,
+    "element": "none",
+    "cooldown": 5,
+    "riders": [],
+    "owner": "berserker"
+  },
+  {
+    "id": "valhalla_strike",
+    "name": "Valhalla Strike",
+    "type": "physical",
+    "range": "melee",
+    "target": "enemy",
+    "power": 14000,
+    "element": "lightning",
+    "cooldown": 3,
+    "riders": [
+      {
+        "status": "shock",
+        "chance": 2000,
+        "duration": 1,
+        "on": "target"
+      }
+    ],
+    "owner": "einherjar"
+  },
+  {
+    "id": "rally",
+    "name": "Rally",
+    "type": "utility",
+    "range": "ranged",
+    "target": "all_allies",
+    "power": 0,
+    "element": "none",
+    "cooldown": 5,
+    "riders": [
+      {
+        "status": "fury",
+        "chance": 10000,
+        "duration": 2,
+        "on": "target"
+      }
+    ],
+    "owner": "einherjar"
+  },
+  {
+    "id": "chain_lightning",
+    "name": "Chain Lightning",
+    "type": "magic",
+    "range": "ranged",
+    "target": "all_enemies",
+    "power": 5250,
+    "element": "lightning",
+    "cooldown": 4,
+    "riders": [],
+    "owner": "stormcaller"
+  },
+  {
+    "id": "thunderclap",
+    "name": "Thunderclap",
+    "type": "magic",
+    "range": "ranged",
+    "target": "enemy",
+    "power": 15000,
+    "element": "lightning",
+    "cooldown": 3,
+    "riders": [
+      {
+        "status": "shock",
+        "chance": 3500,
+        "duration": 1,
+        "on": "target"
+      }
+    ],
+    "owner": "stormcaller"
+  },
+  {
+    "id": "battle_hymn",
+    "name": "Battle Hymn",
+    "type": "utility",
+    "range": "ranged",
+    "target": "all_allies",
+    "power": 0,
+    "element": "none",
+    "cooldown": 5,
+    "riders": [
+      {
+        "status": "fury",
+        "chance": 10000,
+        "duration": 3,
+        "on": "target"
+      }
+    ],
+    "owner": "skald"
+  },
+  {
+    "id": "mending_verse",
+    "name": "Mending Verse",
+    "type": "heal",
+    "range": "ranged",
+    "target": "all_allies",
+    "power": 7000,
+    "element": "none",
+    "cooldown": 4,
+    "riders": [],
+    "owner": "skald"
+  },
+  {
+    "id": "dive",
+    "name": "Dive",
+    "type": "physical",
+    "range": "ranged",
+    "target": "enemy",
+    "power": 16000,
+    "element": "none",
+    "cooldown": 3,
+    "riders": [],
+    "owner": "skyrider"
+  },
+  {
+    "id": "pinion_volley",
+    "name": "Pinion Volley",
+    "type": "physical",
+    "range": "ranged",
+    "target": "all_enemies",
+    "power": 4550,
+    "element": "none",
+    "cooldown": 4,
+    "riders": [],
+    "owner": "skyrider"
+  },
+  {
+    "id": "choose_the_slain",
+    "name": "Choose the Slain",
+    "type": "physical",
+    "range": "melee",
+    "target": "enemy",
+    "power": 22000,
+    "element": "none",
+    "cooldown": 3,
+    "riders": [],
+    "owner": "valkyrie"
+  },
+  {
+    "id": "wings_shield",
+    "name": "Wings' Shield",
+    "type": "utility",
+    "range": "ranged",
+    "target": "all_allies",
+    "power": 0,
+    "element": "none",
+    "cooldown": 5,
+    "riders": [
+      {
+        "status": "bulwark",
+        "chance": 10000,
+        "duration": 3,
+        "on": "target"
+      }
+    ],
+    "owner": "valkyrie"
+  },
+  {
+    "id": "storm_rend",
+    "name": "Storm Rend",
+    "type": "physical",
+    "range": "melee",
+    "target": "all_enemies",
+    "power": 5950,
+    "element": "lightning",
+    "cooldown": 4,
+    "riders": [],
+    "owner": "valkyrie"
+  },
+  {
+    "id": "cold_grip",
+    "name": "Cold Grip",
+    "type": "physical",
+    "range": "melee",
+    "target": "enemy",
+    "power": 20000,
+    "element": "frost",
+    "cooldown": 3,
+    "riders": [
+      {
+        "status": "chill",
+        "chance": 6000,
+        "duration": 2,
+        "on": "target"
+      }
+    ],
+    "owner": "draugr_knight"
+  },
+  {
+    "id": "undying_will",
+    "name": "Undying Will",
+    "type": "utility",
+    "range": "self",
+    "target": "self",
+    "power": 0,
+    "element": "none",
+    "cooldown": 5,
+    "riders": [
+      {
+        "status": "bulwark",
+        "chance": 10000,
+        "duration": 3,
+        "on": "self"
+      },
+      {
+        "status": "mend",
+        "chance": 10000,
+        "duration": 3,
+        "on": "self"
+      }
+    ],
+    "owner": "draugr_knight"
+  },
+  {
+    "id": "hex",
+    "name": "Hex",
+    "type": "magic",
+    "range": "ranged",
+    "target": "enemy",
+    "power": 8000,
+    "element": "none",
+    "cooldown": 3,
+    "riders": [
+      {
+        "status": "mark",
+        "chance": 9000,
+        "duration": 3,
+        "on": "target"
+      }
+    ],
+    "owner": "volva"
+  },
+  {
+    "id": "frostbite",
+    "name": "Frostbite",
+    "type": "magic",
+    "range": "ranged",
+    "target": "enemy",
+    "power": 14000,
+    "element": "frost",
+    "cooldown": 3,
+    "riders": [
+      {
+        "status": "chill",
+        "chance": 6000,
+        "duration": 2,
+        "on": "target"
+      }
+    ],
+    "owner": "volva"
+  },
+  {
+    "id": "gnaw",
+    "name": "Gnaw",
+    "type": "physical",
+    "range": "melee",
+    "target": "enemy",
+    "power": 13000,
+    "element": "none",
+    "cooldown": 3,
+    "riders": [
+      {
+        "status": "mark",
+        "chance": 5000,
+        "duration": 3,
+        "on": "target"
+      }
+    ],
+    "owner": "ghoul_reaver"
+  },
+  {
+    "id": "carrion_feast",
+    "name": "Carrion Feast",
+    "type": "physical",
+    "range": "melee",
+    "target": "enemy",
+    "power": 18000,
+    "element": "none",
+    "cooldown": 4,
+    "riders": [],
+    "lifestealBp": 5000,
+    "owner": "ghoul_reaver"
+  },
+  {
+    "id": "frostmend",
+    "name": "Frostmend",
+    "type": "heal",
+    "range": "ranged",
+    "target": "ally",
+    "power": 11000,
+    "element": "frost",
+    "cooldown": 3,
+    "riders": [
+      {
+        "status": "bulwark",
+        "chance": 10000,
+        "duration": 2,
+        "on": "target"
+      }
+    ],
+    "owner": "rime_mender"
+  },
+  {
+    "id": "mist_veil",
+    "name": "Mist Veil",
+    "type": "utility",
+    "range": "ranged",
+    "target": "all_allies",
+    "power": 0,
+    "element": "none",
+    "cooldown": 5,
+    "riders": [
+      {
+        "status": "bulwark",
+        "chance": 10000,
+        "duration": 3,
+        "on": "target"
+      }
+    ],
+    "owner": "rime_mender"
+  },
+  {
+    "id": "soul_arrow",
+    "name": "Soul Arrow",
+    "type": "physical",
+    "range": "ranged",
+    "target": "enemy",
+    "power": 20000,
+    "element": "none",
+    "cooldown": 3,
+    "riders": [],
+    "owner": "wraith_hunter"
+  },
+  {
+    "id": "deaths_chill",
+    "name": "Death's Chill",
+    "type": "physical",
+    "range": "ranged",
+    "target": "all_enemies",
+    "power": 3850,
+    "element": "frost",
+    "cooldown": 5,
+    "riders": [
+      {
+        "status": "chill",
+        "chance": 4000,
+        "duration": 2,
+        "on": "target"
+      }
+    ],
+    "owner": "wraith_hunter"
+  },
+  {
+    "id": "gravecall",
+    "name": "Gravecall",
+    "type": "magic",
+    "range": "ranged",
+    "target": "enemy",
+    "power": 8000,
+    "element": "none",
+    "cooldown": 4,
+    "riders": [
+      {
+        "status": "shock",
+        "chance": 6000,
+        "duration": 1,
+        "on": "target"
+      }
+    ],
+    "owner": "wraith_hunter"
+  },
+  {
+    "id": "hearthfire_surge",
+    "name": "Hearthfire Surge",
+    "type": "best",
+    "range": "ranged",
+    "target": "all_enemies",
+    "power": 8000,
+    "element": "fire",
+    "cooldown": 5,
+    "riders": [
+      {
+        "status": "burn",
+        "chance": 4000,
+        "duration": 3,
+        "on": "target"
+      }
+    ],
+    "owner": "set"
+  },
+  {
+    "id": "skyfall",
+    "name": "Skyfall",
+    "type": "best",
+    "range": "ranged",
+    "target": "enemy",
+    "power": 20000,
+    "element": "lightning",
+    "cooldown": 5,
+    "riders": [
+      {
+        "status": "shock",
+        "chance": 4000,
+        "duration": 1,
+        "on": "target"
+      }
+    ],
+    "owner": "set"
+  },
+  {
+    "id": "rimebind",
+    "name": "Rimebind",
+    "type": "best",
+    "range": "ranged",
+    "target": "all_enemies",
+    "power": 7000,
+    "element": "frost",
+    "cooldown": 5,
+    "riders": [
+      {
+        "status": "chill",
+        "chance": 7000,
+        "duration": 2,
+        "on": "target"
+      }
+    ],
+    "owner": "set"
+  },
+  {
+    "id": "smash",
+    "name": "Smash",
+    "type": "physical",
+    "range": "melee",
+    "target": "enemy",
+    "power": 13000,
+    "element": "realm",
+    "cooldown": 3,
+    "riders": [],
+    "owner": "archetype",
+    "realmRider": true
+  },
+  {
+    "id": "shieldbash",
+    "name": "Shieldbash",
+    "type": "physical",
+    "range": "melee",
+    "target": "enemy",
+    "power": 9000,
+    "element": "realm",
+    "cooldown": 3,
+    "riders": [
+      {
+        "status": "bulwark",
+        "chance": 10000,
+        "duration": 3,
+        "on": "self"
+      }
+    ],
+    "owner": "archetype",
+    "realmRider": true
+  },
+  {
+    "id": "lunge",
+    "name": "Lunge",
+    "type": "physical",
+    "range": "melee",
+    "target": "enemy",
+    "power": 15000,
+    "element": "realm",
+    "cooldown": 3,
+    "riders": [],
+    "owner": "archetype",
+    "realmRider": true
+  },
+  {
+    "id": "piercing_shot",
+    "name": "Piercing Shot",
+    "type": "physical",
+    "range": "ranged",
+    "target": "enemy",
+    "power": 14000,
+    "element": "realm",
+    "cooldown": 3,
+    "riders": [],
+    "owner": "archetype",
+    "realmRider": true
+  },
+  {
+    "id": "bolt_storm",
+    "name": "Bolt Storm",
+    "type": "magic",
+    "range": "ranged",
+    "target": "all_enemies",
+    "power": 6500,
+    "element": "realm",
+    "cooldown": 4,
+    "riders": [],
+    "owner": "archetype",
+    "realmRider": true
+  },
+  {
+    "id": "mend",
+    "name": "Mend",
+    "type": "heal",
+    "range": "ranged",
+    "target": "ally",
+    "power": 12000,
+    "element": "none",
+    "cooldown": 2,
+    "riders": [],
+    "owner": "archetype",
+    "healBelowBp": 8000
+  },
+  {
+    "id": "curse",
+    "name": "Curse",
+    "type": "magic",
+    "range": "ranged",
+    "target": "enemy",
+    "power": 7000,
+    "element": "realm",
+    "cooldown": 3,
+    "riders": [
+      {
+        "status": "mark",
+        "chance": 10000,
+        "duration": 3,
+        "on": "target"
+      }
+    ],
+    "owner": "archetype"
+  },
+  {
+    "id": "assassinate",
+    "name": "Assassinate",
+    "type": "physical",
+    "range": "melee",
+    "target": "enemy",
+    "power": 18000,
+    "element": "realm",
+    "cooldown": 4,
+    "riders": [],
+    "owner": "archetype",
+    "realmRider": true
+  },
+  {
+    "id": "war_cry",
+    "name": "War Cry",
+    "type": "utility",
+    "range": "ranged",
+    "target": "all_allies",
+    "power": 0,
+    "element": "none",
+    "cooldown": 5,
+    "riders": [
+      {
+        "status": "fury",
+        "chance": 10000,
+        "duration": 2,
+        "on": "target"
+      }
+    ],
+    "owner": "special"
+  },
+  {
+    "id": "howl",
+    "name": "Howl",
+    "type": "utility",
+    "range": "ranged",
+    "target": "all_allies",
+    "power": 0,
+    "element": "none",
+    "cooldown": 5,
+    "riders": [
+      {
+        "status": "fury",
+        "chance": 10000,
+        "duration": 2,
+        "on": "target"
+      }
+    ],
+    "owner": "special"
+  },
+  {
+    "id": "molten_slam",
+    "name": "Molten Slam",
+    "type": "physical",
+    "range": "melee",
+    "target": "all_enemies",
+    "power": 7000,
+    "element": "realm",
+    "cooldown": 4,
+    "riders": [],
+    "owner": "special",
+    "realmRider": true
+  },
+  {
+    "id": "thunder_stomp",
+    "name": "Thunder Stomp",
+    "type": "physical",
+    "range": "melee",
+    "target": "all_enemies",
+    "power": 7000,
+    "element": "realm",
+    "cooldown": 4,
+    "riders": [],
+    "owner": "special",
+    "realmRider": true
+  },
+  {
+    "id": "grave_slam",
+    "name": "Grave Slam",
+    "type": "physical",
+    "range": "melee",
+    "target": "enemy",
+    "power": 18000,
+    "element": "realm",
+    "cooldown": 5,
+    "riders": [],
+    "owner": "special",
+    "realmRider": true
+  },
+  {
+    "id": "meltdown",
+    "name": "Meltdown",
+    "type": "magic",
+    "range": "ranged",
+    "target": "enemy",
+    "power": 20000,
+    "element": "realm",
+    "cooldown": 5,
+    "riders": [],
+    "owner": "special",
+    "realmRider": true
+  },
+  {
+    "id": "tempest",
+    "name": "Tempest",
+    "type": "magic",
+    "range": "ranged",
+    "target": "all_enemies",
+    "power": 6500,
+    "element": "realm",
+    "cooldown": 5,
+    "riders": [
+      {
+        "status": "shock",
+        "chance": 3000,
+        "duration": 1,
+        "on": "target"
+      }
+    ],
+    "owner": "special"
+  },
+  {
+    "id": "death_chill",
+    "name": "Death Chill",
+    "type": "magic",
+    "range": "ranged",
+    "target": "all_enemies",
+    "power": 6500,
+    "element": "realm",
+    "cooldown": 4,
+    "riders": [
+      {
+        "status": "chill",
+        "chance": 5000,
+        "duration": 2,
+        "on": "target"
+      }
+    ],
+    "owner": "special"
+  },
+  {
+    "id": "flame_breath",
+    "name": "Flame Breath",
+    "type": "magic",
+    "range": "ranged",
+    "target": "all_enemies",
+    "power": 6500,
+    "element": "realm",
+    "cooldown": 4,
+    "riders": [
+      {
+        "status": "burn",
+        "chance": 5000,
+        "duration": 3,
+        "on": "target"
+      }
+    ],
+    "owner": "special"
+  },
+  {
+    "id": "hammer_throw",
+    "name": "Hammer Throw",
+    "type": "physical",
+    "range": "ranged",
+    "target": "enemy",
+    "power": 20000,
+    "element": "realm",
+    "cooldown": 5,
+    "riders": [],
+    "owner": "special",
+    "realmRider": true
+  },
+  {
+    "id": "swoop",
+    "name": "Swoop",
+    "type": "physical",
+    "range": "ranged",
+    "target": "enemy",
+    "power": 15000,
+    "element": "realm",
+    "cooldown": 3,
+    "riders": [],
+    "owner": "special",
+    "realmRider": true
+  },
+  {
+    "id": "wail",
+    "name": "Wail",
+    "type": "magic",
+    "range": "ranged",
+    "target": "all_enemies",
+    "power": 6000,
+    "element": "realm",
+    "cooldown": 5,
+    "riders": [
+      {
+        "status": "shock",
+        "chance": 3000,
+        "duration": 1,
+        "on": "target"
+      }
+    ],
+    "owner": "special"
+  },
+  {
+    "id": "sword_of_flame",
+    "name": "Sword of Flame",
+    "type": "physical",
+    "range": "melee",
+    "target": "enemy",
+    "power": 15000,
+    "element": "fire",
+    "cooldown": 2,
+    "riders": [
+      {
+        "status": "burn",
+        "chance": 3000,
+        "duration": 3,
+        "on": "target"
+      }
+    ],
+    "owner": "boss"
+  },
+  {
+    "id": "ragnarok_blaze",
+    "name": "Ragnarok Blaze",
+    "type": "magic",
+    "range": "ranged",
+    "target": "all_enemies",
+    "power": 8000,
+    "element": "fire",
+    "cooldown": 4,
+    "riders": [
+      {
+        "status": "burn",
+        "chance": 5000,
+        "duration": 3,
+        "on": "target"
+      }
+    ],
+    "owner": "boss"
+  },
+  {
+    "id": "storm_hammer",
+    "name": "Storm Hammer",
+    "type": "physical",
+    "range": "melee",
+    "target": "enemy",
+    "power": 16000,
+    "element": "lightning",
+    "cooldown": 2,
+    "riders": [
+      {
+        "status": "shock",
+        "chance": 3000,
+        "duration": 1,
+        "on": "target"
+      }
+    ],
+    "owner": "boss"
+  },
+  {
+    "id": "thunder_roar",
+    "name": "Thunder Roar",
+    "type": "magic",
+    "range": "ranged",
+    "target": "all_enemies",
+    "power": 7500,
+    "element": "lightning",
+    "cooldown": 4,
+    "riders": [],
+    "owner": "boss"
+  },
+  {
+    "id": "rending_bite",
+    "name": "Rending Bite",
+    "type": "physical",
+    "range": "melee",
+    "target": "enemy",
+    "power": 16000,
+    "element": "frost",
+    "cooldown": 2,
+    "riders": [
+      {
+        "status": "mark",
+        "chance": 6000,
+        "duration": 3,
+        "on": "target"
+      }
+    ],
+    "owner": "boss"
+  },
+  {
+    "id": "hel_howl",
+    "name": "Hel-Howl",
+    "type": "magic",
+    "range": "ranged",
+    "target": "all_enemies",
+    "power": 7000,
+    "element": "frost",
+    "cooldown": 4,
+    "riders": [
+      {
+        "status": "chill",
+        "chance": 6000,
+        "duration": 2,
+        "on": "target"
+      }
+    ],
+    "owner": "boss"
+  },
+  {
+    "id": "strike",
+    "name": "Strike",
+    "type": "physical",
+    "range": "melee",
+    "target": "enemy",
+    "power": 10000,
+    "element": "none",
+    "cooldown": 0,
+    "riders": [],
+    "owner": "basic"
+  },
+  {
+    "id": "shoot",
+    "name": "Shoot",
+    "type": "physical",
+    "range": "ranged",
+    "target": "enemy",
+    "power": 10000,
+    "element": "none",
+    "cooldown": 0,
+    "riders": [],
+    "owner": "basic"
+  },
+  {
+    "id": "bolt",
+    "name": "Bolt",
+    "type": "magic",
+    "range": "ranged",
+    "target": "enemy",
+    "power": 10000,
+    "element": "none",
+    "cooldown": 0,
+    "riders": [],
+    "owner": "basic"
+  }
+]

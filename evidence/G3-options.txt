@@ -1,0 +1,27 @@
+OPTION A: add a quadratic term Q to the enemy curve (full size, 900 delves per cell). Current content, linear curve K=34: 124 of 148 in bounds.
+  K=34 Q=0: 124/148 in bounds; delve-table failures: delve_winrate.L40.fine, delve_winrate.L40.runed, delve_winrate.L50.starter, delve_winrate.L50.fine, delve_winrate.L50.runed, delve_winrate.L50.heirloom
+  K=30 Q=10: 129/148 in bounds; delve-table failures: delve_winrate.L50.heirloom
+      L1   starter 1.00  fine 1.00  runed 1.00  heirloom 1.00
+      L5   starter 0.92  fine 1.00  runed 1.00  heirloom 1.00
+      L10  starter 0.78  fine 0.96  runed 1.00  heirloom 1.00
+      L20  starter 0.48  fine 0.85  runed 0.98  heirloom 1.00
+      L30  starter 0.30  fine 0.72  runed 0.93  heirloom 1.00
+      L40  starter 0.16  fine 0.59  runed 0.87  heirloom 1.00
+      L50  starter 0.08  fine 0.47  runed 0.76  heirloom 0.99
+  K=32 Q=8: 128/148 in bounds; delve-table failures: delve_winrate.L20.starter, delve_winrate.L50.heirloom
+  K=34 Q=6: 127/148 in bounds; delve-table failures: delve_winrate.L10.starter, delve_winrate.L20.starter, delve_winrate.L50.heirloom
+
+OPTION B: hero and mechanic variants, mirror tournament (53 checks; today 17 out of bounds).
+  today                                      17/53 out | shieldwarden 0.28 draugr 0.37 stormcaller 0.76 | compositions 0.04..0.93
+  tank skills (Shield Bash, Cold Grip) x1.5  11/53 out | shieldwarden 0.36 draugr 0.44 stormcaller 0.76 | compositions 0.06..0.90
+  tank skills x2                             14/53 out | shieldwarden 0.47 draugr 0.53 stormcaller 0.74 | compositions 0.05..0.86
+  hero AoE skills x0.7                       17/53 out | shieldwarden 0.28 draugr 0.39 stormcaller 0.68 | compositions 0.04..0.90
+  hero AoE x0.7 + tank skills x1.5           12/53 out | shieldwarden 0.37 draugr 0.48 stormcaller 0.66 | compositions 0.05..0.85
+  hero AoE x0.7 + tank skills x2             10/53 out | shieldwarden 0.49 draugr 0.57 stormcaller 0.63 | compositions 0.06..0.87
+  hero AoE x0.7 + tank x1.5 + heals x1.5     15/53 out | shieldwarden 0.34 draugr 0.44 stormcaller 0.61 | compositions 0.10..0.89
+  mitigation constant 12 -> 4 per level      18/53 out | shieldwarden 0.28 draugr 0.37 stormcaller 0.64 | compositions 0.05..0.94
+
+OPTION C: materials per won delve grow 9x from level 1 to 50 (bound 3..8) because the formula is 2 + floor(D/3).
+  matBase 2: growth 9.00x
+  matBase 3: growth 6.33x
+  matBase 4: growth 5.00x

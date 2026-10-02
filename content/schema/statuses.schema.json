@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "statuses.json",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]*$"
+      },
+      "kind": {
+        "enum": [
+          "buff",
+          "debuff"
+        ]
+      },
+      "duration": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 10
+      },
+      "tickDamageBp": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 10000
+      },
+      "mods": {
+        "type": "object",
+        "properties": {
+          "VIG": {
+            "type": "integer",
+            "minimum": -10000,
+            "maximum": 20000
+          },
+          "MIT": {
+            "type": "integer",
+            "minimum": -10000,
+            "maximum": 20000
+          },
+          "ARC": {
+            "type": "integer",
+            "minimum": -10000,
+            "maximum": 20000
+          },
+          "GRD": {
+            "type": "integer",
+            "minimum": -10000,
+            "maximum": 20000
+          },
+          "WRD": {
+            "type": "integer",
+            "minimum": -10000,
+            "maximum": 20000
+          },
+          "SPD": {
+            "type": "integer",
+            "minimum": -10000,
+            "maximum": 20000
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      },
+      "skipsAction": {
+        "type": "boolean"
+      },
+      "immuneTurns": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 10
+      },
+      "bossImmune": {
+        "type": "boolean"
+      },
+      "damageTakenBp": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 10000
+      },
+      "tickHealBp": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 10000
+      }
+    },
+    "required": [
+      "id",
+      "kind",
+      "duration"
+    ],
+    "additionalProperties": false
+  },
+  "minItems": 7,
+  "maxItems": 7
+}

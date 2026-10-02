@@ -1,0 +1,481 @@
+{
+  "shieldwarden": {
+    "v": 1,
+    "rules": [
+      {
+        "when": [
+          {
+            "c": "self_hp_below",
+            "pct": 50
+          }
+        ],
+        "do": {
+          "a": "skill",
+          "skill": "hold_the_line"
+        },
+        "target": null
+      },
+      {
+        "when": [
+          {
+            "c": "always"
+          }
+        ],
+        "do": {
+          "a": "skill",
+          "skill": "shield_bash"
+        },
+        "target": "highest_hp"
+      }
+    ]
+  },
+  "huscarl": {
+    "v": 1,
+    "rules": [
+      {
+        "when": [
+          {
+            "c": "enemies_at_least",
+            "n": 3
+          }
+        ],
+        "do": {
+          "a": "skill",
+          "skill": "cleave"
+        },
+        "target": null
+      },
+      {
+        "when": [
+          {
+            "c": "always"
+          }
+        ],
+        "do": {
+          "a": "skill",
+          "skill": "hearth_strike"
+        },
+        "target": "lowest_hp_pct"
+      }
+    ]
+  },
+  "hunter": {
+    "v": 1,
+    "rules": [
+      {
+        "when": [
+          {
+            "c": "enemies_at_least",
+            "n": 3
+          }
+        ],
+        "do": {
+          "a": "skill",
+          "skill": "volley"
+        },
+        "target": null
+      },
+      {
+        "when": [
+          {
+            "c": "always"
+          }
+        ],
+        "do": {
+          "a": "skill",
+          "skill": "pinning_shot"
+        },
+        "target": "lowest_hp_pct"
+      }
+    ]
+  },
+  "hearthkeeper": {
+    "v": 1,
+    "rules": [
+      {
+        "when": [
+          {
+            "c": "ally_hp_below",
+            "pct": 60
+          }
+        ],
+        "do": {
+          "a": "skill",
+          "skill": "hearth_light"
+        },
+        "target": "lowest_hp_pct"
+      },
+      {
+        "when": [
+          {
+            "c": "ally_lacks",
+            "status": "mend"
+          }
+        ],
+        "do": {
+          "a": "skill",
+          "skill": "warm_embers"
+        },
+        "target": null
+      }
+    ]
+  },
+  "berserker": {
+    "v": 1,
+    "rules": [
+      {
+        "when": [
+          {
+            "c": "self_lacks",
+            "status": "fury"
+          }
+        ],
+        "do": {
+          "a": "skill",
+          "skill": "frenzy"
+        },
+        "target": null
+      },
+      {
+        "when": [
+          {
+            "c": "always"
+          }
+        ],
+        "do": {
+          "a": "skill",
+          "skill": "maul"
+        },
+        "target": "lowest_hp_pct"
+      },
+      {
+        "when": [
+          {
+            "c": "always"
+          }
+        ],
+        "do": {
+          "a": "skill",
+          "skill": "rend"
+        },
+        "target": "lowest_hp_pct"
+      }
+    ]
+  },
+  "einherjar": {
+    "v": 1,
+    "rules": [
+      {
+        "when": [
+          {
+            "c": "ally_lacks",
+            "status": "fury"
+          }
+        ],
+        "do": {
+          "a": "skill",
+          "skill": "rally"
+        },
+        "target": null
+      },
+      {
+        "when": [
+          {
+            "c": "always"
+          }
+        ],
+        "do": {
+          "a": "skill",
+          "skill": "valhalla_strike"
+        },
+        "target": "lowest_hp_pct"
+      }
+    ]
+  },
+  "stormcaller": {
+    "v": 1,
+    "rules": [
+      {
+        "when": [
+          {
+            "c": "enemies_at_least",
+            "n": 3
+          }
+        ],
+        "do": {
+          "a": "skill",
+          "skill": "chain_lightning"
+        },
+        "target": null
+      },
+      {
+        "when": [
+          {
+            "c": "always"
+          }
+        ],
+        "do": {
+          "a": "skill",
+          "skill": "thunderclap"
+        },
+        "target": "lowest_hp_pct"
+      }
+    ]
+  },
+  "skald": {
+    "v": 1,
+    "rules": [
+      {
+        "when": [
+          {
+            "c": "ally_hp_below",
+            "pct": 60
+          }
+        ],
+        "do": {
+          "a": "skill",
+          "skill": "mending_verse"
+        },
+        "target": null
+      },
+      {
+        "when": [
+          {
+            "c": "ally_lacks",
+            "status": "fury"
+          }
+        ],
+        "do": {
+          "a": "skill",
+          "skill": "battle_hymn"
+        },
+        "target": null
+      }
+    ]
+  },
+  "skyrider": {
+    "v": 1,
+    "rules": [
+      {
+        "when": [
+          {
+            "c": "enemies_at_least",
+            "n": 3
+          }
+        ],
+        "do": {
+          "a": "skill",
+          "skill": "pinion_volley"
+        },
+        "target": null
+      },
+      {
+        "when": [
+          {
+            "c": "always"
+          }
+        ],
+        "do": {
+          "a": "skill",
+          "skill": "dive"
+        },
+        "target": "back_first"
+      }
+    ]
+  },
+  "valkyrie": {
+    "v": 1,
+    "rules": [
+      {
+        "when": [
+          {
+            "c": "ally_lacks",
+            "status": "bulwark"
+          }
+        ],
+        "do": {
+          "a": "skill",
+          "skill": "wings_shield"
+        },
+        "target": null
+      },
+      {
+        "when": [
+          {
+            "c": "enemies_at_least",
+            "n": 3
+          }
+        ],
+        "do": {
+          "a": "skill",
+          "skill": "storm_rend"
+        },
+        "target": null
+      },
+      {
+        "when": [
+          {
+            "c": "always"
+          }
+        ],
+        "do": {
+          "a": "skill",
+          "skill": "choose_the_slain"
+        },
+        "target": "lowest_hp_pct"
+      }
+    ]
+  },
+  "draugr_knight": {
+    "v": 1,
+    "rules": [
+      {
+        "when": [
+          {
+            "c": "self_hp_below",
+            "pct": 50
+          }
+        ],
+        "do": {
+          "a": "skill",
+          "skill": "undying_will"
+        },
+        "target": null
+      },
+      {
+        "when": [
+          {
+            "c": "always"
+          }
+        ],
+        "do": {
+          "a": "skill",
+          "skill": "cold_grip"
+        },
+        "target": "lowest_hp_pct"
+      }
+    ]
+  },
+  "volva": {
+    "v": 1,
+    "rules": [
+      {
+        "when": [
+          {
+            "c": "enemy_lacks",
+            "status": "mark"
+          }
+        ],
+        "do": {
+          "a": "skill",
+          "skill": "hex"
+        },
+        "target": "highest_hp"
+      },
+      {
+        "when": [
+          {
+            "c": "always"
+          }
+        ],
+        "do": {
+          "a": "skill",
+          "skill": "frostbite"
+        },
+        "target": "lowest_hp_pct"
+      }
+    ]
+  },
+  "ghoul_reaver": {
+    "v": 1,
+    "rules": [
+      {
+        "when": [
+          {
+            "c": "self_hp_below",
+            "pct": 60
+          }
+        ],
+        "do": {
+          "a": "skill",
+          "skill": "carrion_feast"
+        },
+        "target": "lowest_hp_pct"
+      },
+      {
+        "when": [
+          {
+            "c": "enemy_lacks",
+            "status": "mark"
+          }
+        ],
+        "do": {
+          "a": "skill",
+          "skill": "gnaw"
+        },
+        "target": "highest_hp"
+      }
+    ]
+  },
+  "rime_mender": {
+    "v": 1,
+    "rules": [
+      {
+        "when": [
+          {
+            "c": "ally_hp_below",
+            "pct": 60
+          }
+        ],
+        "do": {
+          "a": "skill",
+          "skill": "frostmend"
+        },
+        "target": "lowest_hp_pct"
+      },
+      {
+        "when": [
+          {
+            "c": "ally_lacks",
+            "status": "bulwark"
+          }
+        ],
+        "do": {
+          "a": "skill",
+          "skill": "mist_veil"
+        },
+        "target": null
+      }
+    ]
+  },
+  "wraith_hunter": {
+    "v": 1,
+    "rules": [
+      {
+        "when": [
+          {
+            "c": "enemies_at_least",
+            "n": 3
+          }
+        ],
+        "do": {
+          "a": "skill",
+          "skill": "deaths_chill"
+        },
+        "target": null
+      },
+      {
+        "when": [
+          {
+            "c": "always"
+          }
+        ],
+        "do": {
+          "a": "skill",
+          "skill": "soul_arrow"
+        },
+        "target": "lowest_hp_pct"
+      }
+    ]
+  }
+}

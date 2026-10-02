@@ -1,0 +1,320 @@
+[
+  {
+    "id": "shieldwarden",
+    "name": "Shieldwarden",
+    "realm": "midgard",
+    "rarity": "common",
+    "role": "tank",
+    "row": "front",
+    "attack": "melee",
+    "stats": {
+      "VIG": 22,
+      "MIT": 12,
+      "ARC": 4,
+      "GRD": 20,
+      "WRD": 12,
+      "SPD": 8
+    },
+    "skills": [
+      "hold_the_line",
+      "shield_bash"
+    ]
+  },
+  {
+    "id": "huscarl",
+    "name": "Huscarl",
+    "realm": "midgard",
+    "rarity": "common",
+    "role": "striker",
+    "row": "front",
+    "attack": "melee",
+    "stats": {
+      "VIG": 18,
+      "MIT": 20,
+      "ARC": 4,
+      "GRD": 12,
+      "WRD": 8,
+      "SPD": 10
+    },
+    "skills": [
+      "cleave",
+      "hearth_strike"
+    ]
+  },
+  {
+    "id": "hunter",
+    "name": "Hunter",
+    "realm": "midgard",
+    "rarity": "common",
+    "role": "archer",
+    "row": "back",
+    "attack": "ranged",
+    "stats": {
+      "VIG": 14,
+      "MIT": 20,
+      "ARC": 4,
+      "GRD": 8,
+      "WRD": 8,
+      "SPD": 12
+    },
+    "skills": [
+      "pinning_shot",
+      "volley"
+    ]
+  },
+  {
+    "id": "hearthkeeper",
+    "name": "Hearthkeeper",
+    "realm": "midgard",
+    "rarity": "common",
+    "role": "healer",
+    "row": "back",
+    "attack": "magic",
+    "stats": {
+      "VIG": 15,
+      "MIT": 4,
+      "ARC": 21,
+      "GRD": 9,
+      "WRD": 16,
+      "SPD": 9
+    },
+    "skills": [
+      "hearth_light",
+      "warm_embers"
+    ]
+  },
+  {
+    "id": "berserker",
+    "name": "Berserker",
+    "realm": "midgard",
+    "rarity": "rare",
+    "role": "burst",
+    "row": "front",
+    "attack": "melee",
+    "stats": {
+      "VIG": 20,
+      "MIT": 26,
+      "ARC": 4,
+      "GRD": 10,
+      "WRD": 8,
+      "SPD": 12
+    },
+    "skills": [
+      "frenzy",
+      "rend",
+      "maul"
+    ]
+  },
+  {
+    "id": "einherjar",
+    "name": "Einherjar",
+    "realm": "asgard",
+    "rarity": "common",
+    "role": "fighter",
+    "row": "front",
+    "attack": "melee",
+    "stats": {
+      "VIG": 19,
+      "MIT": 18,
+      "ARC": 6,
+      "GRD": 14,
+      "WRD": 10,
+      "SPD": 11
+    },
+    "skills": [
+      "valhalla_strike",
+      "rally"
+    ]
+  },
+  {
+    "id": "stormcaller",
+    "name": "Stormcaller",
+    "realm": "asgard",
+    "rarity": "common",
+    "role": "mage",
+    "row": "back",
+    "attack": "magic",
+    "stats": {
+      "VIG": 13,
+      "MIT": 4,
+      "ARC": 22,
+      "GRD": 7,
+      "WRD": 14,
+      "SPD": 11
+    },
+    "skills": [
+      "chain_lightning",
+      "thunderclap"
+    ]
+  },
+  {
+    "id": "skald",
+    "name": "Skald",
+    "realm": "asgard",
+    "rarity": "common",
+    "role": "support",
+    "row": "back",
+    "attack": "magic",
+    "stats": {
+      "VIG": 14,
+      "MIT": 6,
+      "ARC": 18,
+      "GRD": 9,
+      "WRD": 16,
+      "SPD": 12
+    },
+    "skills": [
+      "battle_hymn",
+      "mending_verse"
+    ]
+  },
+  {
+    "id": "skyrider",
+    "name": "Skyrider",
+    "realm": "asgard",
+    "rarity": "common",
+    "role": "skirmisher",
+    "row": "back",
+    "attack": "ranged",
+    "stats": {
+      "VIG": 13,
+      "MIT": 19,
+      "ARC": 4,
+      "GRD": 8,
+      "WRD": 8,
+      "SPD": 15
+    },
+    "skills": [
+      "dive",
+      "pinion_volley"
+    ]
+  },
+  {
+    "id": "valkyrie",
+    "name": "Valkyrie",
+    "realm": "asgard",
+    "rarity": "rare",
+    "role": "duelist",
+    "row": "front",
+    "attack": "melee",
+    "stats": {
+      "VIG": 19,
+      "MIT": 24,
+      "ARC": 8,
+      "GRD": 12,
+      "WRD": 12,
+      "SPD": 15
+    },
+    "skills": [
+      "choose_the_slain",
+      "wings_shield",
+      "storm_rend"
+    ]
+  },
+  {
+    "id": "draugr_knight",
+    "name": "Draugr Knight",
+    "realm": "helheim",
+    "rarity": "common",
+    "role": "tank",
+    "row": "front",
+    "attack": "melee",
+    "stats": {
+      "VIG": 21,
+      "MIT": 11,
+      "ARC": 4,
+      "GRD": 18,
+      "WRD": 16,
+      "SPD": 7
+    },
+    "skills": [
+      "cold_grip",
+      "undying_will"
+    ]
+  },
+  {
+    "id": "volva",
+    "name": "Volva",
+    "realm": "helheim",
+    "rarity": "common",
+    "role": "hexer",
+    "row": "back",
+    "attack": "magic",
+    "stats": {
+      "VIG": 12,
+      "MIT": 3,
+      "ARC": 21,
+      "GRD": 7,
+      "WRD": 17,
+      "SPD": 10
+    },
+    "skills": [
+      "hex",
+      "frostbite"
+    ]
+  },
+  {
+    "id": "ghoul_reaver",
+    "name": "Ghoul Reaver",
+    "realm": "helheim",
+    "rarity": "common",
+    "role": "bruiser",
+    "row": "front",
+    "attack": "melee",
+    "stats": {
+      "VIG": 18,
+      "MIT": 19,
+      "ARC": 4,
+      "GRD": 11,
+      "WRD": 9,
+      "SPD": 11
+    },
+    "skills": [
+      "gnaw",
+      "carrion_feast"
+    ]
+  },
+  {
+    "id": "rime_mender",
+    "name": "Rime-Mender",
+    "realm": "helheim",
+    "rarity": "common",
+    "role": "healer",
+    "row": "back",
+    "attack": "magic",
+    "stats": {
+      "VIG": 14,
+      "MIT": 3,
+      "ARC": 19,
+      "GRD": 9,
+      "WRD": 18,
+      "SPD": 9
+    },
+    "skills": [
+      "frostmend",
+      "mist_veil"
+    ]
+  },
+  {
+    "id": "wraith_hunter",
+    "name": "Wraith-Hunter",
+    "realm": "helheim",
+    "rarity": "rare",
+    "role": "assassin",
+    "row": "back",
+    "attack": "ranged",
+    "stats": {
+      "VIG": 13,
+      "MIT": 24,
+      "ARC": 6,
+      "GRD": 8,
+      "WRD": 10,
+      "SPD": 14
+    },
+    "skills": [
+      "soul_arrow",
+      "deaths_chill",
+      "gravecall"
+    ]
+  }
+]

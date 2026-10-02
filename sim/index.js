@@ -1,0 +1,25 @@
+// Public surface of the deterministic core. No DOM, no Node-only imports.
+export { idiv, mulbp, clamp } from './arith.js';
+export { createRng, deriveSeed, splitmix32 } from './prng.js';
+export { sha256Hex } from './sha256.js';
+export { canonical, hashOf } from './canon.js';
+export { indexContent, contentHash, STATS, ELEMENTS, REALMS } from './content.js';
+export { heroBase, finalStat } from './stats.js';
+export { buildHeroUnit, canEquip } from './hero.js';
+export { buildMonster } from './monster.js';
+export { itemMain, lineValue, rollLines, generateItem, upgradeCost, attemptUpgrade, acceptUpgrade, useMulligan, salvageValue } from './items.js';
+export { xpToNext, recruitLevel, recruitCost, encounterRewards } from './progress.js';
+export { validateRunbook } from './runbook.js';
+export { resolveEncounter, makeContext } from './combat.js';
+export { generateDelve, resolveDelve } from './delve.js';
+export { resolveFloor, DEATH_SAVE, deathSaveKills } from './floor.js';
+export { generateMap, mapFromSeed, moveCost, cellsWithin, TERRAIN_NAMES } from './mapgen.js';
+export { createReplay, createFloorReplay, serializeReplay, readReplay, verifyReplay, contentHashOf, ReplayFormatError } from './replay.js';
+export { GameError } from './gameerror.js';
+export { newGame, recruit, dismiss, equip, setParty, setRunbook, assignThread, unassignThread, buyThread, itemsById, stashCount, topLevel, clone, SAVE_FORMAT, SAVE_VERSION } from './game.js';
+export { playDelve, playDelves, applyDelveResult, MAX_BATCH } from './game-delve.js';
+export { rest, restCost } from './game-rest.js';
+export { startExpedition, move, enterFloor, retreat, returnHome, options as expeditionOptions, expeditionMap, siteAt, scaleReward } from './game-expedition.js';
+export { upgradeAttempt, acceptAttempt, undoAttempt, salvage, salvageMany } from './game-forge.js';
+export { kitOf } from './hero.js';
+export { validateSave } from './save.js';

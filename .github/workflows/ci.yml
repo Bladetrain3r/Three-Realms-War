@@ -1,0 +1,19 @@
+name: ci
+on:
+  push:
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      # the browser tests use the Chrome that ships on the runner (playwright-core downloads nothing)
+      - run: echo "CHROMIUM_PATH=$(command -v google-chrome || command -v chromium-browser || command -v chromium)" >> "$GITHUB_ENV"
+      - run: npm test
+      - name: Budgets (measured, printed)
+        run: node checks/measure-client.mjs

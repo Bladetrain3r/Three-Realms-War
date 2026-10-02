@@ -1,0 +1,562 @@
+{
+  "archetypes": [
+    {
+      "id": "brute",
+      "position": "front",
+      "attack": "melee",
+      "stats": {
+        "VIG": 6,
+        "MIT": 11,
+        "ARC": 1,
+        "GRD": 6,
+        "WRD": 3,
+        "SPD": 9
+      },
+      "threat": 2,
+      "skill": "smash"
+    },
+    {
+      "id": "guard",
+      "position": "front",
+      "attack": "melee",
+      "stats": {
+        "VIG": 7,
+        "MIT": 7,
+        "ARC": 1,
+        "GRD": 10,
+        "WRD": 6,
+        "SPD": 6
+      },
+      "threat": 2,
+      "skill": "shieldbash"
+    },
+    {
+      "id": "skirmisher",
+      "position": "front",
+      "attack": "melee",
+      "stats": {
+        "VIG": 4,
+        "MIT": 10,
+        "ARC": 1,
+        "GRD": 4,
+        "WRD": 3,
+        "SPD": 14
+      },
+      "threat": 1,
+      "skill": "lunge"
+    },
+    {
+      "id": "archer",
+      "position": "back",
+      "attack": "ranged",
+      "stats": {
+        "VIG": 4,
+        "MIT": 11,
+        "ARC": 1,
+        "GRD": 4,
+        "WRD": 4,
+        "SPD": 11
+      },
+      "threat": 1,
+      "skill": "piercing_shot"
+    },
+    {
+      "id": "caster",
+      "position": "back",
+      "attack": "magic",
+      "stats": {
+        "VIG": 4,
+        "MIT": 1,
+        "ARC": 12,
+        "GRD": 3,
+        "WRD": 7,
+        "SPD": 10
+      },
+      "threat": 2,
+      "skill": "bolt_storm"
+    },
+    {
+      "id": "healer",
+      "position": "back",
+      "attack": "magic",
+      "stats": {
+        "VIG": 4,
+        "MIT": 1,
+        "ARC": 11,
+        "GRD": 4,
+        "WRD": 7,
+        "SPD": 9
+      },
+      "threat": 1,
+      "skill": "mend"
+    },
+    {
+      "id": "hexer",
+      "position": "back",
+      "attack": "magic",
+      "stats": {
+        "VIG": 4,
+        "MIT": 1,
+        "ARC": 10,
+        "GRD": 3,
+        "WRD": 6,
+        "SPD": 10
+      },
+      "threat": 2,
+      "skill": "curse"
+    },
+    {
+      "id": "striker",
+      "position": "front",
+      "attack": "melee",
+      "stats": {
+        "VIG": 3,
+        "MIT": 13,
+        "ARC": 1,
+        "GRD": 3,
+        "WRD": 3,
+        "SPD": 15
+      },
+      "threat": 3,
+      "skill": "assassinate"
+    }
+  ],
+  "roster": [
+    {
+      "id": "midgard_ember_raider",
+      "name": "Ember Raider",
+      "realm": "midgard",
+      "archetype": "brute",
+      "signature": false,
+      "special": null,
+      "band": 2
+    },
+    {
+      "id": "asgard_storm_thane",
+      "name": "Storm-Thane",
+      "realm": "asgard",
+      "archetype": "brute",
+      "signature": false,
+      "special": null,
+      "band": 2
+    },
+    {
+      "id": "helheim_draugr_brute",
+      "name": "Draugr Brute",
+      "realm": "helheim",
+      "archetype": "brute",
+      "signature": false,
+      "special": null,
+      "band": 2
+    },
+    {
+      "id": "midgard_cinder_shieldbearer",
+      "name": "Cinder Shieldbearer",
+      "realm": "midgard",
+      "archetype": "guard",
+      "signature": false,
+      "special": null,
+      "band": 2
+    },
+    {
+      "id": "asgard_cloud_warden",
+      "name": "Cloud-Warden",
+      "realm": "asgard",
+      "archetype": "guard",
+      "signature": false,
+      "special": null,
+      "band": 2
+    },
+    {
+      "id": "helheim_bone_shield",
+      "name": "Bone Shield",
+      "realm": "helheim",
+      "archetype": "guard",
+      "signature": false,
+      "special": null,
+      "band": 2
+    },
+    {
+      "id": "midgard_ash_runner",
+      "name": "Ash-Runner",
+      "realm": "midgard",
+      "archetype": "skirmisher",
+      "signature": false,
+      "special": null,
+      "band": 1
+    },
+    {
+      "id": "asgard_gale_runner",
+      "name": "Gale-Runner",
+      "realm": "asgard",
+      "archetype": "skirmisher",
+      "signature": false,
+      "special": null,
+      "band": 1
+    },
+    {
+      "id": "helheim_ghoul_runner",
+      "name": "Ghoul Runner",
+      "realm": "helheim",
+      "archetype": "skirmisher",
+      "signature": false,
+      "special": null,
+      "band": 1
+    },
+    {
+      "id": "midgard_spark_slinger",
+      "name": "Spark-Slinger",
+      "realm": "midgard",
+      "archetype": "archer",
+      "signature": false,
+      "special": null,
+      "band": 1
+    },
+    {
+      "id": "asgard_bolt_archer",
+      "name": "Bolt-Archer",
+      "realm": "asgard",
+      "archetype": "archer",
+      "signature": false,
+      "special": null,
+      "band": 1
+    },
+    {
+      "id": "helheim_wight_archer",
+      "name": "Wight Archer",
+      "realm": "helheim",
+      "archetype": "archer",
+      "signature": false,
+      "special": null,
+      "band": 1
+    },
+    {
+      "id": "midgard_flame_seer",
+      "name": "Flame Seer",
+      "realm": "midgard",
+      "archetype": "caster",
+      "signature": false,
+      "special": null,
+      "band": 2
+    },
+    {
+      "id": "asgard_thunder_seer",
+      "name": "Thunder Seer",
+      "realm": "asgard",
+      "archetype": "caster",
+      "signature": false,
+      "special": null,
+      "band": 2
+    },
+    {
+      "id": "helheim_grave_seer",
+      "name": "Grave Seer",
+      "realm": "helheim",
+      "archetype": "caster",
+      "signature": false,
+      "special": null,
+      "band": 2
+    },
+    {
+      "id": "midgard_pyre_mender",
+      "name": "Pyre Mender",
+      "realm": "midgard",
+      "archetype": "healer",
+      "signature": false,
+      "special": null,
+      "band": 1
+    },
+    {
+      "id": "asgard_sky_mender",
+      "name": "Sky Mender",
+      "realm": "asgard",
+      "archetype": "healer",
+      "signature": false,
+      "special": null,
+      "band": 1
+    },
+    {
+      "id": "helheim_corpse_mender",
+      "name": "Corpse Mender",
+      "realm": "helheim",
+      "archetype": "healer",
+      "signature": false,
+      "special": null,
+      "band": 1
+    },
+    {
+      "id": "midgard_smoke_hexer",
+      "name": "Smoke Hexer",
+      "realm": "midgard",
+      "archetype": "hexer",
+      "signature": false,
+      "special": null,
+      "band": 2
+    },
+    {
+      "id": "asgard_static_hexer",
+      "name": "Static Hexer",
+      "realm": "asgard",
+      "archetype": "hexer",
+      "signature": false,
+      "special": null,
+      "band": 2
+    },
+    {
+      "id": "helheim_hel_hexer",
+      "name": "Hel-Hexer",
+      "realm": "helheim",
+      "archetype": "hexer",
+      "signature": false,
+      "special": null,
+      "band": 2
+    },
+    {
+      "id": "midgard_brand_knife",
+      "name": "Brand-Knife",
+      "realm": "midgard",
+      "archetype": "striker",
+      "signature": false,
+      "special": null,
+      "band": 3
+    },
+    {
+      "id": "asgard_spark_knife",
+      "name": "Spark-Knife",
+      "realm": "asgard",
+      "archetype": "striker",
+      "signature": false,
+      "special": null,
+      "band": 3
+    },
+    {
+      "id": "helheim_shade_knife",
+      "name": "Shade-Knife",
+      "realm": "helheim",
+      "archetype": "striker",
+      "signature": false,
+      "special": null,
+      "band": 3
+    },
+    {
+      "id": "midgard_warband_chief",
+      "name": "Warband-Chief",
+      "realm": "midgard",
+      "archetype": "brute",
+      "signature": true,
+      "special": "war_cry",
+      "band": 3
+    },
+    {
+      "id": "asgard_thrym_s_huscarl",
+      "name": "Thrym's Huscarl",
+      "realm": "asgard",
+      "archetype": "brute",
+      "signature": true,
+      "special": "hammer_throw",
+      "band": 3
+    },
+    {
+      "id": "helheim_garm_s_pup",
+      "name": "Garm's Pup",
+      "realm": "helheim",
+      "archetype": "brute",
+      "signature": true,
+      "special": "howl",
+      "band": 3
+    },
+    {
+      "id": "midgard_magma_hulk",
+      "name": "Magma Hulk",
+      "realm": "midgard",
+      "archetype": "guard",
+      "signature": true,
+      "special": "molten_slam",
+      "band": 3
+    },
+    {
+      "id": "asgard_storm_titan",
+      "name": "Storm-Titan",
+      "realm": "asgard",
+      "archetype": "guard",
+      "signature": true,
+      "special": "thunder_stomp",
+      "band": 3
+    },
+    {
+      "id": "helheim_revenant_knight",
+      "name": "Revenant Knight",
+      "realm": "helheim",
+      "archetype": "guard",
+      "signature": true,
+      "special": "grave_slam",
+      "band": 3
+    },
+    {
+      "id": "midgard_forge_wraith",
+      "name": "Forge-Wraith",
+      "realm": "midgard",
+      "archetype": "caster",
+      "signature": true,
+      "special": "meltdown",
+      "band": 3
+    },
+    {
+      "id": "asgard_jotunn_stormcaller",
+      "name": "Jotunn Stormcaller",
+      "realm": "asgard",
+      "archetype": "caster",
+      "signature": true,
+      "special": "tempest",
+      "band": 3
+    },
+    {
+      "id": "helheim_frost_wight",
+      "name": "Frost Wight",
+      "realm": "helheim",
+      "archetype": "caster",
+      "signature": true,
+      "special": "death_chill",
+      "band": 3
+    },
+    {
+      "id": "midgard_drake_whelp",
+      "name": "Drake Whelp",
+      "realm": "midgard",
+      "archetype": "skirmisher",
+      "signature": true,
+      "special": "flame_breath",
+      "band": 2
+    },
+    {
+      "id": "asgard_storm_raven",
+      "name": "Storm-Raven",
+      "realm": "asgard",
+      "archetype": "skirmisher",
+      "signature": true,
+      "special": "swoop",
+      "band": 2
+    },
+    {
+      "id": "helheim_banshee",
+      "name": "Banshee",
+      "realm": "helheim",
+      "archetype": "hexer",
+      "signature": true,
+      "special": "wail",
+      "band": 2
+    }
+  ],
+  "bosses": [
+    {
+      "id": "surtr",
+      "name": "Surtr, Lord of Muspel",
+      "realm": "midgard",
+      "skills": [
+        "sword_of_flame",
+        "ragnarok_blaze"
+      ]
+    },
+    {
+      "id": "thrym",
+      "name": "Thrym, Storm-Jarl",
+      "realm": "asgard",
+      "skills": [
+        "storm_hammer",
+        "thunder_roar"
+      ]
+    },
+    {
+      "id": "garm",
+      "name": "Garm, Hound of Hel",
+      "realm": "helheim",
+      "skills": [
+        "rending_bite",
+        "hel_howl"
+      ]
+    }
+  ],
+  "affixes": [
+    {
+      "id": "hardy",
+      "name": "Hardy",
+      "minLevel": 10,
+      "effect": {
+        "mods": {
+          "VIG": 4000
+        }
+      }
+    },
+    {
+      "id": "swift",
+      "name": "Swift",
+      "minLevel": 10,
+      "effect": {
+        "mods": {
+          "SPD": 3000
+        }
+      }
+    },
+    {
+      "id": "brutal",
+      "name": "Brutal",
+      "minLevel": 15,
+      "effect": {
+        "mods": {
+          "MIT": 3000,
+          "ARC": 3000
+        }
+      }
+    },
+    {
+      "id": "armoured",
+      "name": "Armoured",
+      "minLevel": 15,
+      "effect": {
+        "mods": {
+          "GRD": 4000,
+          "WRD": 4000
+        }
+      }
+    },
+    {
+      "id": "resolute",
+      "name": "Resolute",
+      "minLevel": 20,
+      "effect": {
+        "sresBp": 5000
+      }
+    },
+    {
+      "id": "vampiric",
+      "name": "Vampiric",
+      "minLevel": 20,
+      "effect": {
+        "lifestealBp": 2000
+      }
+    },
+    {
+      "id": "regenerating",
+      "name": "Regenerating",
+      "minLevel": 25,
+      "effect": {
+        "regenBp": 500
+      }
+    },
+    {
+      "id": "marking",
+      "name": "Marking",
+      "minLevel": 25,
+      "effect": {
+        "riders": [
+          {
+            "status": "mark",
+            "chance": 2500,
+            "duration": 2,
+            "on": "target"
+          }
+        ]
+      }
+    }
+  ]
+}

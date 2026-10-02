@@ -1,0 +1,24 @@
+{
+  "command": "node checks/measure-sim.mjs",
+  "environment": {
+    "node": "v22.22.0",
+    "cpu": "Intel(R) Xeon(R) Processor @ 2.10GHz",
+    "cores": 4,
+    "platform": "linux 6.18.44-fc-v50"
+  },
+  "encounter": {
+    "description": "one 4v4 encounter, level-50 geared party vs a level-50 Helheim encounter",
+    "runs": 300,
+    "medianMs": 0.12018199999999979,
+    "p95Ms": 0.40981800000000135,
+    "maxMs": 4.079177000000001
+  },
+  "tenThousandDelves": {
+    "description": "10,000 full delves over 30 fixed parties, realms and levels 1..50",
+    "count": 10000,
+    "totalMs": 1607.4914910000002,
+    "perDelveMs": 0.16074914910000002,
+    "wins": 5277,
+    "events": 3355885
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "midgard": [
+    "Sigrid",
+    "Bjorn",
+    "Ragna",
+    "Ulf",
+    "Thora",
+    "Gunnar",
+    "Astrid",
+    "Leif",
+    "Ingrid",
+    "Halvard"
+  ],
+  "asgard": [
+    "Solveig",
+    "Hrafn",
+    "Eirik",
+    "Gudrun",
+    "Torvald",
+    "Svala",
+    "Arnor",
+    "Ylva",
+    "Haldor",
+    "Brynja"
+  ],
+  "helheim": [
+    "Hild",
+    "Grimr",
+    "Nidhild",
+    "Hakon",
+    "Vala",
+    "Orm",
+    "Sunniva",
+    "Kolbein",
+    "Dagny",
+    "Finnr"
+  ]
+}

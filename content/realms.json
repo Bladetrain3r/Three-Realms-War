@@ -1,0 +1,62 @@
+[
+  {
+    "id": "midgard",
+    "name": "Midgard",
+    "element": "fire",
+    "weakTo": "frost",
+    "affinityStats": [
+      "VIG",
+      "MIT"
+    ],
+    "dungeon": "Muspel Breach",
+    "material": "forge_iron",
+    "rareMaterial": "ember_heart",
+    "boss": "surtr",
+    "set": "hearthforged",
+    "realmRider": {
+      "status": "burn",
+      "chance": 3000,
+      "duration": 3
+    }
+  },
+  {
+    "id": "asgard",
+    "name": "Asgard",
+    "element": "lightning",
+    "weakTo": "fire",
+    "affinityStats": [
+      "ARC",
+      "SPD"
+    ],
+    "dungeon": "Storm-Hall of Thrym",
+    "material": "sky_silver",
+    "rareMaterial": "storm_heart",
+    "boss": "thrym",
+    "set": "stormbound",
+    "realmRider": {
+      "status": "shock",
+      "chance": 2500,
+      "duration": 1
+    }
+  },
+  {
+    "id": "helheim",
+    "name": "Helheim",
+    "element": "frost",
+    "weakTo": "lightning",
+    "affinityStats": [
+      "GRD",
+      "WRD"
+    ],
+    "dungeon": "Gnipahellir",
+    "material": "grave_rime",
+    "rareMaterial": "rime_heart",
+    "boss": "garm",
+    "set": "grave_shroud",
+    "realmRider": {
+      "status": "chill",
+      "chance": 4000,
+      "duration": 2
+    }
+  }
+]

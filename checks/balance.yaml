@@ -1,0 +1,165 @@
+# Balance thresholds for Three Realms. Written 2026-10-01, BEFORE any balance run (GATES.md, G3).
+#
+# This file is committed before the balance runner exists, so the git history shows the order. A bound here is never loosened to
+# fit a result: if the game is out of bounds, the CONTENT changes. What may change without a STOP is only what DESIGN.md 0.2 allows
+# (the enemy curve constant and the monster profile tables). Anything else (hero classes, costs, drop rates, formulas) is a design
+# change, so an out-of-bounds result there goes to Ziggy at STOP-1 with options, not into a quiet edit.
+#
+# Every bound is [low, high], inclusive. Rates are shares between 0 and 1. "Delves" are winning delves unless stated.
+# Source of the intent: DESIGN.md 0.2 (gear becomes progressively more necessary as level rises: starter gear is enough at low
+# levels, and by the upper levels only upgraded Runed and Heirloom gear keeps a party on-level) and DESIGN.md 11.5 (pacing by feed
+# rate: a first upgrade within a couple of delves, a full tier of upgrades costing many delves, and a rare-heart bottleneck on the
+# last two stars so that boss clearing sets the long-run pace).
+
+version: 1
+written: "2026-10-01"
+
+run:
+  seed_base: 20261001
+  # The party for the delve and injury tables: the four starting classes, balance runbooks, hero level = delve level = L.
+  party: [shieldwarden, huscarl, stormcaller, hearthkeeper]
+  delves_per_cell: 900
+  mirror_compositions: 36
+  mirror_level: 20
+  mirror_fights_per_ordered_pair: 20
+  upgrade_attempts_per_star: 100000
+  line_rolls: 200000
+
+# How a "gear tier" is built for the tables below: every hero wears four items at item level = hero level, no bonus lines
+# (conservative: real gear would also carry lines).
+ladder:
+  none: [none, 0]
+  starter: [plain, 0]
+  fine: [fine, 2]
+  runed: [runed, 3]
+  heirloom: [heirloom, 5]
+
+delve_winrate:
+  levels: [1, 5, 10, 20, 30, 40, 50]
+  L1:
+    starter: [0.85, 1.00]
+    fine: [0.90, 1.00]
+    runed: [0.90, 1.00]
+    heirloom: [0.90, 1.00]
+  L5:
+    starter: [0.80, 1.00]
+    fine: [0.85, 1.00]
+    runed: [0.90, 1.00]
+    heirloom: [0.90, 1.00]
+  L10:
+    starter: [0.65, 0.97]
+    fine: [0.80, 1.00]
+    runed: [0.90, 1.00]
+    heirloom: [0.92, 1.00]
+  L20:
+    starter: [0.40, 0.85]
+    fine: [0.65, 0.97]
+    runed: [0.80, 1.00]
+    heirloom: [0.90, 1.00]
+  L30:
+    starter: [0.20, 0.65]
+    fine: [0.45, 0.88]
+    runed: [0.70, 0.98]
+    heirloom: [0.85, 1.00]
+  L40:
+    starter: [0.05, 0.45]
+    fine: [0.25, 0.70]
+    runed: [0.55, 0.92]
+    heirloom: [0.75, 1.00]
+  L50:
+    starter: [0.00, 0.25]
+    fine: [0.10, 0.50]
+    runed: [0.40, 0.80]
+    heirloom: [0.65, 1.00]
+
+# Gear must never hurt (a better tier may not win fewer fights, within sampling noise), a naked party must not be viable once
+# levels rise, and the gap between the best and the starter tier must widen with level (the "more necessary over time" intent).
+gear_order:
+  tolerance: 0.03
+naked_party:
+  from_level: 20
+  max_win: 0.15
+gear_gap:
+  low_level: 5
+  high_level: 50
+  growth_min: 0.35
+
+# Fights are decided, not stalled: on-level, Runed gear.
+encounter:
+  median_rounds: [3, 10]
+  timeout_rate_max: 0.01
+
+# Injury and the death proxy. Expeditions are built in G5, which re-checks the death rate with the real thing; until then the proxy
+# is the share of heroes at 0 HP at the end of a WON encounter (on-level, Runed gear) times the 4000 bp death save of DESIGN.md 12.4.
+injury:
+  per_hero_per_won_delve: [0.02, 0.40]
+  expedition_death_per_hero_per_won_encounter: [0.005, 0.10]
+
+# The mirror tournament: 36 sampled compositions of four distinct common classes, level 20, Fine gear at two stars, balance
+# runbooks on both sides, every ordered pair fought 20 times so side bias cancels.
+mirror:
+  composition_winrate: [0.05, 0.90]
+  class_winrate: [0.30, 0.70]
+  realm_winrate: [0.40, 0.60]
+  side_bias: [0.35, 0.65]
+  timeout_rate_max: 0.03
+
+# Feed rate against consumption (DESIGN.md 11.5). Computed from expected values of the reward and cost formulas.
+rewards:
+  first_upgrade_max_delves: 2
+  delves_per_item_to_3_stars:
+    L10: [0.5, 3.5]
+    L20: [0.8, 4.0]
+    L30: [1.0, 5.0]
+    L40: [1.0, 6.0]
+    L50: [1.0, 6.0]
+  delves_for_16_items_to_3_stars_at_L30: [20, 120]
+  hearts_vs_materials_min_ratio: 0.8
+  materials_per_delve_growth: [3, 8]
+  delves_per_level:
+    L10: [1.0, 3.0]
+    L20: [1.5, 4.0]
+    L30: [2.0, 5.5]
+    L40: [3.0, 7.5]
+  delves_to_level_50: [100, 300]
+
+# The upgrade and line rolls reproduce the design tables.
+upgrade_odds:
+  success_tolerance: 0.01
+  line_kind_tolerance: 0.01
+
+# ---------------------------------------------------------------------------------------------------------------------------------
+# G5: expeditions (DESIGN.md 12). Written 2026-10-02, BEFORE the expedition code, the expedition bot or any expedition number exists
+# (GATES.md, G5: "reward curves in the bounds set in checks/balance.yaml before the run"). The same rule as above: out of bounds means
+# the content changes or the question goes to Ziggy; the bound does not move.
+#
+# The measuring party: the four starting classes (run.party), balance runbooks, hero level = expedition level E, Runed gear at item
+# level E with no bonus lines (the ladder's "runed" row), 40 seeds x 20 expeditions per realm and level cell. The bot: buy provisions
+# for the walk to the nearest site and back plus every floor of that site; clear it floor by floor; retreat from a site (and walk home)
+# if the party's mean hit-point share is under 40% at a floor boundary; otherwise return home after the site is cleared. Dead heroes
+# are not replaced. Rates are per expedition unless stated.
+expedition:
+  levels: [10, 20, 30]
+  # Permanent loss. The stake must be real and survivable: a few heroes in a hundred expeditions' worth of embarking is too safe to
+  # matter, a third of the party per trip would end the game's roster.
+  hero_death_per_embarked_hero: [0.01, 0.20]
+  wipe_rate: [0.01, 0.25]
+  # The re-check promised in the delve section: deaths per hero per WON encounter, with the real death save.
+  hero_death_per_won_encounter: [0.002, 0.05]
+  # Danger rises with depth: the death rate per hero-encounter at sites 12 or more cells from the start, over the rate at sites
+  # 6 or fewer cells away (a ratio; at least not safer).
+  deep_over_shallow_death_ratio: [1.0, 100.0]
+  # Provisions must not strand the party: starvation (ending for lack of provisions) is an accident of planning, not the game.
+  starvation_rate: [0.0, 0.10]
+  # Rewards by depth. Banked packs only (a wipe banks nothing). All ratios are against the delve at the same level E, per cleared
+  # encounter, so the formula's distance and floor multipliers and the site-level bonus are what is being checked.
+  materials_per_encounter_vs_delve: [1.15, 2.5]
+  xp_per_encounter_vs_delve: [1.15, 2.5]
+  # A floor deeper pays more, but with diminishing steps (DESIGN 12.3: 10000 + 2500 x (floor - 1)): the mean of reward(f+1)/reward(f)
+  # over floors 1 to 5.
+  floor_step_ratio: [1.1, 1.3]
+  # Silver: provisions cost 10 hacksilver each. Expeditions are not silver farms, but they must not burn silver for nothing either:
+  # banked hacksilver over hacksilver spent on provisions, on completed expeditions.
+  silver_return_on_provisions: [0.5, 3.0]
+  # Items: banked items per completed expedition (at least the site boss's, not a flood).
+  items_per_completed_expedition: [1, 12]
