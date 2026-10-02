@@ -6,7 +6,7 @@
 import { createReplay, indexContent, hashOf, canonical, sha256Hex, contentHashOf } from '/sim/index.js';
 
 try {
-  const FILES = ['realms', 'statuses', 'heroes', 'skills', 'monsters', 'items', 'tables', 'names', 'runbook'];
+  const FILES = ['realms', 'statuses', 'heroes', 'skills', 'monsters', 'items', 'tables', 'names', 'runbook', 'starter_runbooks'];
   const raw = {};
   for (const f of FILES) raw[f] = await (await fetch(`/content/${f}.json`)).json();
   const content = indexContent(raw);

@@ -2,8 +2,9 @@
 // Every error names the FILE and the KEY inside it.
 import { validateAgainst, pathKey } from './schema.js';
 import { indexContent } from './content.js';
+import { validateRunbook } from './runbook.js';
 
-export const FILES = ['realms', 'statuses', 'heroes', 'skills', 'monsters', 'items', 'tables', 'names', 'runbook'];
+export const FILES = ['realms', 'statuses', 'heroes', 'skills', 'monsters', 'items', 'tables', 'names', 'runbook', 'starter_runbooks'];
 const MONSTER_OWNERS = ['archetype', 'special', 'boss'];
 const RESERVED_OWNERS = ['basic', 'set', ...MONSTER_OWNERS];
 
@@ -111,6 +112,13 @@ function crossCheck(c, out) {
   if (t.combat.resMin >= t.combat.resMax) bad('tables', ['combat', 'resMin'], 'resMin must be below resMax');
   for (const k of ['first', 'middle', 'boss']) if (t.delve.bandWeights[k].every((w) => w === 0)) bad('tables', ['delve', 'bandWeights', k], 'at least one weight must be above 0');
   if (t.progress.rep.known >= t.progress.rep.trusted || t.progress.rep.trusted >= t.progress.rep.honoured) bad('tables', ['progress', 'rep'], 'standings must rise: known < trusted < honoured');
+
+  for (const h of c.heroes) if (!c.starter_runbooks[h.id]) bad('starter_runbooks', [], `no starter runbook for class "${h.id}"`);
+  for (const id of Object.keys(c.starter_runbooks)) {
+    if (!heroes[id]) { bad('starter_runbooks', [id], `"${id}" is not a hero class`); continue; }
+    const v = validateRunbook(c.starter_runbooks[id], heroes[id].skills, { ...c, skillById: skills, statusById: statuses });
+    v.errors.forEach((e) => bad('starter_runbooks', [id, 'rules', Math.max(0, e.rule - 1)], `${e.code}: ${e.message}`));
+  }
 
   const argTypes = c.runbook.argTypes;
   for (const k of Object.keys(argTypes)) {

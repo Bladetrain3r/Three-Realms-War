@@ -5,7 +5,7 @@ import { spawn } from 'node:child_process';
 import { cpSync, readFileSync, writeFileSync, mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 const REPO = new URL('..', import.meta.url).pathname.replace(/\/$/, '');
-const FILES = ['realms','statuses','heroes','skills','monsters','items','tables','names','runbook'];
+const FILES = ['realms','statuses','heroes','skills','monsters','items','tables','names','runbook','starter_runbooks'];
 const leaves = (v, s, o) => { if (v !== null && typeof v === 'object') { if (Array.isArray(v)) v.forEach((x, i) => leaves(x, [...s, i], o)); else for (const k of Object.keys(v)) leaves(v[k], [...s, k], o); } else o.push(s); return o; };
 const key = (segs) => segs.reduce((a, s) => (typeof s === 'number' ? `${a}[${s}]` : a === '' ? s : `${a}.${s}`), '');
 const jobs = [];

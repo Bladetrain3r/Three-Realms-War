@@ -39,5 +39,6 @@ export function indexContent(raw) {
     setById: byId(raw.items.sets),
     names: raw.names,
     runbook: raw.runbook,
+    starterRunbooks: raw.starter_runbooks,
   };
 }

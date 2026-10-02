@@ -16,7 +16,8 @@ export function loadAll(overrides = {}) {
   const schemas = Object.fromEntries(FILES.map((f) => [f, readContent('schema', f + '.schema.json')]));
   const B = parseYaml(read('checks', 'balance.yaml'));
   Object.assign(B.run, overrides);
-  return { content: loadContent(texts, schemas), B, runbooks: JSON.parse(read('checks', 'balance-runbooks.json')).runbooks };
+  const content = loadContent(texts, schemas);
+  return { content, B, runbooks: content.starterRunbooks }; // the harness plays every class with its starter runbook
 }
 
 // A hero wearing a full set at item level = hero level; ladder[tierName] = [tier, star]; 'none' wears nothing.

@@ -8,7 +8,7 @@ import { validateRunbook } from '../../sim/runbook.js';
 
 const text = readFileSync(repoPath('checks', 'balance.yaml'), 'utf8');
 const B = parseYaml(text);
-const rb = JSON.parse(readFileSync(repoPath('checks', 'balance-runbooks.json'), 'utf8')).runbooks;
+const rb = content.starterRunbooks;
 
 function bounds(obj, path, out = []) { // every [lo, hi] pair in the tree
   for (const [k, v] of Object.entries(obj)) {
@@ -58,7 +58,7 @@ test('balance config: the run block names real classes and the gear ladder names
   }
 });
 
-test('balance runbooks: every class has one and the real validator accepts it', () => {
+test('starter runbooks (also the harness runbooks): every class has one and the real validator accepts it', () => {
   assert.deepEqual(Object.keys(rb).sort(), content.heroes.map((h) => h.id).sort());
   for (const h of content.heroes) {
     const v = validateRunbook(rb[h.id], h.skills, content);
@@ -66,7 +66,7 @@ test('balance runbooks: every class has one and the real validator accepts it', 
   }
 });
 
-test('balance runbooks: each uses every skill its class has at least once (so a class is not tested as a plain attacker)', () => {
+test('starter runbooks: each uses at least one skill of its class (so a class is not tested as a plain attacker)', () => {
   for (const h of content.heroes) {
     const used = new Set(rb[h.id].rules.filter((r) => r.do.a === 'skill').map((r) => r.do.skill));
     assert.ok(used.size >= 1, h.id);

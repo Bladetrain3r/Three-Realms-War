@@ -16,7 +16,7 @@ function refused(errors, file, key, re) {
 
 test('content: the real content bundle is valid', () => assert.deepEqual(validateContent(fresh(), schemas), { ok: true, errors: [] }));
 
-test('content: the schema directory covers exactly the nine content files', () => assert.deepEqual(Object.keys(schemas).sort(), [...FILES].sort()));
+test('content: the schema directory covers exactly the ten content files', () => assert.deepEqual(Object.keys(schemas).sort(), [...FILES].sort()));
 
 const CASES = [
   // [label, file, mutate, key, message pattern]
@@ -102,7 +102,9 @@ test('content: several problems are all reported, not just the first', () => {
   for (const [file, key] of [['heroes', '[0].rarity'], ['tables', 'combat.roundCap'], ['realms', '[1].element']]) refused(errors, file, key);
 });
 
-// ---- systematic: no leaf and no key in any file may be unconstrained ------------------------------------------------
+// ---- systematic: no leaf and no key in any file may be unconstrained (starter_runbooks is free-keyed by class and checked by the real
+// runbook validator, so it has its own targeted tests below)
+const SWEEP_FILES = FILES.filter((f) => f !== 'starter_runbooks');
 const FREE_KEYS = /^(runbook\.json:(argTypes\.[a-z0-9_]+$|conditions\[\d+\]\.args\.[a-z]+$|actions\[\d+\]\.args\.[a-z]+$))/;
 
 function leaves(v, segs, out) {
@@ -117,7 +119,7 @@ const keyOf = (segs) => segs.reduce((a, s) => (typeof s === 'number' ? `${a}[${s
 
 test('content: SYSTEMATIC: mutating any leaf of any file to a wrong type is refused at exactly that key', () => {
   let n = 0;
-  for (const file of FILES) {
+  for (const file of SWEEP_FILES) {
     const base = JSON.parse(contentTexts[file]);
     for (const segs of leaves(base, [], [])) {
       if (!segs.length) continue;
@@ -132,7 +134,7 @@ test('content: SYSTEMATIC: mutating any leaf of any file to a wrong type is refu
 
 test('content: SYSTEMATIC: every integer leaf is bounded above and below (1e9 and -1e9 are refused at that key)', () => {
   let n = 0;
-  for (const file of FILES) {
+  for (const file of SWEEP_FILES) {
     const base = JSON.parse(contentTexts[file]);
     for (const segs of leaves(base, [], [])) {
       if (!segs.length || !Number.isInteger(at(base, segs)[segs[segs.length - 1]])) continue;
@@ -149,7 +151,7 @@ test('content: SYSTEMATIC: every integer leaf is bounded above and below (1e9 an
 
 test('content: SYSTEMATIC: every string leaf refuses the empty string and an uppercase junk string', () => {
   let n = 0;
-  for (const file of FILES) {
+  for (const file of SWEEP_FILES) {
     const base = JSON.parse(contentTexts[file]);
     for (const segs of leaves(base, [], [])) {
       if (!segs.length || typeof at(base, segs)[segs[segs.length - 1]] !== 'string') continue;
@@ -184,6 +186,22 @@ test('content: SYSTEMATIC: renaming any key of any object is refused (unknown ke
       walk(file, v[k], [...segs, k]);
     }
   }
-  for (const file of FILES) walk(file, JSON.parse(contentTexts[file]), []);
+  for (const file of SWEEP_FILES) walk(file, JSON.parse(contentTexts[file]), []);
   assert.ok(n > 600, `only ${n} keys exercised`);
+});
+
+// ---- starter runbooks: each is run through the real runbook validator against its class kit ---------------------------------
+test('content: refused, naming file and key: a starter runbook argument out of range', () => {
+  refused(run((f) => { f.starter_runbooks.shieldwarden.rules[0].when[0].pct = 55; }), 'starter_runbooks', 'shieldwarden.rules[0]', /E05/);
+});
+test('content: refused, naming file and key: a starter runbook using a skill outside the class kit', () => {
+  refused(run((f) => { f.starter_runbooks.huscarl.rules[1].do.skill = 'hex'; }), 'starter_runbooks', 'huscarl.rules[1]', /E07/);
+});
+test('content: refused, naming file and key: a class with no starter runbook, and a runbook for no class', () => {
+  refused(run((f) => { delete f.starter_runbooks.skald; }), 'starter_runbooks', '(root)', /no starter runbook for class "skald"/);
+  refused(run((f) => { f.starter_runbooks.dragon = { v: 1, rules: [] }; }), 'starter_runbooks', 'dragon', /not a hero class/);
+});
+test('content: refused, naming file and key: a starter runbook with the wrong version or an unknown field', () => {
+  refused(run((f) => { f.starter_runbooks.volva.v = 2; }), 'starter_runbooks', 'volva.v', /at most 1/);
+  refused(run((f) => { f.starter_runbooks.volva.note = 'x'; }), 'starter_runbooks', 'volva.note', /unknown key/);
 });
