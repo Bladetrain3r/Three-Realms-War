@@ -11,7 +11,7 @@ import { mapFromSeed, moveCost, cellsWithin } from './mapgen.js';
 import { clone, findHero, itemsById, nextSeed, stashCount, addHero } from './game.js';
 import { gainXp } from './game-delve.js';
 
-const TIER = ['plain', 'fine', 'runed', 'heirloom'];
+const TIER = ['plain', 'fine', 'runed', 'heirloom', 'legendary'];
 const cache = Object.create(null); // maps are pure functions of (seed, level); this only saves recomputing them
 export function expeditionMap(ex, content) {
   const key = `${ex.seed}:${ex.level}`;
@@ -101,9 +101,9 @@ function rewardsForFloor(next, content, ex, site, floor, cleared, boss) {
     out.xp += scale(r.xp); out.materials += scale(r.materials); out.hacksilver += scale(r.hacksilver);
     const setAllowed = next.reputation[ex.realm] >= p.rep.trusted;
     if (isBoss) {
-      const it = generateItem(rng, { ilvl: site.level, realm: ex.realm, boss: true, setAllowed }, content); it.id = next.nextId++; out.items.push(it);
+      const it = generateItem(rng, { ilvl: site.level, realm: ex.realm, boss: true, setAllowed, source: 'expedition' }, content); it.id = next.nextId++; out.items.push(it);
       out.heart += 1; out.reputation += p.repBoss; if (rng.range(10000) < p.threadBp) out.threads += 1;
-    } else if (rng.range(10000) < content.items.drops.encounterBp) { const it = generateItem(rng, { ilvl: site.level, realm: ex.realm, boss: false, setAllowed }, content); it.id = next.nextId++; out.items.push(it); }
+    } else if (rng.range(10000) < content.items.drops.encounterBp) { const it = generateItem(rng, { ilvl: site.level, realm: ex.realm, boss: false, setAllowed, source: 'expedition' }, content); it.id = next.nextId++; out.items.push(it); }
   }
   return out;
 }

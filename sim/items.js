@@ -51,12 +51,13 @@ function pickWeighted(rng, weights) { // weights: array of [id, weight] in a fix
   throw new Error('unreachable');
 }
 
-const TIER_ORDER = ['plain', 'fine', 'runed', 'heirloom'];
+const TIER_ORDER = ['plain', 'fine', 'runed', 'heirloom', 'legendary'];
 
 // 8.6: a dropped item. Draw order: tier, slot, weapon kind (weapon only), set tag (only if allowed), lines.
-export function generateItem(rng, { ilvl, realm, boss, setAllowed }, content) {
-  const items = content.items, drops = items.drops;
-  const weights = boss ? drops.bossTierWeights : drops.tierWeights;
+// source: 'delve' (the default) or 'expedition'. Heirloom items drop only from expeditions (0.9).
+export function generateItem(rng, { ilvl, realm, boss, setAllowed, source = 'delve' }, content) {
+  const items = content.items, drops = items.drops, away = source === 'expedition';
+  const weights = away ? (boss ? drops.expeditionBossTierWeights : drops.expeditionTierWeights) : (boss ? drops.bossTierWeights : drops.tierWeights);
   const tier = pickWeighted(rng, TIER_ORDER.filter((t) => weights[t] !== undefined).map((t) => [t, weights[t]]));
   const slot = items.slotOrder[rng.range(items.slotOrder.length)];
   const kind = slot === 'weapon' ? (rng.range(2) === 0 ? 'MIT' : 'ARC') : null;
@@ -69,9 +70,10 @@ export function generateItem(rng, { ilvl, realm, boss, setAllowed }, content) {
 // 8.4: cost of one attempt.
 export function upgradeCost(item, content) {
   const c = content.items.upgradeCost;
+  const mul = item.star >= c.highStarFrom ? c.highStarMul : 1; // the 6th and 7th star (Legendary only) cost several times more (0.9)
   return {
-    common: c.commonBase + idiv(item.ilvl * (item.star + 1), c.commonDivisor),
-    rare: item.star >= c.rareFromStar ? item.star - (c.rareFromStar - 1) : 0,
+    common: mul * (c.commonBase + idiv(item.ilvl * (item.star + 1), c.commonDivisor)),
+    rare: mul * (item.star >= c.rareFromStar ? item.star - (c.rareFromStar - 1) : 0),
   };
 }
 
@@ -81,6 +83,7 @@ export function attemptUpgrade(item, rng, content) {
   if (item.held !== null) throw new Error('resolve the previous attempt first');
   if (item.star >= tierDef.maxStar) throw new RangeError('item is at its maximum star');
   const success = rng.range(BP) < content.items.starSuccessBp[item.star];
+  if (tierDef.fixedLines) return { ...item, star: item.star + (success ? 1 : 0) }; // a Legendary item's lines are fixed: only the star can change, nothing is held
   const lines = rollLines(rng, tierDef.lines, content);
   return { ...item, star: item.star + (success ? 1 : 0), lines, held: item.lines, heldStar: item.star, mulligan: success ? 1 : item.mulligan };
 }

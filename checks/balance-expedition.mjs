@@ -82,7 +82,7 @@ export function checkV2(res, ctx) {
   const add = (id, value, [lo, hi]) => out.push({ id, value: Number.isFinite(value) ? Math.round(value * 10000) / 10000 : null, lo, hi, ok: Number.isFinite(value) && value >= lo && value <= hi });
   for (const w of res.wellBuilt) {
     add(`v2.well_built.L${w.level}.nearest_wipe`, w.nearest.wiped / w.nearest.n, V.well_built.nearest_wipe[`L${w.level}`]);
-    add(`v2.well_built.L${w.level}.deep_wipe`, w.deep.wiped / w.deep.n, V.well_built.deep_wipe);
+    add(`v2.well_built.L${w.level}.deep_wipe`, w.deep.wiped / w.deep.n, V.well_built.deep_wipe[`L${w.level}`]);
     add(`v2.well_built.L${w.level}.deep_over_nearest_expected_silver`, (w.deep.silver / w.deep.n) / (w.nearest.silver / w.nearest.n), V.well_built.deep_over_nearest_expected_silver);
     add(`v2.well_built.L${w.level}.deep_over_nearest_expected_xp`, (w.deep.xp / w.deep.n) / (w.nearest.xp / w.nearest.n), V.well_built.deep_over_nearest_expected_xp);
   }

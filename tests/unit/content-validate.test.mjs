@@ -58,7 +58,7 @@ const CASES = [
   ['a tier whose max star the success table cannot cover', 'items', (f) => { f.items.tiers[2].maxStar = 9; }, 'tiers[2].maxStar', /needs 9 entries in starSuccessBp/],
   ['line indexes out of sequence', 'items', (f) => { f.items.lines[3].index = 7; }, 'lines[3].index', /must run 0, 1, 2/],
   ['line range inverted', 'items', (f) => { f.items.lines[0].lo = 5000; }, 'lines[0].lo', /lo must not exceed hi/],
-  ['star table too short', 'items', (f) => { f.items.starSuccessBp.pop(); }, 'starSuccessBp', /at least 5 items/],
+  ['star table too short', 'items', (f) => { f.items.starSuccessBp.pop(); }, 'starSuccessBp', /at least 7 items/],
   ['set in an unknown realm', 'items', (f) => { f.items.sets[0].realm = 'nowhere'; }, 'sets[0].realm', /unknown realm/],
   ['round cap of zero', 'tables', (f) => { f.tables.combat.roundCap = 0; }, 'combat.roundCap', /at least 1/],
   ['band weights with two entries', 'tables', (f) => { f.tables.delve.bandWeights.first.pop(); }, 'delve.bandWeights.first', /at least 3 items/],

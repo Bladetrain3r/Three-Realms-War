@@ -80,6 +80,15 @@
       "lines": 3,
       "maxStar": 5,
       "setAllowed": true
+    },
+    {
+      "id": "legendary",
+      "name": "Legendary",
+      "multiplierBp": 22500,
+      "lines": 3,
+      "maxStar": 7,
+      "setAllowed": false,
+      "fixedLines": true
     }
   ],
   "lines": [
@@ -192,12 +201,16 @@
     7500,
     6000,
     4500,
-    3000
+    3000,
+    2000,
+    500
   ],
   "upgradeCost": {
     "commonBase": 3,
     "commonDivisor": 2,
-    "rareFromStar": 3
+    "rareFromStar": 3,
+    "highStarFrom": 5,
+    "highStarMul": 3
   },
   "levelSlack": 5,
   "stashMax": 100,
@@ -210,9 +223,18 @@
     },
     "bossTierWeights": {
       "fine": 4000,
-      "runed": 5000,
-      "heirloom": 1000
+      "runed": 6000
     },
-    "setTagBp": 5000
+    "setTagBp": 5000,
+    "expeditionTierWeights": {
+      "plain": 6500,
+      "fine": 2500,
+      "runed": 700,
+      "heirloom": 300
+    },
+    "expeditionBossTierWeights": {
+      "runed": 4000,
+      "heirloom": 6000
+    }
   }
 }

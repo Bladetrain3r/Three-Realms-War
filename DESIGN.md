@@ -391,6 +391,7 @@ Four slots, each hero wears one item per slot. Item level `i` is 1 to 50; a hero
 | Fine | 11500 | 1 | 4 | no |
 | Runed | 13000 | 2 | 5 | yes |
 | Heirloom | 15000 | 3 | 5 | yes |
+| Legendary | 22500 | 3 | 7 | no |
 
 ### 8.3 Bonus lines
 
@@ -420,7 +421,7 @@ The value in effect is `mulbp(raw, 10000 + 500 x star)`: the raw roll is stored;
 
 An **attempt** costs materials and does two things, in this order:
 
-1. **Star roll.** From star `s` (below the tier's max), success has probability `[9000, 7500, 6000, 4500, 3000][s]` bp
+1. **Star roll.** From star `s` (below the tier's max), success has probability `[9000, 7500, 6000, 4500, 3000, 2000, 500][s]` bp
    (draw `range(10000)`, success when `< p`). Success raises the star by 1.
 2. **Reroll.** *Every* attempt, success or failure, rerolls **all** the item's bonus lines (8.3). The item keeps its
    old lines in a hold.
@@ -430,7 +431,9 @@ The player then sees the result and **accepts it** (default) or **uses the mulli
 does not refund the attempt. Failure never destroys, lowers or removes anything.
 
 **Cost** of an attempt at star `s` on an item of level `i`: common materials `3 + idiv(i x (s + 1), 2)` of the item's
-realm; and from star 3 upward also rare materials (the realm's *heart*): `s - 2` (1 for 3 to 4; 2 for 4 to 5).
+realm; and from star 3 upward also rare materials (the realm's *heart*): `s - 2` (1 for 3 to 4; 2 for 4 to 5). From star 5 (only a Legendary item gets that far) both costs are multiplied by 3 (`upgradeCost.highStarMul`).
+
+**Legendary** (0.9, last row of the table in 8.2) is a tier no random drop ever rolls: 1.5 times the Heirloom multiplier, seven stars (the 6th at 20%, the 7th at 5%), three *fixed* bonus lines that never reroll (so an attempt only rolls the star, nothing is held, and there is no mulligan), no set tag, and it cannot be salvaged. Legendary items are the fixed drops of the legendary bosses (BACKLOG).
 
 [WE-18] common material cost of an attempt on an item level 26, at star 0 and at star 3 => 16, 55
 
@@ -455,7 +458,10 @@ A granted skill appears in the runbook editor for that hero while the bonus hold
 ### 8.6 Drops, salvage, stash
 
 - Every cleared non-boss encounter drops an item with probability 2500 bp: tier by weights Plain 7000, Fine 2500, Runed
-  500. A boss drops one item: Fine 4000, Runed 5000, Heirloom 1000. Item level equals the delve level. Slot, weapon kind
+  500. A boss drops one item: Fine 4000, Runed 6000. **Delves never drop Heirloom** (0.9, Ziggy: "otherwise there's no reason to risk an
+  expedition when you can just 50x delve"). In an expedition, a cleared non-boss encounter drops an item with the same probability by weights
+  Plain 6500, Fine 2500, Runed 700, Heirloom 300, and the site boss drops one item: Runed 4000, Heirloom 6000. Item level equals the delve level
+  (an expedition's, the site level). Slot, weapon kind
   and charm element are uniform draws. A Runed or Heirloom item carries its realm's set tag with probability 5000 bp, but
   only once the realm's reputation has reached *Trusted* (150).
 - **Salvage** turns an item into common materials of its realm: `idiv(i, 2) x (tier index + 1)` (Plain 0 to Heirloom 3).
@@ -752,7 +758,7 @@ Provisions bought with hacksilver (10 each, at most 60 carried). Each step costs
 floor costs 3. With too few provisions to take a step or enter a floor, the expedition **ends and the party returns
 safely** with everything carried: starvation never kills.
 
-[WE-24] a path of 4 plain, 1 forest and 1 hills cells costs; the site level for `E = 20` at distance 11 (`E + idiv(dist, 3)`); the distance multiplier `10000 + 300 x dist` => 8, 23, 13300
+[WE-24] a path of 4 plain, 1 forest and 1 hills cells costs; the site level for `E = 20` at distance 11 (`E + idiv(dist, 3)`); the distance multiplier `10000 + 700 x dist` => 8, 23, 17700
 
 ### 12.3 Sites and floors
 
@@ -761,7 +767,7 @@ Each floor has 2 encounters; the last floor has the boss. Between floors the pla
 (materials, hacksilver, xp) use the delve formulas at the site level, multiplied by `mulbp(mulbp(x, dist multiplier),
 10000 + 2500 x (floor - 1))`. All loot is carried in the **pack** and is banked only on a safe return.
 
-[WE-25] base 10 common materials (site level 23), distance 11, floor 3 => 19
+[WE-25] base 10 common materials (site level 23), distance 11, floor 3 => 25
 
 ### 12.4 Death and loss
 
@@ -1086,3 +1092,9 @@ Random choices use `deriveSeed(masterSeed, counter)` and then increment `counter
   drop at most Runed items (Heirloom only from expeditions); five legendary single-monster bosses with one fixed item each and a marked
   encounter on the expedition map, unique per save; paragon stars that multiply each future level's increment (not retroactively), three per
   stat, bought with xp-free rare realm resources, with a class bonus at 18 of 18 stars. (4) **Activity timer** (section 20): built now, 2 s per run of a batch, switchable off.
+- **0.9 (2026-10-05, Ziggy: "Yes to both, go ahead with your order"):** (1) **`expedition.distBp` 300 to 700** (12.3: the distance multiplier is `10000 + 700 x dist`; WE-24 now 17700, WE-25 now 25),
+  because a deep site at expedition level 40 paid less than the nearest one for a well-built party that wipes there 58% of the time. (2) The `expedition_v2.well_built.deep_wipe` floor for
+  E 20 is 0 (was 0.05), a bound I had specified wrongly; both are with Ziggy's word. Result: **79 of 79** expedition checks in bounds, **148 of 148** in the delve table (the G3 report is
+  byte-identical). **G5 is closed.** (3) **Delves never drop Heirloom** (8.6): the delve boss table is Fine 4000, Runed 6000; expeditions have their own tables (non-boss Plain 6500, Fine 2500, Runed 700,
+  Heirloom 300; site boss Runed 4000, Heirloom 6000). (4) **Legendary tier** (8.2, 8.4): 22500 multiplier, 7 stars (star odds 2000 and 500 for stars 6 and 7), three fixed lines, no set, not salvageable,
+  stars 6 and 7 cost 3x; no random drop rolls it. The Legendary items themselves are the fixed drops of the legendary bosses (not built yet). The numbers 2000, 500, 3x, and the drop weights are mine.

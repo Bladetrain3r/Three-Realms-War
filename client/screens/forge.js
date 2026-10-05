@@ -28,11 +28,11 @@ export function forge(ctx) {
         button('Undo: restore the old lines', () => ctx.run(undoAttempt, it.id), { disabled: it.mulligan < 1, title: it.mulligan < 1 ? 'the mulligan for this star is spent' : 'the mulligan: put the old bonus lines back (the star stays; the materials are not refunded)', id: 'undo' }))) : null;
     detail = h('div', { class: 'item-detail', 'data-testid': 'item-detail' },
       h('h3', null, itemTitle(it, content)),
-      kv([['Item level', it.ilvl], ['Stars', `${stars(it.star, tier.maxStar)} (${it.star} of ${tier.maxStar})`], ['Main', itemMainText(it, content)], ['Bonus lines', itemLineTexts(it, content).join(', ') || 'none'], ['Set', itemSetText(it, content) || 'none'],
+      kv([['Item level', it.ilvl], ['Stars', `${stars(it.star, tier.maxStar)} (${it.star} of ${tier.maxStar})`], ['Main', itemMainText(it, content)], ['Bonus lines', (itemLineTexts(it, content).join(', ') || 'none') + (tier.fixedLines ? ' (fixed: they never reroll)' : '')], ['Set', itemSetText(it, content) || 'none'],
         ['Worn by', worn[it.id] !== undefined ? heroName(worn[it.id]) : 'nobody (stash)']]),
       it.star < tier.maxStar ? h('p', null, (() => { const st = starStep(it, content); return `A star would take the main stat from ${st.now} to ${st.next}${st.same ? ` (${NO_CHANGE})` : ''}. `; })(), `Next attempt: ${pct(odds)} to gain a star, costs ${cost.common} ${matName(realm.material)}${cost.rare ? ` + ${cost.rare} ${matName(realm.rareMaterial)}` : ''}. Every attempt costs, success or not.`) : h('p', null, 'At the top star for its tier.'),
       pending,
-      h('div', { class: 'row-buttons' }, button('Upgrade', () => ctx.run(upgradeAttempt, it.id), { disabled: Boolean(why), title: why, id: 'upgrade' }),
+      h('div', { class: 'row-buttons' }, button('Upgrade', () => { const r = ctx.run(upgradeAttempt, it.id); if (r.ok && tier.fixedLines) { const after = store.save.items.find((x) => x.id === it.id).star; ctx.say(after > it.star ? `Star ${after} reached.` : 'No star gained; the materials are spent.', after > it.star ? 'ok' : 'bad'); } }, { disabled: Boolean(why), title: why, id: 'upgrade' }),
         button(`Salvage (+${salvageValue(it)} ${matName(realm.material)})`, () => ctx.run(salvage, it.id), { disabled: worn[it.id] !== undefined, title: worn[it.id] !== undefined ? 'take the item off first' : '', id: 'salvage' })),
       why ? h('small', { class: 'why' }, why) : null);
   }

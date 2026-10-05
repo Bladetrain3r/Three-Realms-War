@@ -534,7 +534,8 @@
             "plain",
             "fine",
             "runed",
-            "heirloom"
+            "heirloom",
+            "legendary"
           ]
         },
         "ilvl": {
@@ -556,7 +557,7 @@
         "star": {
           "type": "integer",
           "minimum": 0,
-          "maximum": 5
+          "maximum": 7
         },
         "lines": {
           "type": "array",

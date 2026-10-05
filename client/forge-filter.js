@@ -2,7 +2,7 @@
 import { wornIds } from '../sim/game.js';
 import { salvageValue } from '../sim/items.js';
 
-export const TIERS = ['plain', 'fine', 'runed', 'heirloom'];
+export const TIERS = ['plain', 'fine', 'runed', 'heirloom', 'legendary'];
 export const SORTS = ['id', 'tier', 'ilvl', 'star', 'owner', 'slot'];
 
 // filter: { owner: 'all' | 'stash' | 'worn' | <hero id>, tier: 'any' | <tier id>, slot: 'any' | <slot>, realm: 'any' | <realm> }
@@ -29,7 +29,7 @@ export function listItems(save, content, filter = {}, sort = { key: 'id', desc: 
 export function matching(save, rule) {
   const worn = wornIds(save), maxTier = rule.maxTier === undefined || rule.maxTier === 'any' ? TIERS.length - 1 : TIERS.indexOf(rule.maxTier);
   return save.items.filter((it) => worn[it.id] === undefined && it.held === null && TIERS.indexOf(it.tier) <= maxTier
-    && (rule.maxLevel === undefined || it.ilvl <= rule.maxLevel) && (rule.maxStar === undefined || it.star <= rule.maxStar) && !(rule.noSet && it.set !== null)).map((it) => it.id);
+    && (rule.maxLevel === undefined || it.ilvl <= rule.maxLevel) && (rule.maxStar === undefined || it.star <= rule.maxStar) && it.tier !== 'legendary' && !(rule.noSet && it.set !== null)).map((it) => it.id);
 }
 
 // What salvaging `ids` would give, by material id.

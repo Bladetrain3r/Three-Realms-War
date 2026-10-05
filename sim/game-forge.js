@@ -40,6 +40,7 @@ export function undoAttempt(save, content, itemId) {
 }
 
 export function salvage(save, content, itemId) {
+  if (findItem(save, itemId).tier === 'legendary') throw new GameError('legendary_kept', 'a Legendary item cannot be salvaged');
   assertNotAway(save, itemId, 'salvage');
   const next = clone(save), item = findItem(next, itemId);
   if (wornIds(next)[itemId] !== undefined) throw new GameError('item_worn', 'take the item off first');
@@ -57,6 +58,7 @@ export function salvageMany(save, content, ids) {
   ids.forEach((id, i) => {
     if (ids.indexOf(id) !== i) throw new GameError('item_twice', `item ${id} is listed twice`);
     const item = findItem(next, id);
+    if (item.tier === 'legendary') throw new GameError('legendary_kept', 'a Legendary item cannot be salvaged');
     if (worn[id] !== undefined) throw new GameError('item_worn', `${itemLabel(item)} is worn; take it off first`);
     const mat = content.realmById[item.realm].material;
     gain[mat] = (gain[mat] || 0) + salvageValue(item);

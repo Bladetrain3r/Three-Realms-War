@@ -191,8 +191,12 @@ expedition_v2:
       L20: [0.0, 0.10]
       L30: [0.0, 0.20]
       L40: [0.0, 0.35]
-    # sites 12 or more cells from the start: dangerous but beatable.
-    deep_wipe: [0.05, 0.70]
+    # sites 12 or more cells from the start: dangerous but beatable. The E 20 floor was 0.05 and was set to 0 on 2026-10-05 with Ziggy's word
+    # ("Yes to both"): it was a wrongly specified bound, a level-50 party at E 20 is thirty levels over.
+    deep_wipe:
+      L20: [0.0, 0.70]
+      L30: [0.05, 0.70]
+      L40: [0.05, 0.70]
     # risk pays: expected hacksilver per attempt (a wipe banks nothing) at deep sites over the same at the nearest site; and xp likewise.
     deep_over_nearest_expected_silver: [1.0, 8.0]
     deep_over_nearest_expected_xp: [1.0, 8.0]

@@ -23,8 +23,8 @@ test('expedition: WE-24 .. WE-26 numbers (path cost, site level and distance mul
   const { moveCost, PLAIN, FOREST, HILLS } = await import('../../sim/mapgen.js');
   const { deathSaveKills } = await import('../../sim/floor.js'); const { scaleReward } = await import('../../sim/game-expedition.js');
   assert.equal(4 * moveCost(PLAIN, X) + moveCost(FOREST, X) + moveCost(HILLS, X), 8);
-  assert.equal(20 + Math.trunc(11 / X.siteLevelDiv), 23); assert.equal(10000 + X.distBp * 11, 13300);
-  assert.equal(scaleReward(10, 11, 3, X), 19);
+  assert.equal(20 + Math.trunc(11 / X.siteLevelDiv), 23); assert.equal(10000 + X.distBp * 11, 17700);
+  assert.equal(scaleReward(10, 11, 3, X), 25);
   assert.deepEqual([deathSaveKills(3999, X), deathSaveKills(4000, X)].map(Number), [1, 0]);
 });
 

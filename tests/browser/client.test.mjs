@@ -437,3 +437,21 @@ test('client: with the activity timer on, a batch shows its progress, locks the 
   assert.deepEqual(problems, []);
   await context.close();
 });
+
+test('client: a Legendary item shows seven stars and fixed lines, an attempt reports its result in words (no pending panel), and Salvage refuses it', async (t) => {
+  if (!need(t)) return;
+  const { upgradeAttempt } = await import('../../sim/index.js');
+  const start = newGame(content, 12, { savedAt: '', build: 'client-test' }); for (const k of Object.keys(start.materials)) start.materials[k] = 9999;
+  const id = start.nextId++; start.items.push({ id, slot: 'weapon', kind: 'MIT', tier: 'legendary', ilvl: 30, realm: 'midgard', set: null, star: 5, lines: [[0, 900], [5, 600], [6, 300]], held: null, heldStar: null, mulligan: 1 });
+  const { page, problems, context } = await openGame(browser, game.url);
+  await importSave(page, start); await go(page, '#/forge'); await page.click(`[data-testid="item-${id}"]`);
+  assert.match(await text(page, 'item-detail'), /★★★★★☆☆ \(5 of 7\)/); assert.match(await text(page, 'item-detail'), /fixed: they never reroll/);
+  await page.click('[data-testid=upgrade]');
+  const want = upgradeAttempt(start, content, id);
+  await sameSave(page, want, 'a legendary attempt');
+  assert.match(await text(page, 'notice'), /Star 6 reached|No star gained/); assert.equal(await page.locator('[data-testid=pending]').count(), 0);
+  await page.click('[data-testid=salvage]'); assert.match(await text(page, 'notice'), /cannot be salvaged/);
+  await sameSave(page, want, 'salvage refused');
+  assert.deepEqual(problems, []);
+  await context.close();
+});

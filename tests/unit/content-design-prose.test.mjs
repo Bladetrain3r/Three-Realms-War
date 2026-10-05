@@ -30,6 +30,7 @@ const CASES = [
   ['5.9 injury length', /`INJURY_DELVES = (\d+)`/, () => [T.injury.delves]],
   ['9.2 brace duration', /gains bulwark for (\d+) turn/, () => [T.combat.braceTurns]],
   ['7.5 recruit level', /every recruit begins at level (\d+) \(`recruit.startLevel`\)/, () => [T.recruit.startLevel]],
+  ['12.3 distance multiplier', /distance multiplier `10000 \+ (\d+) x dist`/, () => [T.expedition.distBp]],
   ['11.1 rest xp gap', /within (\d+) levels of the party's highest-level hero/, () => [T.progress.restXpGap]],
   ['11.8 training cost and cap', /`(\d+) x L` hacksilver \(`training.costPerLevel`\)/, () => [T.training.costPerLevel]],
   ['11.8 training cap', /A hero below level (\d+) \(`training.maxLevel`/, () => [T.training.maxLevel]],
@@ -37,11 +38,13 @@ const CASES = [
   ['7.5 roster size', /at most (\d+) heroes/, () => [T.recruit.rosterMax]],
   ['8.1 hero may wear items up to level + slack', /`hero level \+ (\d+)`/, () => [I.levelSlack]],
   ['8.4 star bonus', /`mulbp\(raw, 10000 \+ (\d+) x star\)`/, () => [I.starBonusBp]],
-  ['8.4 star success odds', /`\[(\d+), (\d+), (\d+), (\d+), (\d+)\]\[s\]`/, () => I.starSuccessBp],
+  ['8.4 star success odds', /`\[(\d+), (\d+), (\d+), (\d+), (\d+), (\d+), (\d+)\]\[s\]`/, () => I.starSuccessBp],
+  ['8.4 high star cost multiple', /both costs are multiplied by (\d+) \(`upgradeCost.highStarMul`\)/, () => [I.upgradeCost.highStarMul]],
   ['8.4 common cost', /`(\d+) \+ idiv\(i x \(s \+ 1\), (\d+)\)`/, () => [I.upgradeCost.commonBase, I.upgradeCost.commonDivisor]],
   ['8.4 rare material from star', /from star (\d+) upward/, () => [I.upgradeCost.rareFromStar]],
   ['8.6 ordinary drop chance and tier weights', /probability (\d+) bp: tier by weights Plain (\d+), Fine (\d+), Runed\s+(\d+)/, () => [I.drops.encounterBp, I.drops.tierWeights.plain, I.drops.tierWeights.fine, I.drops.tierWeights.runed]],
-  ['8.6 boss drop tier weights', /A boss drops one item: Fine (\d+), Runed (\d+), Heirloom (\d+)/, () => [I.drops.bossTierWeights.fine, I.drops.bossTierWeights.runed, I.drops.bossTierWeights.heirloom]],
+  ['8.6 boss drop tier weights', /A boss drops one item: Fine (\d+), Runed (\d+)\. \*\*Delves never drop Heirloom/, () => [I.drops.bossTierWeights.fine, I.drops.bossTierWeights.runed]],
+  ['8.6 expedition drop weights', /Plain (\d+), Fine (\d+), Runed (\d+), Heirloom (\d+), and the site boss drops one item: Runed (\d+), Heirloom (\d+)/, () => [I.drops.expeditionTierWeights.plain, I.drops.expeditionTierWeights.fine, I.drops.expeditionTierWeights.runed, I.drops.expeditionTierWeights.heirloom, I.drops.expeditionBossTierWeights.runed, I.drops.expeditionBossTierWeights.heirloom]],
   ['8.6 set tag chance', /with probability (\d+) bp, but\s+only once/, () => [I.drops.setTagBp]],
   ['8.6 stash size', /The stash holds (\d+) items/, () => [I.stashMax]],
   ['9 rules per runbook', /at most \*\*(\d+) rules\*\* per hero/, () => [content.runbook.maxRules]],
@@ -82,6 +85,8 @@ test('design prose: the starting roster is the four classes the design names', (
 test('design prose: weights and chances are internally consistent', () => {
   assert.equal(sum(Object.values(I.drops.tierWeights)), 10000);
   assert.equal(sum(Object.values(I.drops.bossTierWeights)), 10000);
+  assert.equal(sum(Object.values(I.drops.expeditionTierWeights)), 10000);
+  assert.equal(sum(Object.values(I.drops.expeditionBossTierWeights)), 10000);
   assert.ok(T.delve.affix.chanceHighBp > T.delve.affix.chanceBp);
   assert.equal(T.stats.levelCap, 50);
   assert.equal(T.stats.growthMul + 1, 10, 'level 50 must be exactly 10x level 1');

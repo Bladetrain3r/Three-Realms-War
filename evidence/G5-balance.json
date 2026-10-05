@@ -19,10 +19,10 @@
       "saveHeroEncounters": 15016,
       "packs": 291,
       "bought": 16327,
-      "matBanked": 17061,
-      "xpBanked": 165331,
-      "silverBanked": 55681,
-      "items": 648,
+      "matBanked": 20992,
+      "xpBanked": 194471,
+      "silverBanked": 66025,
+      "items": 650,
       "delveMat": 12198,
       "delveXp": 101650,
       "noSite": 0,
@@ -41,9 +41,9 @@
       "saveHeroEncounters": 11461,
       "packs": 136,
       "bought": 16218,
-      "matBanked": 6970,
-      "xpBanked": 69386,
-      "silverBanked": 23104,
+      "matBanked": 8600,
+      "xpBanked": 80926,
+      "silverBanked": 27220,
       "items": 290,
       "delveMat": 5280,
       "delveXp": 44000,
@@ -63,9 +63,9 @@
       "saveHeroEncounters": 16409,
       "packs": 408,
       "bought": 16327,
-      "matBanked": 24690,
-      "xpBanked": 235736,
-      "silverBanked": 79242,
+      "matBanked": 30279,
+      "xpBanked": 279362,
+      "silverBanked": 94471,
       "items": 896,
       "delveMat": 17118,
       "delveXp": 142650,
@@ -85,9 +85,9 @@
       "saveHeroEncounters": 15738,
       "packs": 331,
       "bought": 16538,
-      "matBanked": 33248,
-      "xpBanked": 332180,
-      "silverBanked": 105069,
+      "matBanked": 39588,
+      "xpBanked": 394369,
+      "silverBanked": 125867,
       "items": 723,
       "delveMat": 20898,
       "delveXp": 208980,
@@ -107,10 +107,10 @@
       "saveHeroEncounters": 11477,
       "packs": 134,
       "bought": 16271,
-      "matBanked": 11464,
-      "xpBanked": 114010,
-      "silverBanked": 35372,
-      "items": 257,
+      "matBanked": 13570,
+      "xpBanked": 134964,
+      "silverBanked": 42233,
+      "items": 254,
       "delveMat": 7380,
       "delveXp": 73800,
       "noSite": 0,
@@ -129,10 +129,10 @@
       "saveHeroEncounters": 17069,
       "packs": 414,
       "bought": 16538,
-      "matBanked": 42682,
-      "xpBanked": 427216,
-      "silverBanked": 135118,
-      "items": 924,
+      "matBanked": 51019,
+      "xpBanked": 509271,
+      "silverBanked": 162465,
+      "items": 923,
       "delveMat": 26559,
       "delveXp": 265590,
       "noSite": 0,
@@ -151,9 +151,9 @@
       "saveHeroEncounters": 14690,
       "packs": 248,
       "bought": 16326,
-      "matBanked": 31635,
-      "xpBanked": 344745,
-      "silverBanked": 106495,
+      "matBanked": 38059,
+      "xpBanked": 406971,
+      "silverBanked": 126167,
       "items": 539,
       "delveMat": 22295,
       "delveXp": 222950,
@@ -173,9 +173,9 @@
       "saveHeroEncounters": 10120,
       "packs": 57,
       "bought": 16406,
-      "matBanked": 5441,
-      "xpBanked": 59368,
-      "silverBanked": 17841,
+      "matBanked": 6533,
+      "xpBanked": 69734,
+      "silverBanked": 21013,
       "items": 86,
       "delveMat": 4017,
       "delveXp": 40170,
@@ -195,10 +195,10 @@
       "saveHeroEncounters": 15883,
       "packs": 319,
       "bought": 16326,
-      "matBanked": 41473,
-      "xpBanked": 451591,
-      "silverBanked": 139672,
-      "items": 706,
+      "matBanked": 49963,
+      "xpBanked": 534734,
+      "silverBanked": 166009,
+      "items": 707,
       "delveMat": 28964,
       "delveXp": 289640,
       "noSite": 0,
@@ -254,16 +254,16 @@
         "wiped": 0,
         "died": 1,
         "embarked": 3204,
-        "silver": 314170,
-        "xp": 1003452
+        "silver": 392396,
+        "xp": 1248091
       },
       "deep": {
         "n": 801,
         "wiped": 1,
         "died": 39,
         "embarked": 3204,
-        "silver": 667386,
-        "xp": 2210427
+        "silver": 937058,
+        "xp": 3097250
       }
     },
     {
@@ -273,16 +273,16 @@
         "wiped": 4,
         "died": 105,
         "embarked": 3204,
-        "silver": 442005,
-        "xp": 1446601
+        "silver": 553313,
+        "xp": 1808880
       },
       "deep": {
         "n": 801,
         "wiped": 119,
         "died": 773,
         "embarked": 3204,
-        "silver": 764481,
-        "xp": 2578277
+        "silver": 1067237,
+        "xp": 3609230
       }
     },
     {
@@ -292,16 +292,16 @@
         "wiped": 75,
         "died": 600,
         "embarked": 3204,
-        "silver": 491807,
-        "xp": 1629322
+        "silver": 610333,
+        "xp": 2016056
       },
       "deep": {
         "n": 801,
         "wiped": 463,
         "died": 2180,
         "embarked": 3204,
-        "silver": 445754,
-        "xp": 1524663
+        "silver": 618773,
+        "xp": 2115120
       }
     }
   ],
@@ -315,28 +315,28 @@
     },
     {
       "id": "exp.midgard.L10.materials_per_encounter_vs_delve",
-      "value": 1.3987,
+      "value": 1.7209,
       "lo": 1.15,
       "hi": 2.5,
       "ok": true
     },
     {
       "id": "exp.midgard.L10.xp_per_encounter_vs_delve",
-      "value": 1.6265,
+      "value": 1.9131,
       "lo": 1.15,
       "hi": 2.5,
       "ok": true
     },
     {
       "id": "exp.midgard.L10.silver_return_on_provisions",
-      "value": 1.1072,
+      "value": 1.3129,
       "lo": 0.5,
       "hi": 3,
       "ok": true
     },
     {
       "id": "exp.midgard.L10.items_per_completed_expedition",
-      "value": 2.2268,
+      "value": 2.2337,
       "lo": 1,
       "hi": 12,
       "ok": true
@@ -350,21 +350,21 @@
     },
     {
       "id": "exp.asgard.L10.materials_per_encounter_vs_delve",
-      "value": 1.3201,
+      "value": 1.6288,
       "lo": 1.15,
       "hi": 2.5,
       "ok": true
     },
     {
       "id": "exp.asgard.L10.xp_per_encounter_vs_delve",
-      "value": 1.577,
+      "value": 1.8392,
       "lo": 1.15,
       "hi": 2.5,
       "ok": true
     },
     {
       "id": "exp.asgard.L10.silver_return_on_provisions",
-      "value": 0.9786,
+      "value": 1.1529,
       "lo": 0.5,
       "hi": 3,
       "ok": true
@@ -385,21 +385,21 @@
     },
     {
       "id": "exp.helheim.L10.materials_per_encounter_vs_delve",
-      "value": 1.4423,
+      "value": 1.7688,
       "lo": 1.15,
       "hi": 2.5,
       "ok": true
     },
     {
       "id": "exp.helheim.L10.xp_per_encounter_vs_delve",
-      "value": 1.6525,
+      "value": 1.9584,
       "lo": 1.15,
       "hi": 2.5,
       "ok": true
     },
     {
       "id": "exp.helheim.L10.silver_return_on_provisions",
-      "value": 1.0912,
+      "value": 1.3009,
       "lo": 0.5,
       "hi": 3,
       "ok": true
@@ -420,21 +420,21 @@
     },
     {
       "id": "exp.midgard.L20.materials_per_encounter_vs_delve",
-      "value": 1.591,
+      "value": 1.8943,
       "lo": 1.15,
       "hi": 2.5,
       "ok": true
     },
     {
       "id": "exp.midgard.L20.xp_per_encounter_vs_delve",
-      "value": 1.5895,
+      "value": 1.8871,
       "lo": 1.15,
       "hi": 2.5,
       "ok": true
     },
     {
       "id": "exp.midgard.L20.silver_return_on_provisions",
-      "value": 1.7851,
+      "value": 2.1384,
       "lo": 0.5,
       "hi": 3,
       "ok": true
@@ -455,28 +455,28 @@
     },
     {
       "id": "exp.asgard.L20.materials_per_encounter_vs_delve",
-      "value": 1.5534,
+      "value": 1.8388,
       "lo": 1.15,
       "hi": 2.5,
       "ok": true
     },
     {
       "id": "exp.asgard.L20.xp_per_encounter_vs_delve",
-      "value": 1.5449,
+      "value": 1.8288,
       "lo": 1.15,
       "hi": 2.5,
       "ok": true
     },
     {
       "id": "exp.asgard.L20.silver_return_on_provisions",
-      "value": 1.4297,
+      "value": 1.7071,
       "lo": 0.5,
       "hi": 3,
       "ok": true
     },
     {
       "id": "exp.asgard.L20.items_per_completed_expedition",
-      "value": 1.9179,
+      "value": 1.8955,
       "lo": 1,
       "hi": 12,
       "ok": true
@@ -490,28 +490,28 @@
     },
     {
       "id": "exp.helheim.L20.materials_per_encounter_vs_delve",
-      "value": 1.6071,
+      "value": 1.921,
       "lo": 1.15,
       "hi": 2.5,
       "ok": true
     },
     {
       "id": "exp.helheim.L20.xp_per_encounter_vs_delve",
-      "value": 1.6086,
+      "value": 1.9175,
       "lo": 1.15,
       "hi": 2.5,
       "ok": true
     },
     {
       "id": "exp.helheim.L20.silver_return_on_provisions",
-      "value": 1.8166,
+      "value": 2.1843,
       "lo": 0.5,
       "hi": 3,
       "ok": true
     },
     {
       "id": "exp.helheim.L20.items_per_completed_expedition",
-      "value": 2.2319,
+      "value": 2.2295,
       "lo": 1,
       "hi": 12,
       "ok": true
@@ -525,21 +525,21 @@
     },
     {
       "id": "exp.midgard.L30.materials_per_encounter_vs_delve",
-      "value": 1.4189,
+      "value": 1.7071,
       "lo": 1.15,
       "hi": 2.5,
       "ok": true
     },
     {
       "id": "exp.midgard.L30.xp_per_encounter_vs_delve",
-      "value": 1.5463,
+      "value": 1.8254,
       "lo": 1.15,
       "hi": 2.5,
       "ok": true
     },
     {
       "id": "exp.midgard.L30.silver_return_on_provisions",
-      "value": 2.4154,
+      "value": 2.8616,
       "lo": 0.5,
       "hi": 3,
       "ok": true
@@ -560,21 +560,21 @@
     },
     {
       "id": "exp.asgard.L30.materials_per_encounter_vs_delve",
-      "value": 1.3545,
+      "value": 1.6263,
       "lo": 1.15,
       "hi": 2.5,
       "ok": true
     },
     {
       "id": "exp.asgard.L30.xp_per_encounter_vs_delve",
-      "value": 1.4779,
+      "value": 1.736,
       "lo": 1.15,
       "hi": 2.5,
       "ok": true
     },
     {
       "id": "exp.asgard.L30.silver_return_on_provisions",
-      "value": 1.7389,
+      "value": 2.0481,
       "lo": 0.5,
       "hi": 3,
       "ok": true
@@ -595,28 +595,28 @@
     },
     {
       "id": "exp.helheim.L30.materials_per_encounter_vs_delve",
-      "value": 1.4319,
+      "value": 1.725,
       "lo": 1.15,
       "hi": 2.5,
       "ok": true
     },
     {
       "id": "exp.helheim.L30.xp_per_encounter_vs_delve",
-      "value": 1.5591,
+      "value": 1.8462,
       "lo": 1.15,
       "hi": 2.5,
       "ok": true
     },
     {
       "id": "exp.helheim.L30.silver_return_on_provisions",
-      "value": 2.4521,
+      "value": 2.9145,
       "lo": 0.5,
       "hi": 3,
       "ok": true
     },
     {
       "id": "exp.helheim.L30.items_per_completed_expedition",
-      "value": 2.2132,
+      "value": 2.2163,
       "lo": 1,
       "hi": 12,
       "ok": true
@@ -659,20 +659,20 @@
     {
       "id": "v2.well_built.L20.deep_wipe",
       "value": 0.0012,
-      "lo": 0.05,
+      "lo": 0,
       "hi": 0.7,
-      "ok": false
+      "ok": true
     },
     {
       "id": "v2.well_built.L20.deep_over_nearest_expected_silver",
-      "value": 2.1243,
+      "value": 2.388,
       "lo": 1,
       "hi": 8,
       "ok": true
     },
     {
       "id": "v2.well_built.L20.deep_over_nearest_expected_xp",
-      "value": 2.2028,
+      "value": 2.4816,
       "lo": 1,
       "hi": 8,
       "ok": true
@@ -693,14 +693,14 @@
     },
     {
       "id": "v2.well_built.L30.deep_over_nearest_expected_silver",
-      "value": 1.7296,
+      "value": 1.9288,
       "lo": 1,
       "hi": 8,
       "ok": true
     },
     {
       "id": "v2.well_built.L30.deep_over_nearest_expected_xp",
-      "value": 1.7823,
+      "value": 1.9953,
       "lo": 1,
       "hi": 8,
       "ok": true
@@ -721,17 +721,17 @@
     },
     {
       "id": "v2.well_built.L40.deep_over_nearest_expected_silver",
-      "value": 0.9064,
+      "value": 1.0138,
       "lo": 1,
       "hi": 8,
-      "ok": false
+      "ok": true
     },
     {
       "id": "v2.well_built.L40.deep_over_nearest_expected_xp",
-      "value": 0.9358,
+      "value": 1.0491,
       "lo": 1,
       "hi": 8,
-      "ok": false
+      "ok": true
     },
     {
       "id": "v2.badly_built.midgard.L10.nearest_wipe",
@@ -860,9 +860,5 @@
       "ok": true
     }
   ],
-  "failed": [
-    "v2.well_built.L20.deep_wipe",
-    "v2.well_built.L40.deep_over_nearest_expected_silver",
-    "v2.well_built.L40.deep_over_nearest_expected_xp"
-  ]
+  "failed": []
 }

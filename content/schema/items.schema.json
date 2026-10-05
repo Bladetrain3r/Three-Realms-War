@@ -204,7 +204,8 @@
               "plain",
               "fine",
               "runed",
-              "heirloom"
+              "heirloom",
+              "legendary"
             ]
           },
           "name": {
@@ -228,6 +229,9 @@
           },
           "setAllowed": {
             "type": "boolean"
+          },
+          "fixedLines": {
+            "type": "boolean"
           }
         },
         "required": [
@@ -240,8 +244,8 @@
         ],
         "additionalProperties": false
       },
-      "minItems": 4,
-      "maxItems": 4,
+      "minItems": 5,
+      "maxItems": 5,
       "uniqueItems": true
     },
     "lines": {
@@ -416,8 +420,8 @@
         "minimum": 1,
         "maximum": 10000
       },
-      "minItems": 5,
-      "maxItems": 5
+      "minItems": 7,
+      "maxItems": 7
     },
     "upgradeCost": {
       "type": "object",
@@ -436,12 +440,24 @@
           "type": "integer",
           "minimum": 0,
           "maximum": 10
+        },
+        "highStarFrom": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "highStarMul": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
         }
       },
       "required": [
         "commonBase",
         "commonDivisor",
-        "rareFromStar"
+        "rareFromStar",
+        "highStarFrom",
+        "highStarMul"
       ],
       "additionalProperties": false
     },
@@ -501,6 +517,36 @@
               "type": "integer",
               "minimum": 0,
               "maximum": 100000
+            }
+          },
+          "required": [
+            "fine",
+            "runed"
+          ],
+          "additionalProperties": false
+        },
+        "setTagBp": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
+        },
+        "expeditionTierWeights": {
+          "type": "object",
+          "properties": {
+            "plain": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000
+            },
+            "fine": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000
+            },
+            "runed": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000
             },
             "heirloom": {
               "type": "integer",
@@ -509,22 +555,40 @@
             }
           },
           "required": [
+            "plain",
             "fine",
             "runed",
             "heirloom"
           ],
           "additionalProperties": false
         },
-        "setTagBp": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 10000
+        "expeditionBossTierWeights": {
+          "type": "object",
+          "properties": {
+            "runed": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000
+            },
+            "heirloom": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000
+            }
+          },
+          "required": [
+            "runed",
+            "heirloom"
+          ],
+          "additionalProperties": false
         }
       },
       "required": [
         "encounterBp",
         "tierWeights",
         "bossTierWeights",
+        "expeditionTierWeights",
+        "expeditionBossTierWeights",
         "setTagBp"
       ],
       "additionalProperties": false

@@ -139,7 +139,7 @@
     "floorsBase": 2,
     "floorsDiv": 4,
     "encountersPerFloor": 2,
-    "distBp": 300,
+    "distBp": 700,
     "floorBp": 2500,
     "deathSaveBp": 4000,
     "reviveInjury": 2,
