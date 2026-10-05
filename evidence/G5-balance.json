@@ -1,7 +1,7 @@
 {
   "thresholds": {
     "file": "checks/balance.yaml",
-    "section": "expedition"
+    "section": "expedition + expedition_v2"
   },
   "perCell": 800,
   "sets": [],
@@ -246,28 +246,66 @@
       }
     }
   ],
+  "wellBuilt": [
+    {
+      "level": 20,
+      "nearest": {
+        "n": 801,
+        "wiped": 0,
+        "died": 1,
+        "embarked": 3204,
+        "silver": 314170,
+        "xp": 1003452
+      },
+      "deep": {
+        "n": 801,
+        "wiped": 1,
+        "died": 39,
+        "embarked": 3204,
+        "silver": 667386,
+        "xp": 2210427
+      }
+    },
+    {
+      "level": 30,
+      "nearest": {
+        "n": 801,
+        "wiped": 4,
+        "died": 105,
+        "embarked": 3204,
+        "silver": 442005,
+        "xp": 1446601
+      },
+      "deep": {
+        "n": 801,
+        "wiped": 119,
+        "died": 773,
+        "embarked": 3204,
+        "silver": 764481,
+        "xp": 2578277
+      }
+    },
+    {
+      "level": 40,
+      "nearest": {
+        "n": 801,
+        "wiped": 75,
+        "died": 600,
+        "embarked": 3204,
+        "silver": 491807,
+        "xp": 1629322
+      },
+      "deep": {
+        "n": 801,
+        "wiped": 463,
+        "died": 2180,
+        "embarked": 3204,
+        "silver": 445754,
+        "xp": 1524663
+      }
+    }
+  ],
   "checks": [
-    {
-      "id": "exp.midgard.L10.hero_death_per_embarked_hero",
-      "value": 0.7059,
-      "lo": 0.01,
-      "hi": 0.2,
-      "ok": false
-    },
-    {
-      "id": "exp.midgard.L10.wipe_rate",
-      "value": 0.6363,
-      "lo": 0.01,
-      "hi": 0.25,
-      "ok": false
-    },
-    {
-      "id": "exp.midgard.L10.hero_death_per_won_encounter",
-      "value": 0.0605,
-      "lo": 0.002,
-      "hi": 0.05,
-      "ok": false
-    },
     {
       "id": "exp.midgard.L10.starvation_rate",
       "value": 0,
@@ -302,27 +340,6 @@
       "lo": 1,
       "hi": 12,
       "ok": true
-    },
-    {
-      "id": "exp.asgard.L10.hero_death_per_embarked_hero",
-      "value": 0.8741,
-      "lo": 0.01,
-      "hi": 0.2,
-      "ok": false
-    },
-    {
-      "id": "exp.asgard.L10.wipe_rate",
-      "value": 0.83,
-      "lo": 0.01,
-      "hi": 0.25,
-      "ok": false
-    },
-    {
-      "id": "exp.asgard.L10.hero_death_per_won_encounter",
-      "value": 0.0752,
-      "lo": 0.002,
-      "hi": 0.05,
-      "ok": false
     },
     {
       "id": "exp.asgard.L10.starvation_rate",
@@ -360,27 +377,6 @@
       "ok": true
     },
     {
-      "id": "exp.helheim.L10.hero_death_per_embarked_hero",
-      "value": 0.5831,
-      "lo": 0.01,
-      "hi": 0.2,
-      "ok": false
-    },
-    {
-      "id": "exp.helheim.L10.wipe_rate",
-      "value": 0.49,
-      "lo": 0.01,
-      "hi": 0.25,
-      "ok": false
-    },
-    {
-      "id": "exp.helheim.L10.hero_death_per_won_encounter",
-      "value": 0.0514,
-      "lo": 0.002,
-      "hi": 0.05,
-      "ok": false
-    },
-    {
       "id": "exp.helheim.L10.starvation_rate",
       "value": 0,
       "lo": 0,
@@ -414,27 +410,6 @@
       "lo": 1,
       "hi": 12,
       "ok": true
-    },
-    {
-      "id": "exp.midgard.L20.hero_death_per_embarked_hero",
-      "value": 0.6831,
-      "lo": 0.01,
-      "hi": 0.2,
-      "ok": false
-    },
-    {
-      "id": "exp.midgard.L20.wipe_rate",
-      "value": 0.5863,
-      "lo": 0.01,
-      "hi": 0.25,
-      "ok": false
-    },
-    {
-      "id": "exp.midgard.L20.hero_death_per_won_encounter",
-      "value": 0.0642,
-      "lo": 0.002,
-      "hi": 0.05,
-      "ok": false
     },
     {
       "id": "exp.midgard.L20.starvation_rate",
@@ -472,27 +447,6 @@
       "ok": true
     },
     {
-      "id": "exp.asgard.L20.hero_death_per_embarked_hero",
-      "value": 0.8828,
-      "lo": 0.01,
-      "hi": 0.2,
-      "ok": false
-    },
-    {
-      "id": "exp.asgard.L20.wipe_rate",
-      "value": 0.8325,
-      "lo": 0.01,
-      "hi": 0.25,
-      "ok": false
-    },
-    {
-      "id": "exp.asgard.L20.hero_death_per_won_encounter",
-      "value": 0.0853,
-      "lo": 0.002,
-      "hi": 0.05,
-      "ok": false
-    },
-    {
       "id": "exp.asgard.L20.starvation_rate",
       "value": 0,
       "lo": 0,
@@ -526,27 +480,6 @@
       "lo": 1,
       "hi": 12,
       "ok": true
-    },
-    {
-      "id": "exp.helheim.L20.hero_death_per_embarked_hero",
-      "value": 0.6,
-      "lo": 0.01,
-      "hi": 0.2,
-      "ok": false
-    },
-    {
-      "id": "exp.helheim.L20.wipe_rate",
-      "value": 0.4825,
-      "lo": 0.01,
-      "hi": 0.25,
-      "ok": false
-    },
-    {
-      "id": "exp.helheim.L20.hero_death_per_won_encounter",
-      "value": 0.0557,
-      "lo": 0.002,
-      "hi": 0.05,
-      "ok": false
     },
     {
       "id": "exp.helheim.L20.starvation_rate",
@@ -584,27 +517,6 @@
       "ok": true
     },
     {
-      "id": "exp.midgard.L30.hero_death_per_embarked_hero",
-      "value": 0.7738,
-      "lo": 0.01,
-      "hi": 0.2,
-      "ok": false
-    },
-    {
-      "id": "exp.midgard.L30.wipe_rate",
-      "value": 0.69,
-      "lo": 0.01,
-      "hi": 0.25,
-      "ok": false
-    },
-    {
-      "id": "exp.midgard.L30.hero_death_per_won_encounter",
-      "value": 0.0722,
-      "lo": 0.002,
-      "hi": 0.05,
-      "ok": false
-    },
-    {
       "id": "exp.midgard.L30.starvation_rate",
       "value": 0,
       "lo": 0,
@@ -640,27 +552,6 @@
       "ok": true
     },
     {
-      "id": "exp.asgard.L30.hero_death_per_embarked_hero",
-      "value": 0.9488,
-      "lo": 0.01,
-      "hi": 0.2,
-      "ok": false
-    },
-    {
-      "id": "exp.asgard.L30.wipe_rate",
-      "value": 0.9288,
-      "lo": 0.01,
-      "hi": 0.25,
-      "ok": false
-    },
-    {
-      "id": "exp.asgard.L30.hero_death_per_won_encounter",
-      "value": 0.0858,
-      "lo": 0.002,
-      "hi": 0.05,
-      "ok": false
-    },
-    {
       "id": "exp.asgard.L30.starvation_rate",
       "value": 0,
       "lo": 0,
@@ -694,27 +585,6 @@
       "lo": 1,
       "hi": 12,
       "ok": true
-    },
-    {
-      "id": "exp.helheim.L30.hero_death_per_embarked_hero",
-      "value": 0.7072,
-      "lo": 0.01,
-      "hi": 0.2,
-      "ok": false
-    },
-    {
-      "id": "exp.helheim.L30.wipe_rate",
-      "value": 0.6012,
-      "lo": 0.01,
-      "hi": 0.25,
-      "ok": false
-    },
-    {
-      "id": "exp.helheim.L30.hero_death_per_won_encounter",
-      "value": 0.0672,
-      "lo": 0.002,
-      "hi": 0.05,
-      "ok": false
     },
     {
       "id": "exp.helheim.L30.starvation_rate",
@@ -778,35 +648,221 @@
       "lo": 1.1,
       "hi": 1.3,
       "ok": true
+    },
+    {
+      "id": "v2.well_built.L20.nearest_wipe",
+      "value": 0,
+      "lo": 0,
+      "hi": 0.1,
+      "ok": true
+    },
+    {
+      "id": "v2.well_built.L20.deep_wipe",
+      "value": 0.0012,
+      "lo": 0.05,
+      "hi": 0.7,
+      "ok": false
+    },
+    {
+      "id": "v2.well_built.L20.deep_over_nearest_expected_silver",
+      "value": 2.1243,
+      "lo": 1,
+      "hi": 8,
+      "ok": true
+    },
+    {
+      "id": "v2.well_built.L20.deep_over_nearest_expected_xp",
+      "value": 2.2028,
+      "lo": 1,
+      "hi": 8,
+      "ok": true
+    },
+    {
+      "id": "v2.well_built.L30.nearest_wipe",
+      "value": 0.005,
+      "lo": 0,
+      "hi": 0.2,
+      "ok": true
+    },
+    {
+      "id": "v2.well_built.L30.deep_wipe",
+      "value": 0.1486,
+      "lo": 0.05,
+      "hi": 0.7,
+      "ok": true
+    },
+    {
+      "id": "v2.well_built.L30.deep_over_nearest_expected_silver",
+      "value": 1.7296,
+      "lo": 1,
+      "hi": 8,
+      "ok": true
+    },
+    {
+      "id": "v2.well_built.L30.deep_over_nearest_expected_xp",
+      "value": 1.7823,
+      "lo": 1,
+      "hi": 8,
+      "ok": true
+    },
+    {
+      "id": "v2.well_built.L40.nearest_wipe",
+      "value": 0.0936,
+      "lo": 0,
+      "hi": 0.35,
+      "ok": true
+    },
+    {
+      "id": "v2.well_built.L40.deep_wipe",
+      "value": 0.578,
+      "lo": 0.05,
+      "hi": 0.7,
+      "ok": true
+    },
+    {
+      "id": "v2.well_built.L40.deep_over_nearest_expected_silver",
+      "value": 0.9064,
+      "lo": 1,
+      "hi": 8,
+      "ok": false
+    },
+    {
+      "id": "v2.well_built.L40.deep_over_nearest_expected_xp",
+      "value": 0.9358,
+      "lo": 1,
+      "hi": 8,
+      "ok": false
+    },
+    {
+      "id": "v2.badly_built.midgard.L10.nearest_wipe",
+      "value": 0.6363,
+      "lo": 0.35,
+      "hi": 0.97,
+      "ok": true
+    },
+    {
+      "id": "v2.badly_built.midgard.L10.hero_death_per_embarked_hero",
+      "value": 0.7059,
+      "lo": 0.25,
+      "hi": 0.97,
+      "ok": true
+    },
+    {
+      "id": "v2.badly_built.asgard.L10.nearest_wipe",
+      "value": 0.83,
+      "lo": 0.35,
+      "hi": 0.97,
+      "ok": true
+    },
+    {
+      "id": "v2.badly_built.asgard.L10.hero_death_per_embarked_hero",
+      "value": 0.8741,
+      "lo": 0.25,
+      "hi": 0.97,
+      "ok": true
+    },
+    {
+      "id": "v2.badly_built.helheim.L10.nearest_wipe",
+      "value": 0.49,
+      "lo": 0.35,
+      "hi": 0.97,
+      "ok": true
+    },
+    {
+      "id": "v2.badly_built.helheim.L10.hero_death_per_embarked_hero",
+      "value": 0.5831,
+      "lo": 0.25,
+      "hi": 0.97,
+      "ok": true
+    },
+    {
+      "id": "v2.badly_built.midgard.L20.nearest_wipe",
+      "value": 0.5863,
+      "lo": 0.35,
+      "hi": 0.97,
+      "ok": true
+    },
+    {
+      "id": "v2.badly_built.midgard.L20.hero_death_per_embarked_hero",
+      "value": 0.6831,
+      "lo": 0.25,
+      "hi": 0.97,
+      "ok": true
+    },
+    {
+      "id": "v2.badly_built.asgard.L20.nearest_wipe",
+      "value": 0.8325,
+      "lo": 0.35,
+      "hi": 0.97,
+      "ok": true
+    },
+    {
+      "id": "v2.badly_built.asgard.L20.hero_death_per_embarked_hero",
+      "value": 0.8828,
+      "lo": 0.25,
+      "hi": 0.97,
+      "ok": true
+    },
+    {
+      "id": "v2.badly_built.helheim.L20.nearest_wipe",
+      "value": 0.4825,
+      "lo": 0.35,
+      "hi": 0.97,
+      "ok": true
+    },
+    {
+      "id": "v2.badly_built.helheim.L20.hero_death_per_embarked_hero",
+      "value": 0.6,
+      "lo": 0.25,
+      "hi": 0.97,
+      "ok": true
+    },
+    {
+      "id": "v2.badly_built.midgard.L30.nearest_wipe",
+      "value": 0.69,
+      "lo": 0.35,
+      "hi": 0.97,
+      "ok": true
+    },
+    {
+      "id": "v2.badly_built.midgard.L30.hero_death_per_embarked_hero",
+      "value": 0.7738,
+      "lo": 0.25,
+      "hi": 0.97,
+      "ok": true
+    },
+    {
+      "id": "v2.badly_built.asgard.L30.nearest_wipe",
+      "value": 0.9288,
+      "lo": 0.35,
+      "hi": 0.97,
+      "ok": true
+    },
+    {
+      "id": "v2.badly_built.asgard.L30.hero_death_per_embarked_hero",
+      "value": 0.9488,
+      "lo": 0.25,
+      "hi": 0.97,
+      "ok": true
+    },
+    {
+      "id": "v2.badly_built.helheim.L30.nearest_wipe",
+      "value": 0.6012,
+      "lo": 0.35,
+      "hi": 0.97,
+      "ok": true
+    },
+    {
+      "id": "v2.badly_built.helheim.L30.hero_death_per_embarked_hero",
+      "value": 0.7072,
+      "lo": 0.25,
+      "hi": 0.97,
+      "ok": true
     }
   ],
   "failed": [
-    "exp.midgard.L10.hero_death_per_embarked_hero",
-    "exp.midgard.L10.wipe_rate",
-    "exp.midgard.L10.hero_death_per_won_encounter",
-    "exp.asgard.L10.hero_death_per_embarked_hero",
-    "exp.asgard.L10.wipe_rate",
-    "exp.asgard.L10.hero_death_per_won_encounter",
-    "exp.helheim.L10.hero_death_per_embarked_hero",
-    "exp.helheim.L10.wipe_rate",
-    "exp.helheim.L10.hero_death_per_won_encounter",
-    "exp.midgard.L20.hero_death_per_embarked_hero",
-    "exp.midgard.L20.wipe_rate",
-    "exp.midgard.L20.hero_death_per_won_encounter",
-    "exp.asgard.L20.hero_death_per_embarked_hero",
-    "exp.asgard.L20.wipe_rate",
-    "exp.asgard.L20.hero_death_per_won_encounter",
-    "exp.helheim.L20.hero_death_per_embarked_hero",
-    "exp.helheim.L20.wipe_rate",
-    "exp.helheim.L20.hero_death_per_won_encounter",
-    "exp.midgard.L30.hero_death_per_embarked_hero",
-    "exp.midgard.L30.wipe_rate",
-    "exp.midgard.L30.hero_death_per_won_encounter",
-    "exp.asgard.L30.hero_death_per_embarked_hero",
-    "exp.asgard.L30.wipe_rate",
-    "exp.asgard.L30.hero_death_per_won_encounter",
-    "exp.helheim.L30.hero_death_per_embarked_hero",
-    "exp.helheim.L30.wipe_rate",
-    "exp.helheim.L30.hero_death_per_won_encounter"
+    "v2.well_built.L20.deep_wipe",
+    "v2.well_built.L40.deep_over_nearest_expected_silver",
+    "v2.well_built.L40.deep_over_nearest_expected_xp"
   ]
 }

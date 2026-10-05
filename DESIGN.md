@@ -1075,8 +1075,8 @@ Random choices use `deriveSeed(masterSeed, counter)` and then increment `counter
   (j) Replays: a floor is a replay of kind `floor` (inputs realm, level, boss, party, heroHp) verifiable like a delve; event opcode 14,
   `DEATH_SAVE [14, slot, 0 revived | 1 died | 2 Thread]`, is added to format version 1. (k) The save's `expedition` key: realm, level, seed, provisions,
   bought, position, `seen` (a 0/1 string, one per cell), party, hp (-1 = full), floors cleared per site, current site, pack, steps; the map is
-  regenerated from the seed and never stored. WE-24 to WE-26 are now checked by the sim. **Status: the balance bounds written first for
-  expeditions are NOT met by the design as written** (wipe rate 0.48 to 0.93 against 0.01 to 0.25; `evidence/G5.md`, `reports/BLOCKED-G5.md`).
+  regenerated from the seed and never stored. WE-24 to WE-26 are now checked by the sim. **Status (updated 2026-10-05): against the bounds
+  re-baselined with Ziggy's word the design as written is at 76 of 79; two decisions are with Ziggy** (`evidence/G5.md`, `reports/BLOCKED-G5.md`).
 - **0.8 (2026-10-05, Ziggy's decisions after the second playtest):** (1) **Every recruit is level 1** (7.5; content `recruit.startLevel` 1 replaces `levelNum` and
   `levelDen`), so a recruit costs 120 hacksilver (360 for a rare class) and must be levelled. (2) **Rest xp** (11.1) reaches only benched healthy
   heroes within 10 levels of the party's highest-level hero (`progress.restXpGap`); without this a level-1 recruit would have reached level 40

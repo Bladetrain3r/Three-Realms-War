@@ -2,17 +2,21 @@
 // It uses only the public rules layer, exactly as the client does.
 import { newGame, startExpedition, move, enterFloor, retreat, returnHome, expeditionMap, moveCost } from '../sim/index.js';
 
-// A save with the four starting classes at hero level E, wearing Runed gear at item level E, 3 stars, no bonus lines (the ladder's "runed" row).
-// withLines: give each item the two bonus lines a Runed item must carry to be a valid save (the balance runs leave them off).
-export function runedSave(content, E, seed, withLines = false) {
+// A save with the four starting classes at `heroLevel`, wearing a full set of `tier` gear at `star` stars and item level `ilvl`, no bonus lines
+// (the balance ladder's rows) unless withLines (a valid save needs the lines the tier carries). The unlock level is raised to cover E.
+export function builtSave(content, { heroLevel, tier, star, ilvl, withLines = false }, seed) {
   const s = newGame(content, seed, { savedAt: '', build: 'bot' });
-  for (const h of s.heroes) h.level = E;
-  const worn = new Set(s.heroes.flatMap((h) => Object.values(h.slots)));
-  for (const it of s.items) if (worn.has(it.id)) { it.tier = 'runed'; it.ilvl = E; it.star = 3; if (withLines) it.lines = [[0, 500], [1, 500]]; }
-  for (const r of content.realms) s.unlocked[r.id] = Math.max(s.unlocked[r.id], E);
+  for (const h of s.heroes) h.level = heroLevel;
+  const worn = new Set(s.heroes.flatMap((h) => Object.values(h.slots))), lines = { runed: [[0, 500], [1, 500]], heirloom: [[0, 500], [1, 500], [2, 500]], fine: [[0, 500]], plain: [] }[tier];
+  for (const it of s.items) if (worn.has(it.id)) { it.tier = tier; it.ilvl = ilvl; it.star = star; if (withLines) it.lines = lines.map((l) => l.slice()); }
+  for (const r of content.realms) s.unlocked[r.id] = Math.max(s.unlocked[r.id], ilvl, 50);
   s.currency.hacksilver = 1000000;
   return s;
 }
+// The G5 v1 measuring party: hero level = E, 3-star Runed gear at item level E.
+export const runedSave = (content, E, seed, withLines = false) => builtSave(content, { heroLevel: E, tier: 'runed', star: 3, ilvl: E, withLines }, seed);
+// The well-built party of expedition_v2: level-50 heroes in 5-star Heirloom gear at item level E.
+export const wellBuiltSave = (content, E, seed, withLines = false) => builtSave(content, { heroLevel: 50, tier: 'heirloom', star: 5, ilvl: E, withLines }, seed);
 
 // Cheapest path (Dijkstra over move costs, ties broken by cell index) from (sx, sy) to (tx, ty): array of [x, y] steps, and its cost.
 export function pathTo(map, content, sx, sy, tx, ty) {

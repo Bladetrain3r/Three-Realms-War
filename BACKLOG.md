@@ -2,6 +2,15 @@
 
 Not a plan. Nothing here is built unless a gate or Ziggy says so. Ziggy's own words are quoted where they carry the intent.
 
+## Decided by Ziggy on 2026-10-05, not yet built (the order I proposed: items and drops, then bosses)
+- **Delves drop at most Runed items; Heirloom only from expeditions** ("otherwise there's no reason to risk an expedition when you can just 50x delve"). This is item quality only, not silver, xp or materials. Re-run the G3 pacing checks when built.
+- **Legendary encounters**: five single-monster multi-phase bosses (Jormungandr, Fenris, Ymir, Odin, Beowulf), one per 10 levels, found only in expedition encounters at depth 5 or more. Each boss has **one fixed item** and a **special icon on the expedition map** for the encounter; items are unique per save, a mid and late game goal. Legendary items: 1.5 x the Heirloom main stats, a fixed secondary list, 7 stars (the 7th very low odds and very expensive). Needs a Legendary tier, star odds for stars 6 and 7, boss phases in the combat engine (a PHASE event in the replay), and a rule for placing the icon. The five items are to be designed with the bosses (two weapons, armour, helm, charm across the five).
+- **Paragon stars**: three per stat (18 per hero); each star multiplies the **level-up increment** of that stat by about +11%, only for levels gained after the star was bought (not retroactive: three stars at level 10 give +33% on all 40 later level-ups, at level 40 only the last ten, at 50 nothing). Costs realm-specific rare resources as well as being a drop; drops only in expeditions, rare. A hero with all 18 stars gets one class bonus (an assassin +5% crit, a healer +5% healing strength, ...). Needs per-stat bookkeeping of the level each star was bought at.
+- **The late game question** (Ziggy: "we've got no real late game just numbers go up, which is a question we probably want to answer now"): open. Legendary bosses, the 7th star, paragon stars and class passives are the candidate answers; none is a loop yet.
+
+## Done on 2026-10-05
+Every recruit level 1; rest xp only within 10 levels of the party's best; paid training (100 x level, up to 40); the activity timer; expedition bounds re-baselined (well built / badly built).
+
 ## Open from the G5 build
 - `reports/BLOCKED-G5.md`: expedition lethality against the bounds written first; seven build-time decisions to confirm.
 

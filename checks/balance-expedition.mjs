@@ -1,11 +1,11 @@
 // The G5 balance runner: plays whole expeditions with the bot (checks/expedition-bot.mjs) and evaluates the `expedition:` bounds of
 // checks/balance.yaml. Usage:
-//   node checks/balance-expedition.mjs [--write evidence/G5-balance.json] [--per-cell N] [--levels 10,20] [--set tables.expedition.siteLevelDiv=6 ...]
+//   node checks/balance-expedition.mjs [--write evidence/G5-balance.json] [--per-cell N] [--baseline v1|v2 (default v2)] [--levels 10,20] [--set tables.expedition.siteLevelDiv=6 ...]
 // --set changes a content table for an experiment (never for a real run). The report holds no time or date, so reruns are byte-identical.
 import { writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { loadAll } from './balance-lib.mjs';
-import { runedSave, runExpedition } from './expedition-bot.mjs';
+import { runedSave, wellBuiltSave, runExpedition } from './expedition-bot.mjs';
 import { indexContent } from '../sim/content.js';
 import { encounterRewards } from '../sim/progress.js';
 
@@ -60,7 +60,47 @@ export function runExpeditions(ctx, perCell) {
   return { cells, depth };
 }
 
-export function checkExpeditions(res, ctx) {
+// expedition_v2: the well-built party at the nearest site and at a deep one (12 or more cells away), pooled over realms per level.
+export function runWellBuilt(ctx, perCell) {
+  const { content, B } = ctx, W = B.expedition_v2.well_built, out = [];
+  for (const level of W.levels) {
+    const acc = { level, nearest: { n: 0, wiped: 0, died: 0, embarked: 0, silver: 0, xp: 0 }, deep: { n: 0, wiped: 0, died: 0, embarked: 0, silver: 0, xp: 0 } };
+    for (const cls of ['nearest', 'deep']) for (const realm of content.realms.map((r) => r.id)) for (let i = 0; i < perCell; i++) {
+      const seed = B.run.seed_base + 9000000 + level * 100000 + realm.length * 1000 + (cls === 'deep' ? 500 : 0) + i;
+      const { record: r } = runExpedition(wellBuiltSave(content, level, seed), content, { realm, level, choose: CHOOSERS[cls] });
+      if (r.noSite) continue;
+      const a = acc[cls]; a.n++; a.died += r.died; a.embarked += r.embarked; if (r.wiped) a.wiped++;
+      if (r.banked && r.pack && !r.starved) { a.silver += r.pack.hacksilver; a.xp += r.pack.xp; }
+    }
+    out.push(acc);
+  }
+  return out;
+}
+
+export function checkV2(res, ctx) {
+  const { B } = ctx, V = B.expedition_v2, out = [];
+  const add = (id, value, [lo, hi]) => out.push({ id, value: Number.isFinite(value) ? Math.round(value * 10000) / 10000 : null, lo, hi, ok: Number.isFinite(value) && value >= lo && value <= hi });
+  for (const w of res.wellBuilt) {
+    add(`v2.well_built.L${w.level}.nearest_wipe`, w.nearest.wiped / w.nearest.n, V.well_built.nearest_wipe[`L${w.level}`]);
+    add(`v2.well_built.L${w.level}.deep_wipe`, w.deep.wiped / w.deep.n, V.well_built.deep_wipe);
+    add(`v2.well_built.L${w.level}.deep_over_nearest_expected_silver`, (w.deep.silver / w.deep.n) / (w.nearest.silver / w.nearest.n), V.well_built.deep_over_nearest_expected_silver);
+    add(`v2.well_built.L${w.level}.deep_over_nearest_expected_xp`, (w.deep.xp / w.deep.n) / (w.nearest.xp / w.nearest.n), V.well_built.deep_over_nearest_expected_xp);
+  }
+  for (const c of res.cells) {
+    add(`v2.badly_built.${c.realm}.L${c.level}.nearest_wipe`, c.wiped / c.runs, V.badly_built.nearest_wipe);
+    add(`v2.badly_built.${c.realm}.L${c.level}.hero_death_per_embarked_hero`, c.died / c.embarked, V.badly_built.hero_death_per_embarked_hero);
+  }
+  return out;
+}
+
+const V1_LETHALITY = ['hero_death_per_embarked_hero', 'wipe_rate', 'hero_death_per_won_encounter'];
+export function checkExpeditions(res, ctx, baseline = 'v2') {
+  const all = checkV1(res, ctx);
+  if (baseline === 'v1') return all;
+  return [...all.filter((c) => !V1_LETHALITY.some((k) => c.id.endsWith(`.${k}`))), ...checkV2(res, ctx)];
+}
+
+function checkV1(res, ctx) {
   const { content, B } = ctx, E = B.expedition, out = [];
   const add = (id, value, [lo, hi]) => out.push({ id, value: Number.isFinite(value) ? Math.round(value * 10000) / 10000 : null, lo, hi, ok: Number.isFinite(value) && value >= lo && value <= hi });
   for (const c of res.cells) {
@@ -86,8 +126,10 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const sets = process.argv.flatMap((a, i) => (a === '--set' ? [process.argv[i + 1]] : []));
   const ctx = withSets(loadAll(), sets), perCell = Number(arg('--per-cell') || 800);
   if (arg('--levels')) ctx.B.expedition.levels = arg('--levels').split(',').map(Number); // experiments only
-  const res = runExpeditions(ctx, perCell), checks = checkExpeditions(res, ctx), bad = checks.filter((c) => !c.ok);
-  const report = { thresholds: { file: 'checks/balance.yaml', section: 'expedition' }, perCell, sets, cells: res.cells, depth: res.depth, checks, failed: bad.map((c) => c.id) };
+  const baseline = arg('--baseline') || 'v2', res = runExpeditions(ctx, perCell);
+  if (baseline !== 'v1') res.wellBuilt = runWellBuilt(ctx, Math.max(50, Math.round(perCell / 3)));
+  const checks = checkExpeditions(res, ctx, baseline), bad = checks.filter((c) => !c.ok);
+  const report = { thresholds: { file: 'checks/balance.yaml', section: baseline === 'v1' ? 'expedition' : 'expedition + expedition_v2' }, perCell, sets, cells: res.cells, depth: res.depth, wellBuilt: res.wellBuilt, checks, failed: bad.map((c) => c.id) };
   if (arg('--write')) writeFileSync(arg('--write'), JSON.stringify(report, null, 2) + '\n');
   console.log(`${checks.length} checks, ${checks.length - bad.length} in bounds, ${bad.length} out of bounds${sets.length ? ` (with ${sets.join(', ')})` : ''}`);
   for (const c of bad) console.log(`  OUT  ${c.id}: ${c.value}  (bound ${c.lo} .. ${c.hi})`);
