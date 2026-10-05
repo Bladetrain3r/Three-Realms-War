@@ -95,6 +95,30 @@
         "minItems": 2,
         "maxItems": 4,
         "uniqueItems": true
+      },
+      "paragonBonus": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "enum": [
+              "crit",
+              "critDmg",
+              "sres",
+              "heal",
+              "lifesteal"
+            ]
+          },
+          "bp": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5000
+          }
+        },
+        "required": [
+          "kind",
+          "bp"
+        ],
+        "additionalProperties": false
       }
     },
     "required": [
@@ -106,7 +130,8 @@
       "row",
       "attack",
       "stats",
-      "skills"
+      "skills",
+      "paragonBonus"
     ],
     "additionalProperties": false
   },

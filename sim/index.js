@@ -20,7 +20,9 @@ export { newGame, recruit, dismiss, equip, setParty, setRunbook, assignThread, u
 export { playDelve, playDelves, batchStop, batchTotals, applyDelveResult, MAX_BATCH } from './game-delve.js';
 export { rest, restCost } from './game-rest.js';
 export { train } from './game-train.js';
+export { addParagonStar, paragonCost } from './game-paragon.js';
 export { startExpedition, move, enterFloor, retreat, returnHome, options as expeditionOptions, expeditionMap, siteAt, scaleReward } from './game-expedition.js';
 export { upgradeAttempt, acceptAttempt, undoAttempt, salvage, salvageMany } from './game-forge.js';
 export { kitOf } from './hero.js';
-export { validateSave } from './save.js';
+export { paragonStars, paragonComplete } from './hero.js';
+export { validateSave, fillDefaults } from './save.js';

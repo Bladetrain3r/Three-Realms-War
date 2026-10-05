@@ -54,7 +54,7 @@ function hit(ctx, u, t, skill) {
 }
 
 function heal(ctx, u, t, skill) {
-  const amount = mulbp(statOf(u, 'ARC', ctx.content), skill.power);
+  const amount = mulbp(mulbp(statOf(u, 'ARC', ctx.content), skill.power), 10000 + (u.def.healBp || 0)); // healBp: a maxed paragon healer (4.6)
   const actual = Math.min(amount, t.maxHp - t.hp);
   t.hp += actual;
   ctx.emit([5, u.id, t.id, actual, t.hp]);

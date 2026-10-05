@@ -1,6 +1,6 @@
 // The save in the browser: holds the current save, runs rules-layer actions (turning refusals into messages), autosaves to
 // localStorage when it can, and exports / imports through the same validator the tests use.
-import { newGame, playDelve, playDelves, batchStop, batchTotals, MAX_BATCH, rest, salvageMany, startExpedition, move as moveExp, enterFloor, retreat as retreatExp, returnHome, GameError, validateSave, canonical } from '../sim/index.js';
+import { newGame, playDelve, playDelves, batchStop, batchTotals, MAX_BATCH, rest, salvageMany, fillDefaults, addParagonStar, startExpedition, move as moveExp, enterFloor, retreat as retreatExp, returnHome, GameError, validateSave, canonical } from '../sim/index.js';
 
 export const SAVE_KEY = 'three-realms.save.v1';
 
@@ -17,7 +17,7 @@ export function createStore({ content, saveSchema, build, storage = null, now = 
     try { raw = storage ? storage.getItem(SAVE_KEY) : null; } catch (e) { raw = null; }
     if (raw) {
       try {
-        const parsed = JSON.parse(raw), v = validateSave(parsed, content, saveSchema);
+        const parsed = fillDefaults(JSON.parse(raw)), v = validateSave(parsed, content, saveSchema);
         if (v.ok) { save = parsed; return; }
         problem = `the stored save was refused (${v.errors[0].key}: ${v.errors[0].message}); a new game was started and the old text kept under ${SAVE_KEY}.bad`;
       } catch (e) { problem = 'the stored save was not valid JSON; a new game was started'; }
@@ -108,7 +108,7 @@ export function createStore({ content, saveSchema, build, storage = null, now = 
     importText(text) {
       if (busy) return { ok: false, errors: [{ key: '(game)', message: busyResult().message }] };
       let parsed;
-      try { parsed = JSON.parse(text); } catch (e) { return { ok: false, errors: [{ key: '(file)', message: 'not valid JSON' }] }; }
+      try { parsed = fillDefaults(JSON.parse(text)); } catch (e) { return { ok: false, errors: [{ key: '(file)', message: 'not valid JSON' }] }; }
       const v = validateSave(parsed, content, saveSchema);
       if (!v.ok) return v;
       lastBattle = null; lastBatch = null; lastReturn = null; set(parsed, false); return { ok: true };

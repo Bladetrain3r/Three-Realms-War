@@ -1,6 +1,7 @@
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { content } from '../helpers/content.mjs';
+import { loadFixture } from '../helpers/fixture.mjs';
 import { readFileSync } from 'node:fs';
 import { newGame, playDelve, playDelves, rest, salvageMany, canonical } from '../../sim/index.js';
 import { matching } from '../../client/forge-filter.js';
@@ -241,7 +242,7 @@ test('client: an upgrade attempt shows the old and the new bonus lines in the sa
   await context.close();
 });
 
-const playtest = JSON.parse(readFileSync(new URL('../fixtures/playtest-2026-10-02.json', import.meta.url), 'utf8'));
+const playtest = loadFixture('playtest-2026-10-02.json');
 const stateOf = (page) => page.evaluate(() => window.ThreeRealms.exportText());
 const sameSave = async (page, want, what) => assert.equal(withoutMeta(await stateOf(page)), withoutMeta(canonical(want)), what);
 
@@ -452,6 +453,28 @@ test('client: a Legendary item shows seven stars and fixed lines, an attempt rep
   assert.match(await text(page, 'notice'), /Star 6 reached|No star gained/); assert.equal(await page.locator('[data-testid=pending]').count(), 0);
   await page.click('[data-testid=salvage]'); assert.match(await text(page, 'notice'), /cannot be salvaged/);
   await sameSave(page, want, 'salvage refused');
+  assert.deepEqual(problems, []);
+  await context.close();
+});
+
+test('client: the paragon panel spends points and hearts exactly as the rules layer does, shows the gain at the level cap, refuses with the reason, and an older save without the keys loads', async (t) => {
+  if (!need(t)) return;
+  const { addParagonStar } = await import('../../sim/index.js');
+  const start = newGame(content, 90, { savedAt: '', build: 'client-test' }); start.paragonPoints = 2; start.materials.ember_heart = 15; start.heroes[0].level = 10;
+  const id = start.heroes[0].id, { page, problems, context } = await openGame(browser, game.url);
+  // an old-format save: no paragon keys at all
+  const old = JSON.parse(canonical(start)); delete old.paragonPoints; for (const h of old.heroes) delete h.paragon;
+  await go(page, '#/settings'); await page.fill('[data-testid=import-text]', JSON.stringify(old)); await page.click('[data-testid=import]');
+  assert.equal(await page.evaluate(() => window.ThreeRealms.save().paragonPoints), 0, 'the missing keys were filled in');
+  await importSave(page, start); await go(page, `#/hero/${id}`);
+  assert.match(await text(page, 'paragon-have'), /Paragon Points: 2 .* 0 of 18 stars/);
+  assert.match(await page.textContent('[data-testid=pstar-VIG]').then(() => page.locator('tr', { hasText: 'VIG' }).last().textContent()), /\+\d+ at level 50/);
+  await page.click('[data-testid=pstar-VIG]');
+  let want = addParagonStar(start, content, id, 'VIG'); await sameSave(page, want, 'first star');
+  assert.match(await text(page, 'pstars-VIG'), /●○○ 1 of 3/);
+  await page.click('[data-testid=pstar-MIT]'); want = addParagonStar(want, content, id, 'MIT'); await sameSave(page, want, 'second star costs more');
+  assert.equal(want.materials.ember_heart, 0, '5 hearts for the first star, 10 for the second');
+  assert.equal(await page.isDisabled('[data-testid=pstar-GRD]'), true); assert.match(await page.getAttribute('[data-testid=pstar-GRD]', 'title'), /no Paragon Point/);
   assert.deepEqual(problems, []);
   await context.close();
 });

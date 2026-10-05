@@ -20,7 +20,7 @@ function reportPanel(store, content) {
   return panel(title, r.ended === 'wiped'
     ? h('p', { class: 'warn', 'data-testid': 'report' }, `${(r.died || []).join(', ') || 'Everyone'} did not come back. The pack was lost with them.${r.rescued ? ' The hall took in a new level-1 hero.' : ''}`)
     : h('div', { 'data-testid': 'report' }, h('ul', { class: 'earned' }, h('li', null, `${r.xp} XP to each hero who returned`), h('li', null, `${r.hacksilver} hacksilver`), mats ? h('li', null, mats) : null, h('li', null, `${r.reputation} reputation`),
-      h('li', null, `${r.items} item${r.items === 1 ? '' : 's'} added to the stash${r.droppedItems ? `, ${r.droppedItems} lost (stash full)` : ''}`), r.threads ? h('li', null, `${r.threads} Thread of the Norns`) : null),
+      h('li', null, `${r.items} item${r.items === 1 ? '' : 's'} added to the stash${r.droppedItems ? `, ${r.droppedItems} lost (stash full)` : ''}`), r.threads ? h('li', null, `${r.threads} Thread of the Norns`) : null, r.paragon ? h('li', null, `${r.paragon} Paragon Point${r.paragon === 1 ? '' : 's'}`) : null),
       r.levelUps && r.levelUps.length ? h('p', null, 'Level up: ', r.levelUps.map((l) => `${l.name} ${l.from}→${l.to}`).join(', ')) : null));
 }
 
@@ -82,6 +82,6 @@ function mapScreen(ctx, save, content, store) {
     siteBox,
     h('div', { class: 'two' }, panel('Map', h('div', { class: 'map-wrap' }, grid), h('p', { class: 'hint' }, 'H is home, @ is the party, ◆ a site, f forest, n hills, ~ water, ^ peaks. Click a neighbouring cell or use the arrows. Fog hides what is more than 2 cells away.'), dpad),
       h('div', null, panel('Party', h('ul', { 'data-testid': 'x-party' }, ex.party.map((id, i) => h('li', null, hpText(id, i))))),
-        panel('Pack (banked only if you get home)', h('ul', { class: 'earned', 'data-testid': 'x-pack' }, h('li', null, `${pk.xp} XP`), h('li', null, `${pk.hacksilver} hacksilver`), mats ? h('li', null, mats) : null, h('li', null, `${pk.items.length} item${pk.items.length === 1 ? '' : 's'}`), pk.threads ? h('li', null, `${pk.threads} Thread`) : null, h('li', null, `${pk.reputation} reputation`)),
+        panel('Pack (banked only if you get home)', h('ul', { class: 'earned', 'data-testid': 'x-pack' }, h('li', null, `${pk.xp} XP`), h('li', null, `${pk.hacksilver} hacksilver`), mats ? h('li', null, mats) : null, h('li', null, `${pk.items.length} item${pk.items.length === 1 ? '' : 's'}`), pk.threads ? h('li', null, `${pk.threads} Thread`) : null, pk.paragon ? h('li', null, `${pk.paragon} Paragon Point${pk.paragon === 1 ? '' : 's'}`) : null, h('li', null, `${pk.reputation} reputation`)),
           button('Return home with the pack', home, { id: 'x-home', disabled: ex.site !== null, title: ex.site !== null ? 'retreat from the site first' : 'banks the pack; walking home is free' })))));
 }

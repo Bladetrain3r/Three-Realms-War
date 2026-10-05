@@ -1,9 +1,17 @@
 // Build a resolved hero unit (the form a replay carries) from a roster hero and the items they wear (DESIGN.md 4.4, 7, 8).
 import { STATS, ELEMENTS } from './content.js';
-import { heroBase, withAffinity, finalStat, maxHp } from './stats.js';
+import { heroBaseParagon, withAffinity, finalStat, maxHp } from './stats.js';
 import { itemMain, lineValue } from './items.js';
 
 const LINE_STAT = { VIG_PCT: 'VIG', MIT_PCT: 'MIT', ARC_PCT: 'ARC', GRD_PCT: 'GRD', WRD_PCT: 'WRD', SPD_PCT: 'SPD' };
+
+// Every stat has `maxPerStat` paragon stars (6 x 3 = 18).
+export function paragonStars(hero) {
+  return STATS.reduce((n, s) => n + ((hero.paragon && hero.paragon[s]) || []).length, 0);
+}
+export function paragonComplete(hero, content) {
+  return STATS.every((s) => ((hero.paragon && hero.paragon[s]) || []).length >= content.tables.paragon.maxPerStat);
+}
 
 export function canEquip(hero, item, content) {
   return item.ilvl <= hero.level + content.items.levelSlack;
@@ -64,10 +72,16 @@ export function buildHeroUnit(hero, itemsById, content, opts = {}) {
   }
 
   res[realm.element] += t.affinityResBp;
+  // a hero with every paragon star (maxPerStat on all six stats) earns the class's single extra bonus (4.6)
+  let healBp = 0, lifestealBp = 0;
+  if (paragonComplete(hero, content)) {
+    const b = cls.paragonBonus;
+    if (b.kind === 'crit') crit += b.bp; else if (b.kind === 'critDmg') critDmg += b.bp; else if (b.kind === 'sres') sres += b.bp; else if (b.kind === 'heal') healBp = b.bp; else lifestealBp = b.bp;
+  }
   const injured = Boolean(opts.forced);
   const stats = {};
   for (const s of STATS) {
-    let base = heroBase(cls.stats[s], hero.level, t);
+    let base = heroBaseParagon(cls.stats[s], hero.level, (hero.paragon && hero.paragon[s]) || [], t, content.tables.paragon.starBp);
     if (realm.affinityStats.includes(s)) base = withAffinity(base, t);
     stats[s] = { base: base + flat[s], pct: pct[s] };
   }
@@ -75,6 +89,6 @@ export function buildHeroUnit(hero, itemsById, content, opts = {}) {
   return {
     kind: 'hero', heroId: hero.id, name: hero.name, class: cls.id, realm: cls.realm, level: hero.level,
     attack: cls.attack, row: cls.row, injured, maxHp: maxHp(vig, t), stats, crit, critDmg, sres, res,
-    skills, runbook: hero.runbook,
+    skills, runbook: hero.runbook, ...(healBp ? { healBp } : {}), ...(lifestealBp ? { lifestealBp } : {}),
   };
 }

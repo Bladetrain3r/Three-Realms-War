@@ -264,6 +264,66 @@
               "rules"
             ],
             "additionalProperties": false
+          },
+          "paragon": {
+            "type": "object",
+            "properties": {
+              "VIG": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 50
+                },
+                "maxItems": 3
+              },
+              "MIT": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 50
+                },
+                "maxItems": 3
+              },
+              "ARC": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 50
+                },
+                "maxItems": 3
+              },
+              "GRD": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 50
+                },
+                "maxItems": 3
+              },
+              "WRD": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 50
+                },
+                "maxItems": 3
+              },
+              "SPD": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 50
+                },
+                "maxItems": 3
+              }
+            },
+            "additionalProperties": false
           }
         },
         "required": [
@@ -275,7 +335,8 @@
           "injury",
           "slots",
           "thread",
-          "runbook"
+          "runbook",
+          "paragon"
         ],
         "additionalProperties": false
       },
@@ -451,6 +512,11 @@
                 "$ref": "#/$defs/item"
               },
               "maxItems": 200
+            },
+            "paragon": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000
             }
           },
           "required": [
@@ -459,7 +525,8 @@
             "reputation",
             "threads",
             "materials",
-            "items"
+            "items",
+            "paragon"
           ],
           "additionalProperties": false
         },
@@ -486,6 +553,11 @@
         "steps"
       ],
       "additionalProperties": false
+    },
+    "paragonPoints": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1000000
     }
   },
   "required": [
@@ -502,7 +574,8 @@
     "party",
     "items",
     "threads",
-    "expedition"
+    "expedition",
+    "paragonPoints"
   ],
   "additionalProperties": false,
   "$defs": {

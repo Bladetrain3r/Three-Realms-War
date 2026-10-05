@@ -37,7 +37,7 @@ export function forge(ctx) {
       why ? h('small', { class: 'why' }, why) : null);
   }
 
-  const mats = kv([...content.realms.flatMap((r) => [[r.material.replace(/_/g, ' '), save.materials[r.material]], [r.rareMaterial.replace(/_/g, ' '), save.materials[r.rareMaterial]]]), ['hacksilver', save.currency.hacksilver], ['Threads of the Norns', save.threads]]);
+  const mats = kv([...content.realms.flatMap((r) => [[r.material.replace(/_/g, ' '), save.materials[r.material]], [r.rareMaterial.replace(/_/g, ' '), save.materials[r.rareMaterial]]]), ['hacksilver', save.currency.hacksilver], ['Threads of the Norns', save.threads], ['Paragon Points', save.paragonPoints]]);
   const threads = h('div', { class: 'row-buttons' }, content.realms.map((r) => {
     const need = content.tables.progress.threadHearts, rep = content.tables.progress.rep.honoured;
     const why = save.reputation[r.id] < rep ? `needs ${rep} reputation in ${r.name} (you have ${save.reputation[r.id]})` : save.materials[r.rareMaterial] < need ? `costs ${need} ${r.rareMaterial.replace(/_/g, ' ')} (you have ${save.materials[r.rareMaterial]})` : '';

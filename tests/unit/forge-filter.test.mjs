@@ -1,13 +1,14 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { loadFixture } from '../helpers/fixture.mjs';
 import { content, saveSchema } from '../helpers/content.mjs';
 import { salvageMany, salvage, validateSave, GameError, canonical } from '../../sim/index.js';
 import { wornIds } from '../../sim/game.js';
 import { listItems, matching, yieldOf } from '../../client/forge-filter.js';
 
 // a real mid-game save from Ziggy's first playtest (2026-10-02): 8 heroes, 68 items
-const save = JSON.parse(readFileSync(new URL('../fixtures/playtest-2026-10-02.json', import.meta.url), 'utf8'));
+const save = loadFixture('playtest-2026-10-02.json');
 const worn = wornIds(save), stash = save.items.filter((i) => worn[i.id] === undefined);
 
 test('forge filter: the playtest save is a valid save of this build (the fixture is real)', () => {

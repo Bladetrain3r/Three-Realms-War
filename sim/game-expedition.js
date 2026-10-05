@@ -18,7 +18,7 @@ export function expeditionMap(ex, content) {
   if (cache[key] === undefined) cache[key] = mapFromSeed(ex.seed, ex.level, content.tables.expedition);
   return cache[key];
 }
-export const emptyPack = () => ({ xp: 0, hacksilver: 0, reputation: 0, threads: 0, materials: {}, items: [] });
+export const emptyPack = () => ({ xp: 0, hacksilver: 0, reputation: 0, threads: 0, paragon: 0, materials: {}, items: [] });
 
 function requireExpedition(save) {
   if (save.expedition === null) throw new GameError('no_expedition', 'there is no expedition under way');
@@ -57,9 +57,9 @@ export function startExpedition(save, content, { realm, level, provisions, force
 // ---- banking and ending ------------------------------------------------------------------------------------------------------
 // Bank the pack into the save (a safe return). Items beyond the stash limit are lost and counted.
 function bank(next, content, how) {
-  const ex = next.expedition, p = ex.pack, out = { how, xp: p.xp, hacksilver: p.hacksilver, reputation: p.reputation, threads: p.threads, materials: [], items: 0, droppedItems: 0, levelUps: [] };
+  const ex = next.expedition, p = ex.pack, out = { how, xp: p.xp, hacksilver: p.hacksilver, reputation: p.reputation, threads: p.threads, paragon: p.paragon, materials: [], items: 0, droppedItems: 0, levelUps: [] };
   for (const id of ex.party) { const h = findHero(next, id), from = h.level; if (gainXp(h, p.xp, content) > 0) out.levelUps.push({ heroId: id, name: h.name, from, to: h.level }); }
-  next.currency.hacksilver += p.hacksilver; next.reputation[ex.realm] += p.reputation; next.threads += p.threads;
+  next.currency.hacksilver += p.hacksilver; next.reputation[ex.realm] += p.reputation; next.threads += p.threads; next.paragonPoints += p.paragon;
   for (const r of content.realms) for (const key of [r.material, r.rareMaterial]) if (p.materials[key]) { next.materials[key] += p.materials[key]; out.materials.push({ id: key, n: p.materials[key] }); }
   for (const it of p.items) { if (stashCount(next) >= content.items.stashMax) out.droppedItems++; else { next.items.push(it); out.items++; } }
   next.expedition = null;
@@ -94,7 +94,7 @@ export const scaleReward = (v, dist, floor, x) => mulbp(mulbp(v, 10000 + x.distB
 
 function rewardsForFloor(next, content, ex, site, floor, cleared, boss) {
   const p = content.tables.progress, x = content.tables.expedition, rng = createRng(nextSeed(next));
-  const out = { xp: 0, hacksilver: 0, materials: 0, items: [], threads: 0, reputation: 0, heart: 0 };
+  const out = { xp: 0, hacksilver: 0, materials: 0, items: [], threads: 0, reputation: 0, heart: 0, paragon: 0 };
   const scale = (v) => scaleReward(v, site.dist, floor, x);
   for (let k = 0; k < cleared; k++) {
     const isBoss = boss && k === x.encountersPerFloor - 1, r = encounterRewards(site.level, isBoss, p);
@@ -103,6 +103,7 @@ function rewardsForFloor(next, content, ex, site, floor, cleared, boss) {
     if (isBoss) {
       const it = generateItem(rng, { ilvl: site.level, realm: ex.realm, boss: true, setAllowed, source: 'expedition' }, content); it.id = next.nextId++; out.items.push(it);
       out.heart += 1; out.reputation += p.repBoss; if (rng.range(10000) < p.threadBp) out.threads += 1;
+      if (rng.range(10000) < x.paragonBp) out.paragon += 1; // a Paragon Point (4.6): rare, expeditions only
     } else if (rng.range(10000) < content.items.drops.encounterBp) { const it = generateItem(rng, { ilvl: site.level, realm: ex.realm, boss: false, setAllowed, source: 'expedition' }, content); it.id = next.nextId++; out.items.push(it); }
   }
   return out;
@@ -144,10 +145,10 @@ export function enterFloor(save, content) {
   if (res.outcome === 1) {
     nex.floors[site.id] = floor;
     const rw = rewardsForFloor(next, content, nex, site, floor, res.cleared, boss), p = nex.pack;
-    p.xp += rw.xp; p.hacksilver += rw.hacksilver; p.reputation += rw.reputation; p.threads += rw.threads;
+    p.xp += rw.xp; p.hacksilver += rw.hacksilver; p.reputation += rw.reputation; p.threads += rw.threads; p.paragon += rw.paragon;
     const realm = content.realmById[nex.realm]; p.materials[realm.material] = (p.materials[realm.material] || 0) + rw.materials;
     if (rw.heart) p.materials[realm.rareMaterial] = (p.materials[realm.rareMaterial] || 0) + rw.heart;
-    p.items.push(...rw.items); summary.rewards = { xp: rw.xp, hacksilver: rw.hacksilver, materials: rw.materials, heart: rw.heart, items: rw.items.length, threads: rw.threads };
+    p.items.push(...rw.items); summary.rewards = { xp: rw.xp, hacksilver: rw.hacksilver, materials: rw.materials, heart: rw.heart, items: rw.items.length, threads: rw.threads, paragon: rw.paragon };
     if (boss) { summary.cleared = true; nex.site = null; }
   } else { // a wipe: the party is gone and the pack with it; a hero held back by a Thread walks home alone and hurt
     summary.ended = 'wiped'; next.expedition = null;

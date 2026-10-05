@@ -3,6 +3,16 @@ import { validateAgainst, pathKey } from './schema.js';
 import { validateRunbook } from './runbook.js';
 import { kitOf, canEquip } from './hero.js';
 import { mapFromSeed, WATER, PEAK } from './mapgen.js';
+import { STATS } from './content.js';
+
+// Saves written before a key existed get its default (DESIGN 13: additive keys inside version 1). Mutates and returns `save`.
+export function fillDefaults(save) {
+  if (save === null || typeof save !== 'object') return save;
+  if (save.paragonPoints === undefined) save.paragonPoints = 0;
+  if (Array.isArray(save.heroes)) for (const h of save.heroes) if (h && typeof h === 'object' && h.paragon === undefined) h.paragon = {};
+  if (save.expedition && save.expedition.pack && save.expedition.pack.paragon === undefined) save.expedition.pack.paragon = 0;
+  return save;
+}
 
 export function validateSave(save, content, schema) {
   const errors = validateAgainst(save, schema);
@@ -55,6 +65,11 @@ export function validateSave(save, content, schema) {
       if (it.slot !== slot) bad(['heroes', i, 'slots', slot], `item ${id} is a ${it.slot}, not a ${slot}`);
       else if (!canEquip(h, it, content)) bad(['heroes', i, 'slots', slot], `item ${id} (level ${it.ilvl}) is too high for a level ${h.level} hero`);
       if (worn[id] !== undefined) bad(['heroes', i, 'slots', slot], `item ${id} is also worn by hero ${worn[id]}`); else worn[id] = h.id;
+    }
+    for (const stat of STATS) { // unknown stat keys are refused by the schema
+      const at = h.paragon[stat] || [];
+      if (at.length > content.tables.paragon.maxPerStat) bad(['heroes', i, 'paragon', stat], `at most ${content.tables.paragon.maxPerStat} stars`);
+      at.forEach((lv, j) => { if (lv > h.level || (j > 0 && lv < at[j - 1])) bad(['heroes', i, 'paragon', stat, j], `a star bought at level ${lv} by a level ${h.level} hero, out of order or in the future`); });
     }
     const v = validateRunbook(h.runbook, kitOf(h, byId, content), content);
     if (!v.ok) bad(['heroes', i, 'runbook'], `${v.errors[0].code}: ${v.errors[0].message}`);

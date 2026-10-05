@@ -91,7 +91,7 @@ export function addHero(save, content, classId, level, ilvl) {
     const kind = slot === 'weapon' ? (cls.attack === 'magic' ? 'ARC' : 'MIT') : null;
     slots[slot] = newItem(save, slot, kind, ilvl, cls.realm).id;
   }
-  const hero = { id: save.nextId++, class: classId, name: pickName(save, content, cls.realm), level, xp: 0, injury: 0, slots, thread: false, runbook: clone(content.starterRunbooks[classId]) };
+  const hero = { id: save.nextId++, class: classId, name: pickName(save, content, cls.realm), level, xp: 0, injury: 0, slots, thread: false, runbook: clone(content.starterRunbooks[classId]), paragon: {} };
   save.heroes.push(hero);
   return hero;
 }
@@ -100,7 +100,7 @@ export function newGame(content, masterSeed, meta = { savedAt: '', build: '' }) 
   if (!Number.isInteger(masterSeed) || masterSeed < 0 || masterSeed > 4294967295) throw new GameError('bad_seed', 'the master seed must be an integer from 0 to 4294967295');
   const save = {
     format: SAVE_FORMAT, version: SAVE_VERSION, meta: { savedAt: meta.savedAt, build: meta.build }, rng: { masterSeed, counter: 0 }, nextId: 1,
-    currency: { hacksilver: 0 }, materials: {}, reputation: {}, unlocked: {}, heroes: [], party: [], items: [], threads: 0, expedition: null,
+    currency: { hacksilver: 0 }, materials: {}, reputation: {}, unlocked: {}, heroes: [], party: [], items: [], threads: 0, expedition: null, paragonPoints: 0,
   };
   for (const r of content.realms) { save.materials[r.material] = 0; save.materials[r.rareMaterial] = 0; save.reputation[r.id] = 0; save.unlocked[r.id] = 1; }
   for (const classId of content.tables.recruit.startingRoster) save.party.push(addHero(save, content, classId, 1, 1).id);

@@ -195,3 +195,14 @@ test('expedition: save validation refuses a corrupted expedition naming the key 
   bad((c) => { c.expedition.pack.items.push({ ...c.items[0] }); }, /duplicate item id/);
   bad((c) => { c.expedition.bogus = 1; }, /unknown key "bogus"/);
 });
+
+test('expedition: a cleared site boss sometimes drops a Paragon Point (about 2000 bp), banked only on the safe return, and a wipe loses it with the pack', async () => {
+  const { wellBuiltSave, runExpedition } = await import('../../checks/expedition-bot.mjs');
+  let cleared = 0, points = 0, banked = 0;
+  for (let seed = 1; seed <= 120; seed++) {
+    const s = wellBuiltSave(content, 20, seed, true);
+    const { record, save } = runExpedition(s, content, { realm: 'midgard', level: 20, choose: (c) => c.slice().sort((a, b) => a.path.cost - b.path.cost || a.site.id - b.site.id)[0] });
+    if (record.pack && record.pack.how === 'home' && record.floorsFought === record.site.floors) { cleared++; points += record.pack.paragon; banked += save.paragonPoints; }
+  }
+  assert.ok(cleared >= 90, `${cleared} cleared`); assert.equal(banked, points, 'every point dropped was banked'); assert.ok(points / cleared > 0.08 && points / cleared < 0.36, `${points} of ${cleared}`);
+});

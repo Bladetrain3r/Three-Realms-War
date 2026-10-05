@@ -11,7 +11,7 @@ import { healEvent, tickAmounts, orderIds, chillApplies } from '../helpers/units
 import { damageSteps } from '../../sim/damage.js';
 import { pickBand } from '../../sim/delve.js';
 import { scripted } from '../helpers/units.mjs';
-import { heroBase, withAffinity, enemyScaled, enemyBase, finalStat } from '../../sim/stats.js';
+import { heroBaseParagon, heroBase, withAffinity, enemyScaled, enemyBase, finalStat } from '../../sim/stats.js';
 import { itemMain, lineValue, rollLines, upgradeCost, salvageValue } from '../../sim/items.js';
 import { buildHeroUnit } from '../../sim/hero.js';
 import { xpToNext, recruitLevel, recruitKitLevel, trainingCost, encounterRewards } from '../../sim/progress.js';
@@ -53,6 +53,7 @@ export const registry = {
   'WE-25': () => [scaleReward(10, 11, 3, XP)],
   'WE-26': () => [Number(deathSaveKills(3999, XP)), Number(deathSaveKills(4000, XP))],
   'WE-34': () => { const sv = newGame(content, 1, { savedAt: '', build: 't' }); sv.currency.hacksilver = 1000; sv.heroes[0].injury = 2; sv.heroes[1].injury = 1; const r = rest(sv, content); return [1000 - r.save.currency.hacksilver, r.save.currency.hacksilver]; },
+  'WE-37': () => { const T = content.tables.stats, b = content.tables.paragon.starBp; return [heroBase(100, 50, T), heroBaseParagon(100, 50, [10, 10, 10], T, b), heroBaseParagon(100, 50, [40, 40, 40], T, b), heroBaseParagon(100, 50, [50, 50, 50], T, b)]; },
   'WE-36': () => [trainingCost(10, 3, content.tables.training), trainingCost(1, 39, content.tables.training)],
   'WE-35': () => [recruitKitLevel(15, content.tables.recruit), recruitKitLevel(1, content.tables.recruit)],
   'WE-33': () => [salvageValue(item({ tier: 'runed', ilvl: 26 }))],
@@ -75,8 +76,8 @@ const documented = documentedExamples();
 // Expedition examples are implemented with the expedition code in G5; listed here so none can be forgotten silently.
 export const pendingForG5 = [];
 
-test('design examples: DESIGN.md carries 36 tagged worked examples', () => {
-  assert.equal(documented.size, 36);
+test('design examples: DESIGN.md carries 37 tagged worked examples', () => {
+  assert.equal(documented.size, 37);
 });
 
 test('design examples: every documented example is checked by the sim, or is explicitly pending for G5', () => {
@@ -85,7 +86,7 @@ test('design examples: every documented example is checked by the sim, or is exp
   assert.deepEqual(missing, [], `no sim check for: ${missing.join(', ')}`);
   const unknown = Object.keys(registry).filter((id) => !documented.has(id));
   assert.deepEqual(unknown, [], `registry names examples DESIGN.md does not contain: ${unknown.join(', ')}`);
-  assert.equal(Object.keys(registry).length, 36);
+  assert.equal(Object.keys(registry).length, 37);
 });
 
 for (const [id, fn] of Object.entries(registry)) {

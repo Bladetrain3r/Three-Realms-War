@@ -145,6 +145,19 @@ Enemies are not built from equipment. An archetype has a level-1 profile `p`; at
 Enemy `SRES = 500 + 80 x level`, `CRIT = 500`, `CRITDMG = 15000`. Enemy elemental resistances: the realm's own element
 `+5000`, and the element the realm is weak to `-2500` (section 10.1).
 
+### 4.6 Paragon stars (added in 0.10, Ziggy's design)
+
+A hero's six stats can each carry up to 3 **paragon stars** (18 in all). A star multiplies by `1 + 11%` (`paragon.starBp` 1100) the growth of
+that stat for every level the hero gains **after** the star was bought, never retroactively: three stars at level 10 add 33% to all 40 later
+level-ups, at level 40 only to the last ten, at level 50 nothing. With `W` the sum, over the levels gained, of `10000 + starBp x stars in force`,
+the base stat is `s1 + idiv(s1 x growthMul x W, growthDiv x 10000)`; without stars `W = 10000 x (level - 1)` and this is 4.2 exactly.
+A star costs one **Paragon Point** (a rare drop of 2000 bp from an expedition site boss, banked on a safe return) and `5 x (stars the hero
+already has + 1)` hearts of the hero's realm (`paragon.heartBase`). The stars belong to the hero: a dead or dismissed hero takes them away.
+A hero with all 18 stars earns their class's single extra bonus (`paragonBonus` in `content/heroes.json`): +5% crit chance, +15% crit damage,
++10% status resistance, +5% lifesteal, or +5% healing strength (skill heals only).
+
+[WE-37] the level-50 base of a stat with level-1 value 100, plain; with 3 stars bought at level 10; at level 40; at level 50 => 1000, 1242, 1060, 1000
+
 ## 5. Combat
 
 ### 5.1 Setup
@@ -1098,3 +1111,7 @@ Random choices use `deriveSeed(masterSeed, counter)` and then increment `counter
   byte-identical). **G5 is closed.** (3) **Delves never drop Heirloom** (8.6): the delve boss table is Fine 4000, Runed 6000; expeditions have their own tables (non-boss Plain 6500, Fine 2500, Runed 700,
   Heirloom 300; site boss Runed 4000, Heirloom 6000). (4) **Legendary tier** (8.2, 8.4): 22500 multiplier, 7 stars (star odds 2000 and 500 for stars 6 and 7), three fixed lines, no set, not salvageable,
   stars 6 and 7 cost 3x; no random drop rolls it. The Legendary items themselves are the fixed drops of the legendary bosses (not built yet). The numbers 2000, 500, 3x, and the drop weights are mine.
+- **0.10 (2026-10-05, Ziggy's paragon design; the numbers marked mine are mine):** new 4.6. Stars per stat 3, +11% of future growth each, the cost of one Paragon Point plus
+  hearts of the hero's realm (Ziggy: "not a pure XP thing - also burns through realm specific rare resources"), the drop only from expeditions and rare, the class bonus at 18 of 18 stars (his
+  examples: an assassin +5% crit, a healer +5% healing strength). Mine: `heartBase` 5 (so a maxed hero's stars cost 855 hearts in all), the drop chance of 2000 bp per site-boss clear, and
+  which bonus each class gets. Saves written earlier get `paragonPoints: 0` and `paragon: {}` filled in on load (additive keys inside version 1).

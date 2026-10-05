@@ -143,10 +143,16 @@
     "floorBp": 2500,
     "deathSaveBp": 4000,
     "reviveInjury": 2,
-    "floorsMax": 6
+    "floorsMax": 6,
+    "paragonBp": 2000
   },
   "training": {
     "costPerLevel": 100,
     "maxLevel": 40
+  },
+  "paragon": {
+    "starBp": 1100,
+    "maxPerStat": 3,
+    "heartBase": 5
   }
 }

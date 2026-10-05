@@ -18,7 +18,11 @@
     "skills": [
       "hold_the_line",
       "shield_bash"
-    ]
+    ],
+    "paragonBonus": {
+      "kind": "sres",
+      "bp": 1000
+    }
   },
   {
     "id": "huscarl",
@@ -39,7 +43,11 @@
     "skills": [
       "cleave",
       "hearth_strike"
-    ]
+    ],
+    "paragonBonus": {
+      "kind": "critDmg",
+      "bp": 1500
+    }
   },
   {
     "id": "hunter",
@@ -60,7 +68,11 @@
     "skills": [
       "pinning_shot",
       "volley"
-    ]
+    ],
+    "paragonBonus": {
+      "kind": "crit",
+      "bp": 500
+    }
   },
   {
     "id": "hearthkeeper",
@@ -81,7 +93,11 @@
     "skills": [
       "hearth_light",
       "warm_embers"
-    ]
+    ],
+    "paragonBonus": {
+      "kind": "heal",
+      "bp": 500
+    }
   },
   {
     "id": "berserker",
@@ -103,7 +119,11 @@
       "frenzy",
       "rend",
       "maul"
-    ]
+    ],
+    "paragonBonus": {
+      "kind": "lifesteal",
+      "bp": 500
+    }
   },
   {
     "id": "einherjar",
@@ -124,7 +144,11 @@
     "skills": [
       "valhalla_strike",
       "rally"
-    ]
+    ],
+    "paragonBonus": {
+      "kind": "sres",
+      "bp": 1000
+    }
   },
   {
     "id": "stormcaller",
@@ -145,7 +169,11 @@
     "skills": [
       "chain_lightning",
       "thunderclap"
-    ]
+    ],
+    "paragonBonus": {
+      "kind": "crit",
+      "bp": 500
+    }
   },
   {
     "id": "skald",
@@ -166,7 +194,11 @@
     "skills": [
       "battle_hymn",
       "mending_verse"
-    ]
+    ],
+    "paragonBonus": {
+      "kind": "sres",
+      "bp": 1000
+    }
   },
   {
     "id": "skyrider",
@@ -187,7 +219,11 @@
     "skills": [
       "dive",
       "pinion_volley"
-    ]
+    ],
+    "paragonBonus": {
+      "kind": "crit",
+      "bp": 500
+    }
   },
   {
     "id": "valkyrie",
@@ -209,7 +245,11 @@
       "choose_the_slain",
       "wings_shield",
       "storm_rend"
-    ]
+    ],
+    "paragonBonus": {
+      "kind": "lifesteal",
+      "bp": 500
+    }
   },
   {
     "id": "draugr_knight",
@@ -230,7 +270,11 @@
     "skills": [
       "cold_grip",
       "undying_will"
-    ]
+    ],
+    "paragonBonus": {
+      "kind": "sres",
+      "bp": 1000
+    }
   },
   {
     "id": "volva",
@@ -251,7 +295,11 @@
     "skills": [
       "hex",
       "frostbite"
-    ]
+    ],
+    "paragonBonus": {
+      "kind": "critDmg",
+      "bp": 1500
+    }
   },
   {
     "id": "ghoul_reaver",
@@ -272,7 +320,11 @@
     "skills": [
       "gnaw",
       "carrion_feast"
-    ]
+    ],
+    "paragonBonus": {
+      "kind": "lifesteal",
+      "bp": 500
+    }
   },
   {
     "id": "rime_mender",
@@ -293,7 +345,11 @@
     "skills": [
       "frostmend",
       "mist_veil"
-    ]
+    ],
+    "paragonBonus": {
+      "kind": "heal",
+      "bp": 500
+    }
   },
   {
     "id": "wraith_hunter",
@@ -315,6 +371,10 @@
       "soul_arrow",
       "deaths_chill",
       "gravecall"
-    ]
+    ],
+    "paragonBonus": {
+      "kind": "crit",
+      "bp": 500
+    }
   }
 ]
