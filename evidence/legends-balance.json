@@ -1,0 +1,482 @@
+{
+  "thresholds": {
+    "file": "checks/balance.yaml",
+    "section": "legends + final"
+  },
+  "fights": 150,
+  "sets": [],
+  "cells": [
+    {
+      "legend": "fenris",
+      "party": "ready",
+      "level": 15,
+      "E": 10,
+      "n": 150,
+      "wins": 74,
+      "lastPhase": 74,
+      "died": 0,
+      "embarkedWon": 296,
+      "diedWon": 49,
+      "median": 10
+    },
+    {
+      "legend": "fenris",
+      "party": "weak",
+      "level": 15,
+      "E": 10,
+      "n": 150,
+      "wins": 0,
+      "lastPhase": 0,
+      "died": 0,
+      "embarkedWon": 0,
+      "diedWon": 0,
+      "median": 7
+    },
+    {
+      "legend": "fenris",
+      "party": "strong",
+      "level": 15,
+      "E": 10,
+      "n": 150,
+      "wins": 150,
+      "lastPhase": 149,
+      "died": 0,
+      "embarkedWon": 600,
+      "diedWon": 0,
+      "median": 3
+    },
+    {
+      "legend": "jormungandr",
+      "party": "ready",
+      "level": 25,
+      "E": 20,
+      "n": 150,
+      "wins": 72,
+      "lastPhase": 72,
+      "died": 0,
+      "embarkedWon": 288,
+      "diedWon": 60,
+      "median": 17
+    },
+    {
+      "legend": "jormungandr",
+      "party": "weak",
+      "level": 25,
+      "E": 20,
+      "n": 150,
+      "wins": 0,
+      "lastPhase": 0,
+      "died": 0,
+      "embarkedWon": 0,
+      "diedWon": 0,
+      "median": 6
+    },
+    {
+      "legend": "jormungandr",
+      "party": "strong",
+      "level": 25,
+      "E": 20,
+      "n": 150,
+      "wins": 150,
+      "lastPhase": 150,
+      "died": 0,
+      "embarkedWon": 600,
+      "diedWon": 31,
+      "median": 6
+    },
+    {
+      "legend": "ymir",
+      "party": "ready",
+      "level": 35,
+      "E": 30,
+      "n": 150,
+      "wins": 81,
+      "lastPhase": 81,
+      "died": 0,
+      "embarkedWon": 324,
+      "diedWon": 56,
+      "median": 18
+    },
+    {
+      "legend": "ymir",
+      "party": "weak",
+      "level": 35,
+      "E": 30,
+      "n": 150,
+      "wins": 0,
+      "lastPhase": 0,
+      "died": 0,
+      "embarkedWon": 0,
+      "diedWon": 0,
+      "median": 6
+    },
+    {
+      "legend": "ymir",
+      "party": "strong",
+      "level": 35,
+      "E": 30,
+      "n": 150,
+      "wins": 150,
+      "lastPhase": 150,
+      "died": 0,
+      "embarkedWon": 600,
+      "diedWon": 5,
+      "median": 8
+    },
+    {
+      "legend": "beowulf",
+      "party": "ready",
+      "level": 45,
+      "E": 40,
+      "n": 150,
+      "wins": 76,
+      "lastPhase": 76,
+      "died": 0,
+      "embarkedWon": 304,
+      "diedWon": 63,
+      "median": 12
+    },
+    {
+      "legend": "beowulf",
+      "party": "weak",
+      "level": 45,
+      "E": 40,
+      "n": 150,
+      "wins": 0,
+      "lastPhase": 0,
+      "died": 0,
+      "embarkedWon": 0,
+      "diedWon": 0,
+      "median": 10
+    },
+    {
+      "legend": "beowulf",
+      "party": "strong",
+      "level": 45,
+      "E": 40,
+      "n": 150,
+      "wins": 150,
+      "lastPhase": 150,
+      "died": 0,
+      "embarkedWon": 600,
+      "diedWon": 49,
+      "median": 7
+    },
+    {
+      "legend": "odin",
+      "party": "ready",
+      "level": 55,
+      "E": 50,
+      "n": 150,
+      "wins": 69,
+      "lastPhase": 69,
+      "died": 0,
+      "embarkedWon": 276,
+      "diedWon": 44,
+      "median": 17
+    },
+    {
+      "legend": "odin",
+      "party": "weak",
+      "level": 55,
+      "E": 50,
+      "n": 150,
+      "wins": 0,
+      "lastPhase": 0,
+      "died": 0,
+      "embarkedWon": 0,
+      "diedWon": 0,
+      "median": 6
+    },
+    {
+      "legend": "odin",
+      "party": "strong",
+      "level": 55,
+      "E": 50,
+      "n": 150,
+      "wins": 150,
+      "lastPhase": 150,
+      "died": 0,
+      "embarkedWon": 600,
+      "diedWon": 24,
+      "median": 10
+    },
+    {
+      "legend": "chaos",
+      "party": "solid",
+      "level": 60,
+      "n": 150,
+      "wins": 45,
+      "lastPhase": 45,
+      "died": 0,
+      "embarkedWon": 180,
+      "diedWon": 51,
+      "median": 13
+    },
+    {
+      "legend": "chaos",
+      "party": "under",
+      "level": 60,
+      "n": 150,
+      "wins": 4,
+      "lastPhase": 4,
+      "died": 0,
+      "embarkedWon": 16,
+      "diedWon": 6,
+      "median": 13
+    },
+    {
+      "legend": "chaos",
+      "party": "full",
+      "level": 60,
+      "n": 150,
+      "wins": 130,
+      "lastPhase": 130,
+      "died": 0,
+      "embarkedWon": 520,
+      "diedWon": 103,
+      "median": 10
+    }
+  ],
+  "checks": [
+    {
+      "id": "lg.fenris.ready.win_rate",
+      "value": 0.4933,
+      "lo": 0.25,
+      "hi": 0.8,
+      "ok": true
+    },
+    {
+      "id": "lg.fenris.ready.median_rounds",
+      "value": 10,
+      "lo": 7,
+      "hi": 30,
+      "ok": true
+    },
+    {
+      "id": "lg.fenris.ready.last_phase_share",
+      "value": 1,
+      "lo": 0.6,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "lg.fenris.ready.hero_death_per_won_fight",
+      "value": 0.1655,
+      "lo": 0.05,
+      "hi": 0.7,
+      "ok": true
+    },
+    {
+      "id": "lg.fenris.weak.win_rate",
+      "value": 0,
+      "lo": 0,
+      "hi": 0.05,
+      "ok": true
+    },
+    {
+      "id": "lg.fenris.strong.win_rate",
+      "value": 1,
+      "lo": 0.75,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "lg.jormungandr.ready.win_rate",
+      "value": 0.48,
+      "lo": 0.25,
+      "hi": 0.8,
+      "ok": true
+    },
+    {
+      "id": "lg.jormungandr.ready.median_rounds",
+      "value": 17,
+      "lo": 7,
+      "hi": 30,
+      "ok": true
+    },
+    {
+      "id": "lg.jormungandr.ready.last_phase_share",
+      "value": 1,
+      "lo": 0.6,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "lg.jormungandr.ready.hero_death_per_won_fight",
+      "value": 0.2083,
+      "lo": 0.05,
+      "hi": 0.7,
+      "ok": true
+    },
+    {
+      "id": "lg.jormungandr.weak.win_rate",
+      "value": 0,
+      "lo": 0,
+      "hi": 0.05,
+      "ok": true
+    },
+    {
+      "id": "lg.jormungandr.strong.win_rate",
+      "value": 1,
+      "lo": 0.75,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "lg.ymir.ready.win_rate",
+      "value": 0.54,
+      "lo": 0.25,
+      "hi": 0.8,
+      "ok": true
+    },
+    {
+      "id": "lg.ymir.ready.median_rounds",
+      "value": 18,
+      "lo": 7,
+      "hi": 30,
+      "ok": true
+    },
+    {
+      "id": "lg.ymir.ready.last_phase_share",
+      "value": 1,
+      "lo": 0.6,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "lg.ymir.ready.hero_death_per_won_fight",
+      "value": 0.1728,
+      "lo": 0.05,
+      "hi": 0.7,
+      "ok": true
+    },
+    {
+      "id": "lg.ymir.weak.win_rate",
+      "value": 0,
+      "lo": 0,
+      "hi": 0.05,
+      "ok": true
+    },
+    {
+      "id": "lg.ymir.strong.win_rate",
+      "value": 1,
+      "lo": 0.75,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "lg.beowulf.ready.win_rate",
+      "value": 0.5067,
+      "lo": 0.25,
+      "hi": 0.8,
+      "ok": true
+    },
+    {
+      "id": "lg.beowulf.ready.median_rounds",
+      "value": 12,
+      "lo": 7,
+      "hi": 30,
+      "ok": true
+    },
+    {
+      "id": "lg.beowulf.ready.last_phase_share",
+      "value": 1,
+      "lo": 0.6,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "lg.beowulf.ready.hero_death_per_won_fight",
+      "value": 0.2072,
+      "lo": 0.05,
+      "hi": 0.7,
+      "ok": true
+    },
+    {
+      "id": "lg.beowulf.weak.win_rate",
+      "value": 0,
+      "lo": 0,
+      "hi": 0.05,
+      "ok": true
+    },
+    {
+      "id": "lg.beowulf.strong.win_rate",
+      "value": 1,
+      "lo": 0.75,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "lg.odin.ready.win_rate",
+      "value": 0.46,
+      "lo": 0.25,
+      "hi": 0.8,
+      "ok": true
+    },
+    {
+      "id": "lg.odin.ready.median_rounds",
+      "value": 17,
+      "lo": 7,
+      "hi": 30,
+      "ok": true
+    },
+    {
+      "id": "lg.odin.ready.last_phase_share",
+      "value": 1,
+      "lo": 0.6,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "lg.odin.ready.hero_death_per_won_fight",
+      "value": 0.1594,
+      "lo": 0.05,
+      "hi": 0.7,
+      "ok": true
+    },
+    {
+      "id": "lg.odin.weak.win_rate",
+      "value": 0,
+      "lo": 0,
+      "hi": 0.05,
+      "ok": true
+    },
+    {
+      "id": "lg.odin.strong.win_rate",
+      "value": 1,
+      "lo": 0.75,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "final.solid.win_rate",
+      "value": 0.3,
+      "lo": 0.2,
+      "hi": 0.8,
+      "ok": true
+    },
+    {
+      "id": "final.solid.median_rounds",
+      "value": 13,
+      "lo": 10,
+      "hi": 45,
+      "ok": true
+    },
+    {
+      "id": "final.under.win_rate",
+      "value": 0.0267,
+      "lo": 0,
+      "hi": 0.03,
+      "ok": true
+    },
+    {
+      "id": "final.full.win_rate",
+      "value": 0.8667,
+      "lo": 0.8,
+      "hi": 1,
+      "ok": true
+    }
+  ],
+  "failed": []
+}

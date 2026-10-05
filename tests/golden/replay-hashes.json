@@ -1,0 +1,185 @@
+{
+  "contentHash": "61cad96abbbe0d05c319f75f1e1525f1da48f71f456dd89a79ae437ac64607d5",
+  "replays": [
+    {
+      "seed": 1,
+      "hash": "c21d8625cddd9d89e9a98a3f154a24d9bd96fe0883770ddebbfd43bd4b8956c2",
+      "events": 282,
+      "outcome": 1
+    },
+    {
+      "seed": 2,
+      "hash": "41dafe36755a7f3c4e4d659886bf83c9d351ff85a74e62d7e46e3df0d046026a",
+      "events": 232,
+      "outcome": 1
+    },
+    {
+      "seed": 3,
+      "hash": "db6d1ca50022d63a42710b4815d4b194039827ed59a58cbf9356ebe0491b3f2d",
+      "events": 312,
+      "outcome": 0
+    },
+    {
+      "seed": 4,
+      "hash": "e1cfa335b6b7f1470f9ab7487cb797c6c8b45a65e7604a6af857b8f74cc3d0a8",
+      "events": 329,
+      "outcome": 0
+    },
+    {
+      "seed": 5,
+      "hash": "e762558f20872b8a1c27158c822638854b70d48cfb0ec88133e34f1d86edaf8c",
+      "events": 385,
+      "outcome": 1
+    },
+    {
+      "seed": 6,
+      "hash": "dfc1493c854d01d6bfb88992d766b589586f8ec9c928a3bc2865026a20860966",
+      "events": 279,
+      "outcome": 0
+    },
+    {
+      "seed": 7,
+      "hash": "414ce3c36081a41a7cc40b7805b2351120c8179d0b4f94072a59c154a5239005",
+      "events": 282,
+      "outcome": 0
+    },
+    {
+      "seed": 8,
+      "hash": "ebcb7fd995c3b5cdd6333a29391964429d34b275d2f6c767db9a086cdc8cdae7",
+      "events": 129,
+      "outcome": 1
+    },
+    {
+      "seed": 9,
+      "hash": "0bbb8c7c49a115bcb30befd96e0c47ba45d7468fcd0c94f5ead3f58a3a33b6d5",
+      "events": 217,
+      "outcome": 1
+    },
+    {
+      "seed": 10,
+      "hash": "7bab1c490ee922144ca3a8488ae33cbb720c74be15d1d2d079043c65c8486666",
+      "events": 243,
+      "outcome": 1
+    },
+    {
+      "seed": 11,
+      "hash": "42995ae29cc8fbe5266a79dec8809105263fc2d1a8bed1c7babb77f461df15ee",
+      "events": 200,
+      "outcome": 1
+    },
+    {
+      "seed": 12,
+      "hash": "ae1d93791ba162b7779ddd6a6251c2f553336d70fb4e2b1789650f1797463257",
+      "events": 314,
+      "outcome": 0
+    },
+    {
+      "seed": 13,
+      "hash": "896e016860b87be5ce5fd84d59922c97f7bef0f54d3178476af27ba59c469c0c",
+      "events": 231,
+      "outcome": 0
+    },
+    {
+      "seed": 14,
+      "hash": "f3a865d19fc35619f60ae6672aa010d250a22e5859b7c31c97454e5c5bb12bd8",
+      "events": 232,
+      "outcome": 1
+    },
+    {
+      "seed": 15,
+      "hash": "17188fd6db38bdc6ce14f352bb34cefdcd948c100d1a2e0674e694e1144f9ec6",
+      "events": 184,
+      "outcome": 1
+    },
+    {
+      "seed": 16,
+      "hash": "5721a2aa81e99634037464e2db38b292e43dedb9d87195c85c45674257107eac",
+      "events": 255,
+      "outcome": 1
+    },
+    {
+      "seed": 17,
+      "hash": "06cf248d23ac561168346bfdd2315382dbb5cae7825659d7dcbb5787b680d1f3",
+      "events": 266,
+      "outcome": 1
+    },
+    {
+      "seed": 18,
+      "hash": "c37afcd089cc30fa81e1135f49712dbffff894e028fd34c57b145ac9bdc9f8f9",
+      "events": 231,
+      "outcome": 1
+    },
+    {
+      "seed": 19,
+      "hash": "ac3ad97bbf0da664ceb70c3d00ef4062f2e87bdc953ca84d40a00e85d0ee4337",
+      "events": 224,
+      "outcome": 1
+    },
+    {
+      "seed": 20,
+      "hash": "a1880190ac2b143d97a2d992a8085f09dcd243010bf4218b0bd2bd2455c7eb08",
+      "events": 299,
+      "outcome": 1
+    },
+    {
+      "seed": 21,
+      "hash": "b20eb447dd2f5f57e63c272ea7470474027713f819588a2e9c0c3fb15fd25b27",
+      "events": 257,
+      "outcome": 0
+    },
+    {
+      "seed": 22,
+      "hash": "31774185fc5a5063945ca1d6e3295d6a8c6455d5217323d4715128a8335a8e40",
+      "events": 165,
+      "outcome": 1
+    },
+    {
+      "seed": 23,
+      "hash": "e8579d092c3261b6638a4c4e104d89efc6ed2e77c1f347e9f167809101a9ec07",
+      "events": 212,
+      "outcome": 1
+    },
+    {
+      "seed": 24,
+      "hash": "051b922ed78e6b745043d54d853417863653e2ce07c553347fc51ba992a2a60f",
+      "events": 300,
+      "outcome": 1
+    },
+    {
+      "seed": 25,
+      "hash": "479ebefbb8a1a8829d3bb1533f01501482379d77a50f12399cbf76121c4d3853",
+      "events": 210,
+      "outcome": 1
+    },
+    {
+      "seed": 26,
+      "hash": "38729630db4dd08266519521660d40dce6f538fdd415f893e35d6c0d8456e301",
+      "events": 318,
+      "outcome": 1
+    },
+    {
+      "seed": 27,
+      "hash": "ccebb1c26ff04fa1cdc68ece36b119245dd391bbea9f17ab354e43e9f488ea28",
+      "events": 273,
+      "outcome": 1
+    },
+    {
+      "seed": 28,
+      "hash": "27260a2ce10ebbe923bcc0f9ff31bc40c4c0cb8bdc0fe2c11b1f5404e0700c6d",
+      "events": 273,
+      "outcome": 0
+    },
+    {
+      "seed": 29,
+      "hash": "8195afd65ffae784887b047d973fb4d2dc4b445b9ddfbdbf0af409412e3b2e80",
+      "events": 139,
+      "outcome": 1
+    },
+    {
+      "seed": 30,
+      "hash": "2a15a7042fa11882b649b4e01a54daea237d797019b240fb636036b16b0414ac",
+      "events": 200,
+      "outcome": 1
+    }
+  ]
+}

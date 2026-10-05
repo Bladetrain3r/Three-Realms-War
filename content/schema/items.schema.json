@@ -1,0 +1,611 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "items.json",
+  "type": "object",
+  "properties": {
+    "slots": {
+      "type": "object",
+      "properties": {
+        "weapon": {
+          "type": "object",
+          "properties": {
+            "main": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "stat": {
+                    "enum": [
+                      "VIG",
+                      "MIT",
+                      "ARC",
+                      "GRD",
+                      "WRD",
+                      "SPD",
+                      "MIT_OR_ARC"
+                    ]
+                  },
+                  "coef": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 100
+                  }
+                },
+                "required": [
+                  "stat",
+                  "coef"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 1,
+              "maxItems": 3
+            }
+          },
+          "required": [
+            "main"
+          ],
+          "additionalProperties": false
+        },
+        "armour": {
+          "type": "object",
+          "properties": {
+            "main": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "stat": {
+                    "enum": [
+                      "VIG",
+                      "MIT",
+                      "ARC",
+                      "GRD",
+                      "WRD",
+                      "SPD",
+                      "MIT_OR_ARC"
+                    ]
+                  },
+                  "coef": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 100
+                  }
+                },
+                "required": [
+                  "stat",
+                  "coef"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 1,
+              "maxItems": 3
+            }
+          },
+          "required": [
+            "main"
+          ],
+          "additionalProperties": false
+        },
+        "helm": {
+          "type": "object",
+          "properties": {
+            "main": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "stat": {
+                    "enum": [
+                      "VIG",
+                      "MIT",
+                      "ARC",
+                      "GRD",
+                      "WRD",
+                      "SPD",
+                      "MIT_OR_ARC"
+                    ]
+                  },
+                  "coef": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 100
+                  }
+                },
+                "required": [
+                  "stat",
+                  "coef"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 1,
+              "maxItems": 3
+            }
+          },
+          "required": [
+            "main"
+          ],
+          "additionalProperties": false
+        },
+        "charm": {
+          "type": "object",
+          "properties": {
+            "main": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "stat": {
+                    "enum": [
+                      "VIG",
+                      "MIT",
+                      "ARC",
+                      "GRD",
+                      "WRD",
+                      "SPD",
+                      "MIT_OR_ARC"
+                    ]
+                  },
+                  "coef": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 100
+                  }
+                },
+                "required": [
+                  "stat",
+                  "coef"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 1,
+              "maxItems": 3
+            },
+            "resistBpPerLevel": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000
+            }
+          },
+          "required": [
+            "main"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "weapon",
+        "armour",
+        "helm",
+        "charm"
+      ],
+      "additionalProperties": false
+    },
+    "slotOrder": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "weapon",
+          "armour",
+          "helm",
+          "charm"
+        ]
+      },
+      "minItems": 4,
+      "maxItems": 4,
+      "uniqueItems": true
+    },
+    "tiers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "enum": [
+              "plain",
+              "fine",
+              "runed",
+              "heirloom",
+              "legendary"
+            ]
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "multiplierBp": {
+            "type": "integer",
+            "minimum": 10000,
+            "maximum": 40000
+          },
+          "lines": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 5
+          },
+          "maxStar": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10
+          },
+          "setAllowed": {
+            "type": "boolean"
+          },
+          "fixedLines": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "multiplierBp",
+          "lines",
+          "maxStar",
+          "setAllowed"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 5,
+      "maxItems": 5,
+      "uniqueItems": true
+    },
+    "lines": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "index": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 20
+          },
+          "lo": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100000
+          },
+          "hi": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100000
+          },
+          "id": {
+            "enum": [
+              "VIG_PCT",
+              "MIT_PCT",
+              "ARC_PCT",
+              "GRD_PCT",
+              "WRD_PCT",
+              "SPD_PCT",
+              "CRIT",
+              "CRITDMG",
+              "SRES",
+              "RES_REALM"
+            ]
+          }
+        },
+        "required": [
+          "index",
+          "lo",
+          "hi",
+          "id"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 10,
+      "maxItems": 10
+    },
+    "sets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "realm": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "two": {
+            "type": "object",
+            "properties": {
+              "mods": {
+                "type": "object",
+                "properties": {
+                  "VIG": {
+                    "type": "integer",
+                    "minimum": -10000,
+                    "maximum": 20000
+                  },
+                  "MIT": {
+                    "type": "integer",
+                    "minimum": -10000,
+                    "maximum": 20000
+                  },
+                  "ARC": {
+                    "type": "integer",
+                    "minimum": -10000,
+                    "maximum": 20000
+                  },
+                  "GRD": {
+                    "type": "integer",
+                    "minimum": -10000,
+                    "maximum": 20000
+                  },
+                  "WRD": {
+                    "type": "integer",
+                    "minimum": -10000,
+                    "maximum": 20000
+                  },
+                  "SPD": {
+                    "type": "integer",
+                    "minimum": -10000,
+                    "maximum": 20000
+                  }
+                },
+                "required": [],
+                "additionalProperties": false
+              },
+              "res": {
+                "type": "object",
+                "properties": {
+                  "fire": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 10000
+                  },
+                  "frost": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 10000
+                  },
+                  "lightning": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 10000
+                  }
+                },
+                "required": [],
+                "additionalProperties": false
+              },
+              "sresBp": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 10000
+              }
+            },
+            "required": [],
+            "additionalProperties": false
+          },
+          "four": {
+            "type": "object",
+            "properties": {
+              "skill": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*$"
+              }
+            },
+            "required": [
+              "skill"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "realm",
+          "two",
+          "four"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "maxItems": 20
+    },
+    "starBonusBp": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 5000
+    },
+    "starSuccessBp": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 10000
+      },
+      "minItems": 7,
+      "maxItems": 7
+    },
+    "upgradeCost": {
+      "type": "object",
+      "properties": {
+        "commonBase": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "commonDivisor": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "rareFromStar": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "highStarFrom": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "highStarMul": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        }
+      },
+      "required": [
+        "commonBase",
+        "commonDivisor",
+        "rareFromStar",
+        "highStarFrom",
+        "highStarMul"
+      ],
+      "additionalProperties": false
+    },
+    "levelSlack": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 50
+    },
+    "stashMax": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10000
+    },
+    "drops": {
+      "type": "object",
+      "properties": {
+        "encounterBp": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
+        },
+        "tierWeights": {
+          "type": "object",
+          "properties": {
+            "plain": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000
+            },
+            "fine": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000
+            },
+            "runed": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000
+            }
+          },
+          "required": [
+            "plain",
+            "fine",
+            "runed"
+          ],
+          "additionalProperties": false
+        },
+        "bossTierWeights": {
+          "type": "object",
+          "properties": {
+            "fine": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000
+            },
+            "runed": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000
+            }
+          },
+          "required": [
+            "fine",
+            "runed"
+          ],
+          "additionalProperties": false
+        },
+        "setTagBp": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
+        },
+        "expeditionTierWeights": {
+          "type": "object",
+          "properties": {
+            "plain": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000
+            },
+            "fine": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000
+            },
+            "runed": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000
+            },
+            "heirloom": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000
+            }
+          },
+          "required": [
+            "plain",
+            "fine",
+            "runed",
+            "heirloom"
+          ],
+          "additionalProperties": false
+        },
+        "expeditionBossTierWeights": {
+          "type": "object",
+          "properties": {
+            "runed": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000
+            },
+            "heirloom": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000
+            }
+          },
+          "required": [
+            "runed",
+            "heirloom"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "encounterBp",
+        "tierWeights",
+        "bossTierWeights",
+        "expeditionTierWeights",
+        "expeditionBossTierWeights",
+        "setTagBp"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "slots",
+    "slotOrder",
+    "tiers",
+    "lines",
+    "sets",
+    "starBonusBp",
+    "starSuccessBp",
+    "upgradeCost",
+    "levelSlack",
+    "stashMax",
+    "drops"
+  ],
+  "additionalProperties": false
+}

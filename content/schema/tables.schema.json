@@ -1,0 +1,894 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "tables.json",
+  "type": "object",
+  "properties": {
+    "stats": {
+      "type": "object",
+      "properties": {
+        "levelCap": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "growthMul": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "growthDiv": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "hpPerVig": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "affinityBp": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
+        },
+        "affinityResBp": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
+        },
+        "injuredBp": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10000
+        },
+        "heroSresBase": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
+        },
+        "baseCrit": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
+        },
+        "baseCritDmg": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
+        }
+      },
+      "required": [
+        "levelCap",
+        "growthMul",
+        "growthDiv",
+        "hpPerVig",
+        "affinityBp",
+        "affinityResBp",
+        "injuredBp",
+        "heroSresBase",
+        "baseCrit",
+        "baseCritDmg"
+      ],
+      "additionalProperties": false
+    },
+    "enemy": {
+      "type": "object",
+      "properties": {
+        "curveK": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "curveQ": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2000
+        },
+        "curveDiv": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "signatureBp": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
+        },
+        "bossVigBp": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
+        },
+        "bossOtherBp": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
+        },
+        "bossLevelBonus": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 20
+        },
+        "tiltBp": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
+        },
+        "sresBase": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
+        },
+        "sresPerLevel": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
+        },
+        "ownResistBp": {
+          "type": "integer",
+          "minimum": -10000,
+          "maximum": 100000
+        },
+        "weakResistBp": {
+          "type": "integer",
+          "minimum": -10000,
+          "maximum": 100000
+        }
+      },
+      "required": [
+        "curveK",
+        "curveQ",
+        "curveDiv",
+        "signatureBp",
+        "bossVigBp",
+        "bossOtherBp",
+        "bossLevelBonus",
+        "tiltBp",
+        "sresBase",
+        "sresPerLevel",
+        "ownResistBp",
+        "weakResistBp"
+      ],
+      "additionalProperties": false
+    },
+    "combat": {
+      "type": "object",
+      "properties": {
+        "roundCap": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "mitCapBp": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10000
+        },
+        "mitBase": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "mitPerLevel": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "realmDamageBp": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
+        },
+        "resMin": {
+          "type": "integer",
+          "minimum": -10000,
+          "maximum": 100000
+        },
+        "resMax": {
+          "type": "integer",
+          "minimum": -10000,
+          "maximum": 100000
+        },
+        "varianceMin": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
+        },
+        "varianceSpan": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100000
+        },
+        "restHealBp": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
+        },
+        "braceTurns": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10
+        }
+      },
+      "required": [
+        "roundCap",
+        "mitCapBp",
+        "mitBase",
+        "mitPerLevel",
+        "realmDamageBp",
+        "resMin",
+        "resMax",
+        "varianceMin",
+        "varianceSpan",
+        "restHealBp",
+        "braceTurns"
+      ],
+      "additionalProperties": false
+    },
+    "injury": {
+      "type": "object",
+      "properties": {
+        "delves": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "restCost": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
+        },
+        "restCostWounded": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
+        }
+      },
+      "required": [
+        "delves",
+        "restCost",
+        "restCostWounded"
+      ],
+      "additionalProperties": false
+    },
+    "recruit": {
+      "type": "object",
+      "properties": {
+        "costBase": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
+        },
+        "costPerLevel": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
+        },
+        "rareMul": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "rosterMax": {
+          "type": "integer",
+          "minimum": 4,
+          "maximum": 1000
+        },
+        "startingRoster": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "minItems": 1,
+          "maxItems": 4,
+          "uniqueItems": true
+        },
+        "kitLevelDen": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "startLevel": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 50
+        }
+      },
+      "required": [
+        "costBase",
+        "costPerLevel",
+        "rareMul",
+        "rosterMax",
+        "startingRoster",
+        "kitLevelDen",
+        "startLevel"
+      ],
+      "additionalProperties": false
+    },
+    "delve": {
+      "type": "object",
+      "properties": {
+        "minEncounters": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "encounterSpan": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "firstEnemies": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4
+        },
+        "otherEnemies": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4
+        },
+        "bossAdds": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3
+        },
+        "bandWeights": {
+          "type": "object",
+          "properties": {
+            "first": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 1000
+              },
+              "minItems": 3,
+              "maxItems": 3
+            },
+            "middle": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 1000
+              },
+              "minItems": 3,
+              "maxItems": 3
+            },
+            "boss": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 1000
+              },
+              "minItems": 3,
+              "maxItems": 3
+            }
+          },
+          "required": [
+            "first",
+            "middle",
+            "boss"
+          ],
+          "additionalProperties": false
+        },
+        "affix": {
+          "type": "object",
+          "properties": {
+            "minDelve": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            },
+            "chanceBp": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10000
+            },
+            "chanceHighBp": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10000
+            },
+            "highFrom": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            },
+            "secondBp": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10000
+            },
+            "secondFrom": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            }
+          },
+          "required": [
+            "minDelve",
+            "chanceBp",
+            "chanceHighBp",
+            "highFrom",
+            "secondBp",
+            "secondFrom"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "minEncounters",
+        "encounterSpan",
+        "firstEnemies",
+        "otherEnemies",
+        "bossAdds",
+        "bandWeights",
+        "affix"
+      ],
+      "additionalProperties": false
+    },
+    "progress": {
+      "type": "object",
+      "properties": {
+        "xpBase": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
+        },
+        "xpPerLevel": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
+        },
+        "xpCubeDiv": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100000
+        },
+        "encXpBase": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
+        },
+        "encXpPerD": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000
+        },
+        "bossMul": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "restXpBp": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
+        },
+        "matBase": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "matDiv": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "silverBase": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "bossSilverMul": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "bossMatMul": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "repWin": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "repBoss": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "threadBp": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
+        },
+        "rep": {
+          "type": "object",
+          "properties": {
+            "known": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000
+            },
+            "trusted": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000
+            },
+            "honoured": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000
+            }
+          },
+          "required": [
+            "known",
+            "trusted",
+            "honoured"
+          ],
+          "additionalProperties": false
+        },
+        "threadHearts": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "unlockCap": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "restXpGap": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 50
+        }
+      },
+      "required": [
+        "xpBase",
+        "xpPerLevel",
+        "xpCubeDiv",
+        "encXpBase",
+        "encXpPerD",
+        "bossMul",
+        "restXpBp",
+        "matBase",
+        "matDiv",
+        "silverBase",
+        "bossSilverMul",
+        "bossMatMul",
+        "repWin",
+        "repBoss",
+        "threadBp",
+        "rep",
+        "threadHearts",
+        "unlockCap",
+        "restXpGap"
+      ],
+      "additionalProperties": false
+    },
+    "expedition": {
+      "type": "object",
+      "properties": {
+        "width": {
+          "type": "integer",
+          "minimum": 8,
+          "maximum": 64
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 8,
+          "maximum": 64
+        },
+        "latticeW": {
+          "type": "integer",
+          "minimum": 2,
+          "maximum": 16
+        },
+        "latticeH": {
+          "type": "integer",
+          "minimum": 2,
+          "maximum": 16
+        },
+        "jitter": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "waterBelow": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 255
+        },
+        "forestFrom": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 255
+        },
+        "hillsFrom": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 255
+        },
+        "peakFrom": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 256
+        },
+        "moveCostPlain": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9
+        },
+        "moveCostForest": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9
+        },
+        "moveCostHills": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9
+        },
+        "sitesMin": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "sitesMax": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "siteSpacing": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "startSpacing": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "revealRadius": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "provisionCost": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "provisionMax": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "floorCost": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "siteLevelDiv": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "floorsBase": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "floorsDiv": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "encountersPerFloor": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 6
+        },
+        "distBp": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
+        },
+        "floorBp": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 20000
+        },
+        "deathSaveBp": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
+        },
+        "reviveInjury": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "floorsMax": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "paragonBp": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
+        }
+      },
+      "required": [
+        "width",
+        "height",
+        "latticeW",
+        "latticeH",
+        "jitter",
+        "waterBelow",
+        "forestFrom",
+        "hillsFrom",
+        "peakFrom",
+        "moveCostPlain",
+        "moveCostForest",
+        "moveCostHills",
+        "sitesMin",
+        "sitesMax",
+        "siteSpacing",
+        "startSpacing",
+        "revealRadius",
+        "provisionCost",
+        "provisionMax",
+        "floorCost",
+        "siteLevelDiv",
+        "floorsBase",
+        "floorsDiv",
+        "encountersPerFloor",
+        "distBp",
+        "floorBp",
+        "deathSaveBp",
+        "reviveInjury",
+        "floorsMax",
+        "paragonBp"
+      ],
+      "additionalProperties": false
+    },
+    "training": {
+      "type": "object",
+      "properties": {
+        "costPerLevel": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "maxLevel": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 50
+        }
+      },
+      "required": [
+        "costPerLevel",
+        "maxLevel"
+      ],
+      "additionalProperties": false
+    },
+    "paragon": {
+      "type": "object",
+      "properties": {
+        "starBp": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10000
+        },
+        "maxPerStat": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10
+        },
+        "heartBase": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        }
+      },
+      "required": [
+        "starBp",
+        "maxPerStat",
+        "heartBase"
+      ],
+      "additionalProperties": false
+    },
+    "legend": {
+      "type": "object",
+      "properties": {
+        "roundCap": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 500
+        },
+        "levelBonus": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 20
+        },
+        "minDist": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 40
+        },
+        "unlockCount": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        "chaosLevel": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "chaosFrom": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 50
+        },
+        "rewardMul": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "hearts": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 20
+        },
+        "paragon": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 20
+        },
+        "chaosParagon": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 20
+        }
+      },
+      "required": [
+        "roundCap",
+        "levelBonus",
+        "minDist",
+        "unlockCount",
+        "chaosLevel",
+        "chaosFrom",
+        "rewardMul",
+        "hearts",
+        "paragon",
+        "chaosParagon"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "stats",
+    "enemy",
+    "combat",
+    "injury",
+    "recruit",
+    "delve",
+    "progress",
+    "expedition",
+    "training",
+    "paragon",
+    "legend"
+  ],
+  "additionalProperties": false
+}

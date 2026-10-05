@@ -1,0 +1,1570 @@
+{
+  "thresholds": {
+    "file": "checks/balance.yaml",
+    "version": 1,
+    "written": "2026-10-01"
+  },
+  "run": {
+    "seed_base": 20261001,
+    "party": [
+      "shieldwarden",
+      "huscarl",
+      "stormcaller",
+      "hearthkeeper"
+    ],
+    "delves_per_cell": 900,
+    "mirror_compositions": 36,
+    "mirror_level": 20,
+    "mirror_fights_per_ordered_pair": 20,
+    "upgrade_attempts_per_star": 100000,
+    "line_rolls": 200000
+  },
+  "delves": {
+    "winRate": {
+      "1": {
+        "none": 0.98,
+        "starter": 1,
+        "fine": 1,
+        "runed": 1,
+        "heirloom": 1
+      },
+      "5": {
+        "none": 0,
+        "starter": 0.891111,
+        "fine": 0.983333,
+        "runed": 1,
+        "heirloom": 1
+      },
+      "10": {
+        "none": 0,
+        "starter": 0.688889,
+        "fine": 0.927778,
+        "runed": 0.994444,
+        "heirloom": 1
+      },
+      "20": {
+        "none": 0,
+        "starter": 0.403333,
+        "fine": 0.818889,
+        "runed": 0.978889,
+        "heirloom": 1
+      },
+      "30": {
+        "none": 0,
+        "starter": 0.22,
+        "fine": 0.646667,
+        "runed": 0.925556,
+        "heirloom": 0.998889
+      },
+      "40": {
+        "none": 0,
+        "starter": 0.105556,
+        "fine": 0.501111,
+        "runed": 0.854444,
+        "heirloom": 0.993333
+      },
+      "50": {
+        "none": 0,
+        "starter": 0.05,
+        "fine": 0.396667,
+        "runed": 0.711111,
+        "heirloom": 0.987778
+      }
+    },
+    "runedPooled": {
+      "medianRounds": 3,
+      "timeoutRate": 0.00044,
+      "injuryPerHeroPerWonDelve": 0.136473,
+      "deathProxyPerHeroPerWonEncounter": 0.016535,
+      "encounters": 25012,
+      "wonDelves": 5818,
+      "byLevel": {
+        "1": {
+          "winRate": 1,
+          "injuryRate": 0.007778,
+          "medianRounds": 2
+        },
+        "5": {
+          "winRate": 1,
+          "injuryRate": 0.046944,
+          "medianRounds": 2
+        },
+        "10": {
+          "winRate": 0.994444,
+          "injuryRate": 0.076257,
+          "medianRounds": 3
+        },
+        "20": {
+          "winRate": 0.978889,
+          "injuryRate": 0.131385,
+          "medianRounds": 3
+        },
+        "30": {
+          "winRate": 0.925556,
+          "injuryRate": 0.193878,
+          "medianRounds": 3
+        },
+        "40": {
+          "winRate": 0.854444,
+          "injuryRate": 0.258778,
+          "medianRounds": 4
+        },
+        "50": {
+          "winRate": 0.711111,
+          "injuryRate": 0.312891,
+          "medianRounds": 4
+        }
+      }
+    }
+  },
+  "mirror": {
+    "compositions": [
+      {
+        "classes": [
+          "draugr_knight",
+          "einherjar",
+          "ghoul_reaver",
+          "huscarl"
+        ],
+        "winRate": 0.723571
+      },
+      {
+        "classes": [
+          "draugr_knight",
+          "ghoul_reaver",
+          "hunter",
+          "shieldwarden"
+        ],
+        "winRate": 0.538571
+      },
+      {
+        "classes": [
+          "hearthkeeper",
+          "hunter",
+          "stormcaller",
+          "volva"
+        ],
+        "winRate": 0.437857
+      },
+      {
+        "classes": [
+          "draugr_knight",
+          "einherjar",
+          "shieldwarden",
+          "stormcaller"
+        ],
+        "winRate": 0.87
+      },
+      {
+        "classes": [
+          "hearthkeeper",
+          "hunter",
+          "skyrider",
+          "stormcaller"
+        ],
+        "winRate": 0.422143
+      },
+      {
+        "classes": [
+          "draugr_knight",
+          "einherjar",
+          "hunter",
+          "shieldwarden"
+        ],
+        "winRate": 0.641429
+      },
+      {
+        "classes": [
+          "ghoul_reaver",
+          "hearthkeeper",
+          "skald",
+          "volva"
+        ],
+        "winRate": 0.620714
+      },
+      {
+        "classes": [
+          "ghoul_reaver",
+          "rime_mender",
+          "skald",
+          "skyrider"
+        ],
+        "winRate": 0.457143
+      },
+      {
+        "classes": [
+          "draugr_knight",
+          "ghoul_reaver",
+          "rime_mender",
+          "shieldwarden"
+        ],
+        "winRate": 0.461429
+      },
+      {
+        "classes": [
+          "einherjar",
+          "hearthkeeper",
+          "rime_mender",
+          "stormcaller"
+        ],
+        "winRate": 0.714286
+      },
+      {
+        "classes": [
+          "einherjar",
+          "hearthkeeper",
+          "rime_mender",
+          "volva"
+        ],
+        "winRate": 0.496429
+      },
+      {
+        "classes": [
+          "ghoul_reaver",
+          "hearthkeeper",
+          "huscarl",
+          "volva"
+        ],
+        "winRate": 0.330714
+      },
+      {
+        "classes": [
+          "hunter",
+          "huscarl",
+          "skyrider",
+          "stormcaller"
+        ],
+        "winRate": 0.365
+      },
+      {
+        "classes": [
+          "draugr_knight",
+          "ghoul_reaver",
+          "hearthkeeper",
+          "shieldwarden"
+        ],
+        "winRate": 0.69
+      },
+      {
+        "classes": [
+          "ghoul_reaver",
+          "hearthkeeper",
+          "hunter",
+          "skald"
+        ],
+        "winRate": 0.670714
+      },
+      {
+        "classes": [
+          "einherjar",
+          "ghoul_reaver",
+          "rime_mender",
+          "skyrider"
+        ],
+        "winRate": 0.240714
+      },
+      {
+        "classes": [
+          "hearthkeeper",
+          "huscarl",
+          "rime_mender",
+          "shieldwarden"
+        ],
+        "winRate": 0.41
+      },
+      {
+        "classes": [
+          "einherjar",
+          "hunter",
+          "rime_mender",
+          "volva"
+        ],
+        "winRate": 0.218571
+      },
+      {
+        "classes": [
+          "huscarl",
+          "rime_mender",
+          "skald",
+          "volva"
+        ],
+        "winRate": 0.396429
+      },
+      {
+        "classes": [
+          "draugr_knight",
+          "ghoul_reaver",
+          "hearthkeeper",
+          "volva"
+        ],
+        "winRate": 0.477143
+      },
+      {
+        "classes": [
+          "draugr_knight",
+          "einherjar",
+          "hunter",
+          "skald"
+        ],
+        "winRate": 0.717143
+      },
+      {
+        "classes": [
+          "hearthkeeper",
+          "rime_mender",
+          "skald",
+          "skyrider"
+        ],
+        "winRate": 0.45
+      },
+      {
+        "classes": [
+          "draugr_knight",
+          "hearthkeeper",
+          "huscarl",
+          "skald"
+        ],
+        "winRate": 0.677857
+      },
+      {
+        "classes": [
+          "einherjar",
+          "huscarl",
+          "rime_mender",
+          "stormcaller"
+        ],
+        "winRate": 0.706429
+      },
+      {
+        "classes": [
+          "ghoul_reaver",
+          "hunter",
+          "shieldwarden",
+          "skyrider"
+        ],
+        "winRate": 0.218571
+      },
+      {
+        "classes": [
+          "einherjar",
+          "ghoul_reaver",
+          "skald",
+          "skyrider"
+        ],
+        "winRate": 0.415
+      },
+      {
+        "classes": [
+          "einherjar",
+          "hearthkeeper",
+          "huscarl",
+          "shieldwarden"
+        ],
+        "winRate": 0.655
+      },
+      {
+        "classes": [
+          "draugr_knight",
+          "hunter",
+          "rime_mender",
+          "shieldwarden"
+        ],
+        "winRate": 0.21
+      },
+      {
+        "classes": [
+          "einherjar",
+          "hunter",
+          "skald",
+          "volva"
+        ],
+        "winRate": 0.493571
+      },
+      {
+        "classes": [
+          "einherjar",
+          "hearthkeeper",
+          "skyrider",
+          "volva"
+        ],
+        "winRate": 0.285
+      },
+      {
+        "classes": [
+          "draugr_knight",
+          "einherjar",
+          "hearthkeeper",
+          "skald"
+        ],
+        "winRate": 0.863571
+      },
+      {
+        "classes": [
+          "draugr_knight",
+          "hunter",
+          "huscarl",
+          "shieldwarden"
+        ],
+        "winRate": 0.405
+      },
+      {
+        "classes": [
+          "rime_mender",
+          "shieldwarden",
+          "skyrider",
+          "volva"
+        ],
+        "winRate": 0.056429
+      },
+      {
+        "classes": [
+          "draugr_knight",
+          "rime_mender",
+          "skyrider",
+          "volva"
+        ],
+        "winRate": 0.102857
+      },
+      {
+        "classes": [
+          "einherjar",
+          "hearthkeeper",
+          "huscarl",
+          "stormcaller"
+        ],
+        "winRate": 0.792143
+      },
+      {
+        "classes": [
+          "ghoul_reaver",
+          "hearthkeeper",
+          "shieldwarden",
+          "stormcaller"
+        ],
+        "winRate": 0.737143
+      }
+    ],
+    "classWinRate": {
+      "shieldwarden": 0.491131,
+      "huscarl": 0.546214,
+      "hunter": 0.444881,
+      "hearthkeeper": 0.572395,
+      "einherjar": 0.588857,
+      "stormcaller": 0.630625,
+      "skald": 0.576214,
+      "skyrider": 0.301286,
+      "draugr_knight": 0.567582,
+      "volva": 0.355974,
+      "ghoul_reaver": 0.506264,
+      "rime_mender": 0.378516
+    },
+    "realmWinRate": {
+      "midgard": 0.513655,
+      "asgard": 0.524246,
+      "helheim": 0.452084
+    },
+    "sideBias": 0.629956,
+    "timeoutRate": 0.003202,
+    "fights": 25920
+  },
+  "econ": {
+    "firstUpgradeDelves": 1,
+    "delvesPerItemTo3": {
+      "L10": 1.874074,
+      "L20": 2.224691,
+      "L30": 2.215385,
+      "L40": 2.348611,
+      "L50": 2.439766
+    },
+    "delves16To3AtL30": 35.446154,
+    "heartsVsMaterials": {
+      "L20": 1.469388,
+      "L30": 1.444444,
+      "L40": 1.347368,
+      "L50": 1.288136
+    },
+    "heartsVsMaterialsMin": 1.288136,
+    "materialsGrowth": 6.333333,
+    "delvesPerLevel": {
+      "L10": 1.6,
+      "L20": 2.333333,
+      "L30": 3.538462,
+      "L40": 5.235294
+    },
+    "delvesToLevel50": 163.945437,
+    "upgradeSuccess": {
+      "star0": {
+        "observed": 0.89961,
+        "table": 0.9
+      },
+      "star1": {
+        "observed": 0.74906,
+        "table": 0.75
+      },
+      "star2": {
+        "observed": 0.60023,
+        "table": 0.6
+      },
+      "star3": {
+        "observed": 0.44929,
+        "table": 0.45
+      },
+      "star4": {
+        "observed": 0.30034,
+        "table": 0.3
+      }
+    },
+    "lineKindShare": [
+      0.100551,
+      0.099706,
+      0.100511,
+      0.099836,
+      0.099706,
+      0.099801,
+      0.101111,
+      0.099686,
+      0.100001,
+      0.099091
+    ],
+    "lineValuesOutOfRange": 0
+  },
+  "checks": [
+    {
+      "id": "delve_winrate.L1.starter",
+      "value": 1,
+      "lo": 0.85,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "delve_winrate.L1.fine",
+      "value": 1,
+      "lo": 0.9,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "delve_winrate.L1.runed",
+      "value": 1,
+      "lo": 0.9,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "delve_winrate.L1.heirloom",
+      "value": 1,
+      "lo": 0.9,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "delve_winrate.L5.starter",
+      "value": 0.891111,
+      "lo": 0.8,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "delve_winrate.L5.fine",
+      "value": 0.983333,
+      "lo": 0.85,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "delve_winrate.L5.runed",
+      "value": 1,
+      "lo": 0.9,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "delve_winrate.L5.heirloom",
+      "value": 1,
+      "lo": 0.9,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "delve_winrate.L10.starter",
+      "value": 0.688889,
+      "lo": 0.65,
+      "hi": 0.97,
+      "ok": true
+    },
+    {
+      "id": "delve_winrate.L10.fine",
+      "value": 0.927778,
+      "lo": 0.8,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "delve_winrate.L10.runed",
+      "value": 0.994444,
+      "lo": 0.9,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "delve_winrate.L10.heirloom",
+      "value": 1,
+      "lo": 0.92,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "delve_winrate.L20.starter",
+      "value": 0.403333,
+      "lo": 0.4,
+      "hi": 0.85,
+      "ok": true
+    },
+    {
+      "id": "delve_winrate.L20.fine",
+      "value": 0.818889,
+      "lo": 0.65,
+      "hi": 0.97,
+      "ok": true
+    },
+    {
+      "id": "delve_winrate.L20.runed",
+      "value": 0.978889,
+      "lo": 0.8,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "delve_winrate.L20.heirloom",
+      "value": 1,
+      "lo": 0.9,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "delve_winrate.L30.starter",
+      "value": 0.22,
+      "lo": 0.2,
+      "hi": 0.65,
+      "ok": true
+    },
+    {
+      "id": "delve_winrate.L30.fine",
+      "value": 0.646667,
+      "lo": 0.45,
+      "hi": 0.88,
+      "ok": true
+    },
+    {
+      "id": "delve_winrate.L30.runed",
+      "value": 0.925556,
+      "lo": 0.7,
+      "hi": 0.98,
+      "ok": true
+    },
+    {
+      "id": "delve_winrate.L30.heirloom",
+      "value": 0.998889,
+      "lo": 0.85,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "delve_winrate.L40.starter",
+      "value": 0.105556,
+      "lo": 0.05,
+      "hi": 0.45,
+      "ok": true
+    },
+    {
+      "id": "delve_winrate.L40.fine",
+      "value": 0.501111,
+      "lo": 0.25,
+      "hi": 0.7,
+      "ok": true
+    },
+    {
+      "id": "delve_winrate.L40.runed",
+      "value": 0.854444,
+      "lo": 0.55,
+      "hi": 0.92,
+      "ok": true
+    },
+    {
+      "id": "delve_winrate.L40.heirloom",
+      "value": 0.993333,
+      "lo": 0.75,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "delve_winrate.L50.starter",
+      "value": 0.05,
+      "lo": 0,
+      "hi": 0.25,
+      "ok": true
+    },
+    {
+      "id": "delve_winrate.L50.fine",
+      "value": 0.396667,
+      "lo": 0.1,
+      "hi": 0.5,
+      "ok": true
+    },
+    {
+      "id": "delve_winrate.L50.runed",
+      "value": 0.711111,
+      "lo": 0.4,
+      "hi": 0.8,
+      "ok": true
+    },
+    {
+      "id": "delve_winrate.L50.heirloom",
+      "value": 0.987778,
+      "lo": 0.65,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "gear_order.L1.starter_vs_none",
+      "value": 0.02,
+      "lo": -0.03,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "gear_order.L1.fine_vs_starter",
+      "value": 0,
+      "lo": -0.03,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "gear_order.L1.runed_vs_fine",
+      "value": 0,
+      "lo": -0.03,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "gear_order.L1.heirloom_vs_runed",
+      "value": 0,
+      "lo": -0.03,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "gear_order.L5.starter_vs_none",
+      "value": 0.891111,
+      "lo": -0.03,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "gear_order.L5.fine_vs_starter",
+      "value": 0.092222,
+      "lo": -0.03,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "gear_order.L5.runed_vs_fine",
+      "value": 0.016667,
+      "lo": -0.03,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "gear_order.L5.heirloom_vs_runed",
+      "value": 0,
+      "lo": -0.03,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "gear_order.L10.starter_vs_none",
+      "value": 0.688889,
+      "lo": -0.03,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "gear_order.L10.fine_vs_starter",
+      "value": 0.238889,
+      "lo": -0.03,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "gear_order.L10.runed_vs_fine",
+      "value": 0.066666,
+      "lo": -0.03,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "gear_order.L10.heirloom_vs_runed",
+      "value": 0.005556,
+      "lo": -0.03,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "gear_order.L20.starter_vs_none",
+      "value": 0.403333,
+      "lo": -0.03,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "gear_order.L20.fine_vs_starter",
+      "value": 0.415556,
+      "lo": -0.03,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "gear_order.L20.runed_vs_fine",
+      "value": 0.16,
+      "lo": -0.03,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "gear_order.L20.heirloom_vs_runed",
+      "value": 0.021111,
+      "lo": -0.03,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "gear_order.L30.starter_vs_none",
+      "value": 0.22,
+      "lo": -0.03,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "gear_order.L30.fine_vs_starter",
+      "value": 0.426667,
+      "lo": -0.03,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "gear_order.L30.runed_vs_fine",
+      "value": 0.278889,
+      "lo": -0.03,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "gear_order.L30.heirloom_vs_runed",
+      "value": 0.073333,
+      "lo": -0.03,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "gear_order.L40.starter_vs_none",
+      "value": 0.105556,
+      "lo": -0.03,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "gear_order.L40.fine_vs_starter",
+      "value": 0.395555,
+      "lo": -0.03,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "gear_order.L40.runed_vs_fine",
+      "value": 0.353333,
+      "lo": -0.03,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "gear_order.L40.heirloom_vs_runed",
+      "value": 0.138889,
+      "lo": -0.03,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "gear_order.L50.starter_vs_none",
+      "value": 0.05,
+      "lo": -0.03,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "gear_order.L50.fine_vs_starter",
+      "value": 0.346667,
+      "lo": -0.03,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "gear_order.L50.runed_vs_fine",
+      "value": 0.314444,
+      "lo": -0.03,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "gear_order.L50.heirloom_vs_runed",
+      "value": 0.276667,
+      "lo": -0.03,
+      "hi": 1,
+      "ok": true
+    },
+    {
+      "id": "naked_party.L20",
+      "value": 0,
+      "lo": 0,
+      "hi": 0.15,
+      "ok": true
+    },
+    {
+      "id": "naked_party.L30",
+      "value": 0,
+      "lo": 0,
+      "hi": 0.15,
+      "ok": true
+    },
+    {
+      "id": "naked_party.L40",
+      "value": 0,
+      "lo": 0,
+      "hi": 0.15,
+      "ok": true
+    },
+    {
+      "id": "naked_party.L50",
+      "value": 0,
+      "lo": 0,
+      "hi": 0.15,
+      "ok": true
+    },
+    {
+      "id": "gear_gap.growth",
+      "value": 0.828889,
+      "lo": 0.35,
+      "hi": 2,
+      "ok": true
+    },
+    {
+      "id": "encounter.median_rounds",
+      "value": 3,
+      "lo": 3,
+      "hi": 10,
+      "ok": true
+    },
+    {
+      "id": "encounter.timeout_rate",
+      "value": 0.00044,
+      "lo": 0,
+      "hi": 0.01,
+      "ok": true
+    },
+    {
+      "id": "injury.per_hero_per_won_delve",
+      "value": 0.136473,
+      "lo": 0.02,
+      "hi": 0.4,
+      "ok": true
+    },
+    {
+      "id": "injury.expedition_death_per_hero_per_won_encounter",
+      "value": 0.016535,
+      "lo": 0.005,
+      "hi": 0.1,
+      "ok": true
+    },
+    {
+      "id": "mirror.composition.draugr_knight+einherjar+ghoul_reaver+huscarl",
+      "value": 0.723571,
+      "lo": 0.05,
+      "hi": 0.9,
+      "ok": true
+    },
+    {
+      "id": "mirror.composition.draugr_knight+ghoul_reaver+hunter+shieldwarden",
+      "value": 0.538571,
+      "lo": 0.05,
+      "hi": 0.9,
+      "ok": true
+    },
+    {
+      "id": "mirror.composition.hearthkeeper+hunter+stormcaller+volva",
+      "value": 0.437857,
+      "lo": 0.05,
+      "hi": 0.9,
+      "ok": true
+    },
+    {
+      "id": "mirror.composition.draugr_knight+einherjar+shieldwarden+stormcaller",
+      "value": 0.87,
+      "lo": 0.05,
+      "hi": 0.9,
+      "ok": true
+    },
+    {
+      "id": "mirror.composition.hearthkeeper+hunter+skyrider+stormcaller",
+      "value": 0.422143,
+      "lo": 0.05,
+      "hi": 0.9,
+      "ok": true
+    },
+    {
+      "id": "mirror.composition.draugr_knight+einherjar+hunter+shieldwarden",
+      "value": 0.641429,
+      "lo": 0.05,
+      "hi": 0.9,
+      "ok": true
+    },
+    {
+      "id": "mirror.composition.ghoul_reaver+hearthkeeper+skald+volva",
+      "value": 0.620714,
+      "lo": 0.05,
+      "hi": 0.9,
+      "ok": true
+    },
+    {
+      "id": "mirror.composition.ghoul_reaver+rime_mender+skald+skyrider",
+      "value": 0.457143,
+      "lo": 0.05,
+      "hi": 0.9,
+      "ok": true
+    },
+    {
+      "id": "mirror.composition.draugr_knight+ghoul_reaver+rime_mender+shieldwarden",
+      "value": 0.461429,
+      "lo": 0.05,
+      "hi": 0.9,
+      "ok": true
+    },
+    {
+      "id": "mirror.composition.einherjar+hearthkeeper+rime_mender+stormcaller",
+      "value": 0.714286,
+      "lo": 0.05,
+      "hi": 0.9,
+      "ok": true
+    },
+    {
+      "id": "mirror.composition.einherjar+hearthkeeper+rime_mender+volva",
+      "value": 0.496429,
+      "lo": 0.05,
+      "hi": 0.9,
+      "ok": true
+    },
+    {
+      "id": "mirror.composition.ghoul_reaver+hearthkeeper+huscarl+volva",
+      "value": 0.330714,
+      "lo": 0.05,
+      "hi": 0.9,
+      "ok": true
+    },
+    {
+      "id": "mirror.composition.hunter+huscarl+skyrider+stormcaller",
+      "value": 0.365,
+      "lo": 0.05,
+      "hi": 0.9,
+      "ok": true
+    },
+    {
+      "id": "mirror.composition.draugr_knight+ghoul_reaver+hearthkeeper+shieldwarden",
+      "value": 0.69,
+      "lo": 0.05,
+      "hi": 0.9,
+      "ok": true
+    },
+    {
+      "id": "mirror.composition.ghoul_reaver+hearthkeeper+hunter+skald",
+      "value": 0.670714,
+      "lo": 0.05,
+      "hi": 0.9,
+      "ok": true
+    },
+    {
+      "id": "mirror.composition.einherjar+ghoul_reaver+rime_mender+skyrider",
+      "value": 0.240714,
+      "lo": 0.05,
+      "hi": 0.9,
+      "ok": true
+    },
+    {
+      "id": "mirror.composition.hearthkeeper+huscarl+rime_mender+shieldwarden",
+      "value": 0.41,
+      "lo": 0.05,
+      "hi": 0.9,
+      "ok": true
+    },
+    {
+      "id": "mirror.composition.einherjar+hunter+rime_mender+volva",
+      "value": 0.218571,
+      "lo": 0.05,
+      "hi": 0.9,
+      "ok": true
+    },
+    {
+      "id": "mirror.composition.huscarl+rime_mender+skald+volva",
+      "value": 0.396429,
+      "lo": 0.05,
+      "hi": 0.9,
+      "ok": true
+    },
+    {
+      "id": "mirror.composition.draugr_knight+ghoul_reaver+hearthkeeper+volva",
+      "value": 0.477143,
+      "lo": 0.05,
+      "hi": 0.9,
+      "ok": true
+    },
+    {
+      "id": "mirror.composition.draugr_knight+einherjar+hunter+skald",
+      "value": 0.717143,
+      "lo": 0.05,
+      "hi": 0.9,
+      "ok": true
+    },
+    {
+      "id": "mirror.composition.hearthkeeper+rime_mender+skald+skyrider",
+      "value": 0.45,
+      "lo": 0.05,
+      "hi": 0.9,
+      "ok": true
+    },
+    {
+      "id": "mirror.composition.draugr_knight+hearthkeeper+huscarl+skald",
+      "value": 0.677857,
+      "lo": 0.05,
+      "hi": 0.9,
+      "ok": true
+    },
+    {
+      "id": "mirror.composition.einherjar+huscarl+rime_mender+stormcaller",
+      "value": 0.706429,
+      "lo": 0.05,
+      "hi": 0.9,
+      "ok": true
+    },
+    {
+      "id": "mirror.composition.ghoul_reaver+hunter+shieldwarden+skyrider",
+      "value": 0.218571,
+      "lo": 0.05,
+      "hi": 0.9,
+      "ok": true
+    },
+    {
+      "id": "mirror.composition.einherjar+ghoul_reaver+skald+skyrider",
+      "value": 0.415,
+      "lo": 0.05,
+      "hi": 0.9,
+      "ok": true
+    },
+    {
+      "id": "mirror.composition.einherjar+hearthkeeper+huscarl+shieldwarden",
+      "value": 0.655,
+      "lo": 0.05,
+      "hi": 0.9,
+      "ok": true
+    },
+    {
+      "id": "mirror.composition.draugr_knight+hunter+rime_mender+shieldwarden",
+      "value": 0.21,
+      "lo": 0.05,
+      "hi": 0.9,
+      "ok": true
+    },
+    {
+      "id": "mirror.composition.einherjar+hunter+skald+volva",
+      "value": 0.493571,
+      "lo": 0.05,
+      "hi": 0.9,
+      "ok": true
+    },
+    {
+      "id": "mirror.composition.einherjar+hearthkeeper+skyrider+volva",
+      "value": 0.285,
+      "lo": 0.05,
+      "hi": 0.9,
+      "ok": true
+    },
+    {
+      "id": "mirror.composition.draugr_knight+einherjar+hearthkeeper+skald",
+      "value": 0.863571,
+      "lo": 0.05,
+      "hi": 0.9,
+      "ok": true
+    },
+    {
+      "id": "mirror.composition.draugr_knight+hunter+huscarl+shieldwarden",
+      "value": 0.405,
+      "lo": 0.05,
+      "hi": 0.9,
+      "ok": true
+    },
+    {
+      "id": "mirror.composition.rime_mender+shieldwarden+skyrider+volva",
+      "value": 0.056429,
+      "lo": 0.05,
+      "hi": 0.9,
+      "ok": true
+    },
+    {
+      "id": "mirror.composition.draugr_knight+rime_mender+skyrider+volva",
+      "value": 0.102857,
+      "lo": 0.05,
+      "hi": 0.9,
+      "ok": true
+    },
+    {
+      "id": "mirror.composition.einherjar+hearthkeeper+huscarl+stormcaller",
+      "value": 0.792143,
+      "lo": 0.05,
+      "hi": 0.9,
+      "ok": true
+    },
+    {
+      "id": "mirror.composition.ghoul_reaver+hearthkeeper+shieldwarden+stormcaller",
+      "value": 0.737143,
+      "lo": 0.05,
+      "hi": 0.9,
+      "ok": true
+    },
+    {
+      "id": "mirror.class.shieldwarden",
+      "value": 0.491131,
+      "lo": 0.3,
+      "hi": 0.7,
+      "ok": true
+    },
+    {
+      "id": "mirror.class.huscarl",
+      "value": 0.546214,
+      "lo": 0.3,
+      "hi": 0.7,
+      "ok": true
+    },
+    {
+      "id": "mirror.class.hunter",
+      "value": 0.444881,
+      "lo": 0.3,
+      "hi": 0.7,
+      "ok": true
+    },
+    {
+      "id": "mirror.class.hearthkeeper",
+      "value": 0.572395,
+      "lo": 0.3,
+      "hi": 0.7,
+      "ok": true
+    },
+    {
+      "id": "mirror.class.einherjar",
+      "value": 0.588857,
+      "lo": 0.3,
+      "hi": 0.7,
+      "ok": true
+    },
+    {
+      "id": "mirror.class.stormcaller",
+      "value": 0.630625,
+      "lo": 0.3,
+      "hi": 0.7,
+      "ok": true
+    },
+    {
+      "id": "mirror.class.skald",
+      "value": 0.576214,
+      "lo": 0.3,
+      "hi": 0.7,
+      "ok": true
+    },
+    {
+      "id": "mirror.class.skyrider",
+      "value": 0.301286,
+      "lo": 0.3,
+      "hi": 0.7,
+      "ok": true
+    },
+    {
+      "id": "mirror.class.draugr_knight",
+      "value": 0.567582,
+      "lo": 0.3,
+      "hi": 0.7,
+      "ok": true
+    },
+    {
+      "id": "mirror.class.volva",
+      "value": 0.355974,
+      "lo": 0.3,
+      "hi": 0.7,
+      "ok": true
+    },
+    {
+      "id": "mirror.class.ghoul_reaver",
+      "value": 0.506264,
+      "lo": 0.3,
+      "hi": 0.7,
+      "ok": true
+    },
+    {
+      "id": "mirror.class.rime_mender",
+      "value": 0.378516,
+      "lo": 0.3,
+      "hi": 0.7,
+      "ok": true
+    },
+    {
+      "id": "mirror.realm.midgard",
+      "value": 0.513655,
+      "lo": 0.4,
+      "hi": 0.6,
+      "ok": true
+    },
+    {
+      "id": "mirror.realm.asgard",
+      "value": 0.524246,
+      "lo": 0.4,
+      "hi": 0.6,
+      "ok": true
+    },
+    {
+      "id": "mirror.realm.helheim",
+      "value": 0.452084,
+      "lo": 0.4,
+      "hi": 0.6,
+      "ok": true
+    },
+    {
+      "id": "mirror.side_bias",
+      "value": 0.629956,
+      "lo": 0.35,
+      "hi": 0.65,
+      "ok": true
+    },
+    {
+      "id": "mirror.timeout_rate",
+      "value": 0.003202,
+      "lo": 0,
+      "hi": 0.03,
+      "ok": true
+    },
+    {
+      "id": "rewards.first_upgrade_max_delves",
+      "value": 1,
+      "lo": 0,
+      "hi": 2,
+      "ok": true
+    },
+    {
+      "id": "rewards.delves_per_item_to_3_stars.L10",
+      "value": 1.874074,
+      "lo": 0.5,
+      "hi": 3.5,
+      "ok": true
+    },
+    {
+      "id": "rewards.delves_per_item_to_3_stars.L20",
+      "value": 2.224691,
+      "lo": 0.8,
+      "hi": 4,
+      "ok": true
+    },
+    {
+      "id": "rewards.delves_per_item_to_3_stars.L30",
+      "value": 2.215385,
+      "lo": 1,
+      "hi": 5,
+      "ok": true
+    },
+    {
+      "id": "rewards.delves_per_item_to_3_stars.L40",
+      "value": 2.348611,
+      "lo": 1,
+      "hi": 6,
+      "ok": true
+    },
+    {
+      "id": "rewards.delves_per_item_to_3_stars.L50",
+      "value": 2.439766,
+      "lo": 1,
+      "hi": 6,
+      "ok": true
+    },
+    {
+      "id": "rewards.delves_for_16_items_to_3_stars_at_L30",
+      "value": 35.446154,
+      "lo": 20,
+      "hi": 120,
+      "ok": true
+    },
+    {
+      "id": "rewards.hearts_vs_materials_min_ratio",
+      "value": 1.288136,
+      "lo": 0.8,
+      "hi": 1000,
+      "ok": true
+    },
+    {
+      "id": "rewards.materials_per_delve_growth",
+      "value": 6.333333,
+      "lo": 3,
+      "hi": 8,
+      "ok": true
+    },
+    {
+      "id": "rewards.delves_per_level.L10",
+      "value": 1.6,
+      "lo": 1,
+      "hi": 3,
+      "ok": true
+    },
+    {
+      "id": "rewards.delves_per_level.L20",
+      "value": 2.333333,
+      "lo": 1.5,
+      "hi": 4,
+      "ok": true
+    },
+    {
+      "id": "rewards.delves_per_level.L30",
+      "value": 3.538462,
+      "lo": 2,
+      "hi": 5.5,
+      "ok": true
+    },
+    {
+      "id": "rewards.delves_per_level.L40",
+      "value": 5.235294,
+      "lo": 3,
+      "hi": 7.5,
+      "ok": true
+    },
+    {
+      "id": "rewards.delves_to_level_50",
+      "value": 163.945437,
+      "lo": 100,
+      "hi": 300,
+      "ok": true
+    },
+    {
+      "id": "upgrade_odds.success.star0",
+      "value": 0.89961,
+      "lo": 0.89,
+      "hi": 0.91,
+      "ok": true
+    },
+    {
+      "id": "upgrade_odds.success.star1",
+      "value": 0.74906,
+      "lo": 0.74,
+      "hi": 0.76,
+      "ok": true
+    },
+    {
+      "id": "upgrade_odds.success.star2",
+      "value": 0.60023,
+      "lo": 0.59,
+      "hi": 0.61,
+      "ok": true
+    },
+    {
+      "id": "upgrade_odds.success.star3",
+      "value": 0.44929,
+      "lo": 0.44,
+      "hi": 0.46,
+      "ok": true
+    },
+    {
+      "id": "upgrade_odds.success.star4",
+      "value": 0.30034,
+      "lo": 0.29,
+      "hi": 0.31,
+      "ok": true
+    },
+    {
+      "id": "upgrade_odds.line_kind.0",
+      "value": 0.100551,
+      "lo": 0.09,
+      "hi": 0.11,
+      "ok": true
+    },
+    {
+      "id": "upgrade_odds.line_kind.1",
+      "value": 0.099706,
+      "lo": 0.09,
+      "hi": 0.11,
+      "ok": true
+    },
+    {
+      "id": "upgrade_odds.line_kind.2",
+      "value": 0.100511,
+      "lo": 0.09,
+      "hi": 0.11,
+      "ok": true
+    },
+    {
+      "id": "upgrade_odds.line_kind.3",
+      "value": 0.099836,
+      "lo": 0.09,
+      "hi": 0.11,
+      "ok": true
+    },
+    {
+      "id": "upgrade_odds.line_kind.4",
+      "value": 0.099706,
+      "lo": 0.09,
+      "hi": 0.11,
+      "ok": true
+    },
+    {
+      "id": "upgrade_odds.line_kind.5",
+      "value": 0.099801,
+      "lo": 0.09,
+      "hi": 0.11,
+      "ok": true
+    },
+    {
+      "id": "upgrade_odds.line_kind.6",
+      "value": 0.101111,
+      "lo": 0.09,
+      "hi": 0.11,
+      "ok": true
+    },
+    {
+      "id": "upgrade_odds.line_kind.7",
+      "value": 0.099686,
+      "lo": 0.09,
+      "hi": 0.11,
+      "ok": true
+    },
+    {
+      "id": "upgrade_odds.line_kind.8",
+      "value": 0.100001,
+      "lo": 0.09,
+      "hi": 0.11,
+      "ok": true
+    },
+    {
+      "id": "upgrade_odds.line_kind.9",
+      "value": 0.099091,
+      "lo": 0.09,
+      "hi": 0.11,
+      "ok": true
+    },
+    {
+      "id": "upgrade_odds.line_values_out_of_range",
+      "value": 0,
+      "lo": 0,
+      "hi": 0,
+      "ok": true
+    }
+  ],
+  "failed": []
+}

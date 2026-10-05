@@ -1,0 +1,14 @@
+{
+  "name": "three-realms",
+  "version": "0.1.0",
+  "description": "Three Realms (working title): a single-player, browser-only, turn-based team-tactics game with a deterministic simulation.",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "test": "node --test \"tests/**/*.test.mjs\""
+  },
+  "devDependencies": {
+    "playwright-core": "1.56.1"
+  }
+}

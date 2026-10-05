@@ -1,0 +1,26 @@
+name: ci
+on:
+  push:
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      # the browser tests use the Chrome that ships on the runner (playwright-core downloads nothing)
+      - run: echo "CHROMIUM_PATH=$(command -v google-chrome || command -v chromium-browser || command -v chromium)" >> "$GITHUB_ENV"
+      - run: npm test
+      - name: Budgets (measured, printed)
+        run: node checks/measure-client.mjs
+      - name: Build the deployable page (refuses invalid content) and print its size
+        run: node tools/bundle.mjs --out dist --build "ci-${GITHUB_SHA::7}"
+      - name: Balance bounds (delves, expeditions, legendary bosses)
+        run: |
+          node checks/balance.mjs
+          node checks/balance-expedition.mjs
+          node checks/balance-legends.mjs

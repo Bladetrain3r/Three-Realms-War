@@ -1,0 +1,14 @@
+144 settings, 150 delves per cell; score = delve_winrate cells plus gear_gap.growth in bounds, out of 29
+K=34 HP x0.5  attack x0.7  defence x0.7   23/29   gap growth 0.45
+K=34 HP x0.4  attack x0.7  defence x0.5   23/29   gap growth 0.41
+K=34 HP x0.4  attack x0.7  defence x0.7   22/29   gap growth 0.47
+K=34 HP x1  attack x0.5  defence x1   21/29   gap growth 0.69
+K=48 HP x0.4  attack x0.5  defence x0.5   21/29   gap growth 0.55
+K=34 HP x1  attack x0.5  defence x0.7   21/29   gap growth 0.54
+K=34 HP x1  attack x0.5  defence x0.5   21/29   gap growth 0.53
+K=34 HP x0.4  attack x0.7  defence x1   21/29   gap growth 0.52
+K=34 HP x0.5  attack x0.7  defence x0.5   21/29   gap growth 0.43
+K=48 HP x0.4  attack x0.5  defence x1   20/29   gap growth 0.48
+K=34 HP x0.5  attack x0.7  defence x1   20/29   gap growth 0.47
+K=48 HP x0.5  attack x0.5  defence x0.5   20/29   gap growth 0.47
+settings by score: 1:12 2:7 3:2 4:2 5:2 6:1 7:3 8:4 9:1 10:1 11:4 12:3 13:6 14:3 15:55 16:7 17:7 18:7 19:5 20:3 21:6 22:1 23:2

@@ -1,0 +1,204 @@
+{
+  "version": 1,
+  "maxRules": 8,
+  "maxClauses": 2,
+  "conditions": [
+    {
+      "id": "always",
+      "args": {}
+    },
+    {
+      "id": "self_hp_below",
+      "args": {
+        "pct": "pct"
+      }
+    },
+    {
+      "id": "self_hp_above",
+      "args": {
+        "pct": "pct"
+      }
+    },
+    {
+      "id": "ally_hp_below",
+      "args": {
+        "pct": "pct"
+      }
+    },
+    {
+      "id": "enemy_hp_below",
+      "args": {
+        "pct": "pct"
+      }
+    },
+    {
+      "id": "enemies_at_least",
+      "args": {
+        "n": "n1_4"
+      }
+    },
+    {
+      "id": "allies_alive_at_most",
+      "args": {
+        "n": "n1_3"
+      }
+    },
+    {
+      "id": "self_has",
+      "args": {
+        "status": "status"
+      }
+    },
+    {
+      "id": "self_lacks",
+      "args": {
+        "status": "status"
+      }
+    },
+    {
+      "id": "ally_lacks",
+      "args": {
+        "status": "status"
+      }
+    },
+    {
+      "id": "enemy_has",
+      "args": {
+        "status": "status"
+      }
+    },
+    {
+      "id": "enemy_lacks",
+      "args": {
+        "status": "status"
+      }
+    },
+    {
+      "id": "skill_ready",
+      "args": {
+        "skill": "skill"
+      }
+    },
+    {
+      "id": "round_at_least",
+      "args": {
+        "n": "n1_10"
+      }
+    },
+    {
+      "id": "enemy_row_alive",
+      "args": {
+        "row": "row"
+      }
+    },
+    {
+      "id": "enemy_weak_to",
+      "args": {
+        "element": "element"
+      }
+    }
+  ],
+  "argTypes": {
+    "pct": {
+      "min": 10,
+      "max": 90,
+      "step": 10
+    },
+    "n1_4": {
+      "min": 1,
+      "max": 4
+    },
+    "n1_3": {
+      "min": 1,
+      "max": 3
+    },
+    "n1_10": {
+      "min": 1,
+      "max": 10
+    },
+    "status": {
+      "of": "statuses"
+    },
+    "skill": {
+      "of": "skills"
+    },
+    "row": {
+      "values": [
+        "front",
+        "back"
+      ]
+    },
+    "element": {
+      "values": [
+        "fire",
+        "frost",
+        "lightning"
+      ]
+    }
+  },
+  "actions": [
+    {
+      "id": "skill",
+      "args": {
+        "skill": "skill"
+      }
+    },
+    {
+      "id": "basic",
+      "args": {}
+    },
+    {
+      "id": "brace",
+      "args": {}
+    }
+  ],
+  "selectors": [
+    {
+      "id": "lowest_hp_pct",
+      "for": [
+        "enemy",
+        "ally"
+      ]
+    },
+    {
+      "id": "lowest_hp",
+      "for": [
+        "enemy",
+        "ally"
+      ]
+    },
+    {
+      "id": "highest_hp",
+      "for": [
+        "enemy"
+      ]
+    },
+    {
+      "id": "fastest",
+      "for": [
+        "enemy",
+        "ally"
+      ]
+    },
+    {
+      "id": "strongest",
+      "for": [
+        "enemy",
+        "ally"
+      ]
+    },
+    {
+      "id": "back_first",
+      "for": [
+        "enemy"
+      ]
+    },
+    {
+      "id": "self",
+      "for": [
+        "self",
+        "ally"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,170 @@
+{
+  "stats": {
+    "levelCap": 50,
+    "growthMul": 9,
+    "growthDiv": 49,
+    "hpPerVig": 5,
+    "affinityBp": 1000,
+    "affinityResBp": 2000,
+    "injuredBp": 5000,
+    "heroSresBase": 500,
+    "baseCrit": 500,
+    "baseCritDmg": 15000
+  },
+  "enemy": {
+    "curveK": 30,
+    "curveQ": 10,
+    "curveDiv": 49,
+    "signatureBp": 11500,
+    "bossVigBp": 30000,
+    "bossOtherBp": 15000,
+    "bossLevelBonus": 2,
+    "tiltBp": 1000,
+    "sresBase": 500,
+    "sresPerLevel": 80,
+    "ownResistBp": 5000,
+    "weakResistBp": -2500
+  },
+  "combat": {
+    "roundCap": 30,
+    "mitCapBp": 8000,
+    "mitBase": 40,
+    "mitPerLevel": 12,
+    "realmDamageBp": 11000,
+    "resMin": -5000,
+    "resMax": 7500,
+    "varianceMin": 9000,
+    "varianceSpan": 2001,
+    "restHealBp": 2000,
+    "braceTurns": 1
+  },
+  "injury": {
+    "delves": 2,
+    "restCost": 10,
+    "restCostWounded": 30
+  },
+  "recruit": {
+    "costBase": 100,
+    "costPerLevel": 20,
+    "rareMul": 3,
+    "rosterMax": 24,
+    "startingRoster": [
+      "shieldwarden",
+      "huscarl",
+      "stormcaller",
+      "hearthkeeper"
+    ],
+    "kitLevelDen": 2,
+    "startLevel": 1
+  },
+  "delve": {
+    "minEncounters": 3,
+    "encounterSpan": 3,
+    "firstEnemies": 3,
+    "otherEnemies": 4,
+    "bossAdds": 2,
+    "bandWeights": {
+      "first": [
+        6,
+        3,
+        1
+      ],
+      "middle": [
+        3,
+        4,
+        3
+      ],
+      "boss": [
+        2,
+        4,
+        4
+      ]
+    },
+    "affix": {
+      "minDelve": 10,
+      "chanceBp": 3000,
+      "chanceHighBp": 5000,
+      "highFrom": 25,
+      "secondBp": 1500,
+      "secondFrom": 25
+    }
+  },
+  "progress": {
+    "xpBase": 50,
+    "xpPerLevel": 30,
+    "xpCubeDiv": 20,
+    "encXpBase": 10,
+    "encXpPerD": 4,
+    "bossMul": 2,
+    "restXpBp": 5000,
+    "matBase": 3,
+    "matDiv": 3,
+    "silverBase": 5,
+    "bossSilverMul": 3,
+    "bossMatMul": 2,
+    "repWin": 5,
+    "repBoss": 5,
+    "threadBp": 300,
+    "rep": {
+      "known": 50,
+      "trusted": 150,
+      "honoured": 400
+    },
+    "threadHearts": 5,
+    "unlockCap": 50,
+    "restXpGap": 10
+  },
+  "expedition": {
+    "width": 20,
+    "height": 14,
+    "latticeW": 6,
+    "latticeH": 5,
+    "jitter": 24,
+    "waterBelow": 26,
+    "forestFrom": 150,
+    "hillsFrom": 200,
+    "peakFrom": 236,
+    "moveCostPlain": 1,
+    "moveCostForest": 2,
+    "moveCostHills": 2,
+    "sitesMin": 5,
+    "sitesMax": 8,
+    "siteSpacing": 4,
+    "startSpacing": 4,
+    "revealRadius": 2,
+    "provisionCost": 10,
+    "provisionMax": 60,
+    "floorCost": 3,
+    "siteLevelDiv": 3,
+    "floorsBase": 2,
+    "floorsDiv": 4,
+    "encountersPerFloor": 2,
+    "distBp": 700,
+    "floorBp": 2500,
+    "deathSaveBp": 4000,
+    "reviveInjury": 2,
+    "floorsMax": 6,
+    "paragonBp": 2000
+  },
+  "training": {
+    "costPerLevel": 100,
+    "maxLevel": 40
+  },
+  "paragon": {
+    "starBp": 1100,
+    "maxPerStat": 3,
+    "heartBase": 5
+  },
+  "legend": {
+    "roundCap": 60,
+    "levelBonus": 2,
+    "minDist": 10,
+    "unlockCount": 4,
+    "chaosLevel": 60,
+    "chaosFrom": 50,
+    "rewardMul": 6,
+    "hearts": 3,
+    "paragon": 1,
+    "chaosParagon": 3
+  }
+}

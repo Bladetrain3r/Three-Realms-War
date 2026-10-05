@@ -1,0 +1,240 @@
+{
+  "slots": {
+    "weapon": {
+      "main": [
+        {
+          "stat": "MIT_OR_ARC",
+          "coef": 6
+        }
+      ]
+    },
+    "armour": {
+      "main": [
+        {
+          "stat": "GRD",
+          "coef": 4
+        },
+        {
+          "stat": "VIG",
+          "coef": 3
+        }
+      ]
+    },
+    "helm": {
+      "main": [
+        {
+          "stat": "WRD",
+          "coef": 3
+        },
+        {
+          "stat": "VIG",
+          "coef": 2
+        }
+      ]
+    },
+    "charm": {
+      "main": [
+        {
+          "stat": "SPD",
+          "coef": 1
+        }
+      ],
+      "resistBpPerLevel": 20
+    }
+  },
+  "slotOrder": [
+    "weapon",
+    "armour",
+    "helm",
+    "charm"
+  ],
+  "tiers": [
+    {
+      "id": "plain",
+      "name": "Plain",
+      "multiplierBp": 10000,
+      "lines": 0,
+      "maxStar": 3,
+      "setAllowed": false
+    },
+    {
+      "id": "fine",
+      "name": "Fine",
+      "multiplierBp": 11500,
+      "lines": 1,
+      "maxStar": 4,
+      "setAllowed": false
+    },
+    {
+      "id": "runed",
+      "name": "Runed",
+      "multiplierBp": 13000,
+      "lines": 2,
+      "maxStar": 5,
+      "setAllowed": true
+    },
+    {
+      "id": "heirloom",
+      "name": "Heirloom",
+      "multiplierBp": 15000,
+      "lines": 3,
+      "maxStar": 5,
+      "setAllowed": true
+    },
+    {
+      "id": "legendary",
+      "name": "Legendary",
+      "multiplierBp": 22500,
+      "lines": 3,
+      "maxStar": 7,
+      "setAllowed": false,
+      "fixedLines": true
+    }
+  ],
+  "lines": [
+    {
+      "index": 0,
+      "lo": 400,
+      "hi": 1200,
+      "id": "VIG_PCT"
+    },
+    {
+      "index": 1,
+      "lo": 400,
+      "hi": 1200,
+      "id": "MIT_PCT"
+    },
+    {
+      "index": 2,
+      "lo": 400,
+      "hi": 1200,
+      "id": "ARC_PCT"
+    },
+    {
+      "index": 3,
+      "lo": 400,
+      "hi": 1200,
+      "id": "GRD_PCT"
+    },
+    {
+      "index": 4,
+      "lo": 400,
+      "hi": 1200,
+      "id": "WRD_PCT"
+    },
+    {
+      "index": 5,
+      "lo": 300,
+      "hi": 900,
+      "id": "SPD_PCT"
+    },
+    {
+      "index": 6,
+      "lo": 100,
+      "hi": 400,
+      "id": "CRIT"
+    },
+    {
+      "index": 7,
+      "lo": 1000,
+      "hi": 3000,
+      "id": "CRITDMG"
+    },
+    {
+      "index": 8,
+      "lo": 300,
+      "hi": 1000,
+      "id": "SRES"
+    },
+    {
+      "index": 9,
+      "lo": 400,
+      "hi": 1200,
+      "id": "RES_REALM"
+    }
+  ],
+  "sets": [
+    {
+      "id": "hearthforged",
+      "name": "Hearthforged",
+      "realm": "midgard",
+      "two": {
+        "mods": {
+          "VIG": 1000
+        }
+      },
+      "four": {
+        "skill": "hearthfire_surge"
+      }
+    },
+    {
+      "id": "stormbound",
+      "name": "Stormbound",
+      "realm": "asgard",
+      "two": {
+        "mods": {
+          "SPD": 1000
+        }
+      },
+      "four": {
+        "skill": "skyfall"
+      }
+    },
+    {
+      "id": "grave_shroud",
+      "name": "Grave-Shroud",
+      "realm": "helheim",
+      "two": {
+        "res": {
+          "frost": 1500
+        },
+        "sresBp": 1000
+      },
+      "four": {
+        "skill": "rimebind"
+      }
+    }
+  ],
+  "starBonusBp": 500,
+  "starSuccessBp": [
+    9000,
+    7500,
+    6000,
+    4500,
+    3000,
+    2000,
+    500
+  ],
+  "upgradeCost": {
+    "commonBase": 3,
+    "commonDivisor": 2,
+    "rareFromStar": 3,
+    "highStarFrom": 5,
+    "highStarMul": 3
+  },
+  "levelSlack": 5,
+  "stashMax": 100,
+  "drops": {
+    "encounterBp": 2500,
+    "tierWeights": {
+      "plain": 7000,
+      "fine": 2500,
+      "runed": 500
+    },
+    "bossTierWeights": {
+      "fine": 4000,
+      "runed": 6000
+    },
+    "setTagBp": 5000,
+    "expeditionTierWeights": {
+      "plain": 6500,
+      "fine": 2500,
+      "runed": 700,
+      "heirloom": 300
+    },
+    "expeditionBossTierWeights": {
+      "runed": 4000,
+      "heirloom": 6000
+    }
+  }
+}

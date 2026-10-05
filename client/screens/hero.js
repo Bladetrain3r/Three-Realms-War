@@ -1,0 +1,86 @@
+// Hero: stats, equipment, Thread of the Norns, dismissing, and the runbook editor.
+import { h } from '../dom.js';
+import { panel, kv, bar, button, heroPortrait, realmTag } from '../ui.js';
+import { equip, dismiss, assignThread, unassignThread } from '../../sim/index.js';
+import { wornIds } from '../../sim/game.js';
+import { canEquip } from '../../sim/hero.js';
+import { train, addParagonStar, paragonCost, paragonStars } from '../../sim/index.js';
+import { heroBaseParagon } from '../../sim/stats.js';
+import { trainingCost } from '../../sim/progress.js';
+import { xpToNext } from '../../sim/progress.js';
+import { heroSheet, itemLine, itemMainText, itemLineTexts, injuryText } from '../format.js';
+import { runbookEditor } from '../runbook-editor.js';
+
+let confirmDismiss = null, trainLevels = 1;
+
+export function hero(ctx, id) {
+  const { store, content } = ctx, save = store.save, hero = save.heroes.find((x) => x.id === Number(id));
+  if (!hero) return h('div', { class: 'screen' }, h('h1', null, 'No such hero'), h('p', null, 'That hero is not on the roster. ', h('a', { href: '#/hall' }, 'Back to the Hall.')));
+  const cls = content.heroById[hero.class], sheet = heroSheet(hero, save, content), worn = wornIds(save);
+  const need = xpToNext(hero.level, content.tables.progress);
+
+  const slotRow = (slot) => {
+    const cur = hero.slots[slot] === null ? null : save.items.find((x) => x.id === hero.slots[slot]);
+    const options = save.items.filter((it) => it.slot === slot && (worn[it.id] === undefined || worn[it.id] === hero.id));
+    const select = h('select', { 'aria-label': `${slot} item`, 'data-testid': `slot-${slot}`, onchange: (e) => { const v = e.target.value; ctx.run(equip, hero.id, slot, v === '' ? null : Number(v)); } },
+      h('option', { value: '' }, '(empty)'),
+      options.map((it) => {
+        const bad = !canEquip(hero, it, content);
+        return h('option', { value: String(it.id), selected: cur && cur.id === it.id, disabled: bad && !(cur && cur.id === it.id) }, `${itemLine(it, content)}${bad ? ' — too high a level' : ''}`);
+      }));
+    return h('tr', null, h('th', { scope: 'row' }, slot), h('td', null, select),
+      h('td', { class: 'num' }, cur ? [itemMainText(cur, content), ...itemLineTexts(cur, content).map((t) => h('div', { class: 'line' }, t))] : '—'));
+  };
+
+  const stats = h('table', { class: 'stats', 'data-testid': 'stats' }, h('thead', null, h('tr', null, h('th', null, 'Stat'), h('th', { class: 'num' }, 'Final'))),
+    h('tbody', null,
+      ['VIG', 'MIT', 'ARC', 'GRD', 'WRD', 'SPD'].map((s) => h('tr', null, h('th', { scope: 'row' }, s), h('td', { class: 'num', 'data-testid': `stat-${s}` }, sheet.stats[s]))),
+      h('tr', null, h('th', { scope: 'row' }, 'Max HP'), h('td', { class: 'num', 'data-testid': 'stat-HP' }, sheet.maxHp)),
+      h('tr', null, h('th', { scope: 'row' }, 'Crit'), h('td', { class: 'num' }, `${sheet.crit / 100}% × ${(10000 + sheet.critDmg) / 10000}`))));
+
+  const thread = save.threads > 0 || hero.thread
+    ? (hero.thread ? button('Release the Thread', () => ctx.run(unassignThread, hero.id), { id: 'unthread' }) : button(`Bind a Thread of the Norns (${save.threads} held)`, () => ctx.run(assignThread, hero.id), { id: 'thread' }))
+    : h('small', null, 'No Thread of the Norns held.');
+
+  const dis = confirmDismiss === hero.id
+    ? h('span', null, 'Dismiss for good? ', button('Yes, dismiss', () => { confirmDismiss = null; const r = ctx.run(dismiss, hero.id); if (r.ok) location.hash = '#/hall'; }, { id: 'confirm-dismiss' }), button('Keep', () => { confirmDismiss = null; ctx.rerender(); }, { id: 'keep' }))
+    : button('Dismiss…', () => { confirmDismiss = hero.id; ctx.rerender(); }, { id: 'dismiss', disabled: save.heroes.length <= 1, title: save.heroes.length <= 1 ? 'the last hero cannot be dismissed' : '' });
+
+  const tr = content.tables.training, room = tr.maxLevel - hero.level;
+  trainLevels = Math.max(1, Math.min(trainLevels, Math.max(1, room)));
+  const tCost = room > 0 ? trainingCost(hero.level, trainLevels, tr) : 0;
+  const tWhy = room <= 0 ? `training stops at level ${tr.maxLevel}` : save.currency.hacksilver <= 0 ? 'you have no hacksilver' : save.currency.hacksilver < tCost ? `costs ${tCost} (you have ${save.currency.hacksilver})` : '';
+  const trainPanel = panel('Training', room <= 0
+    ? h('p', null, hero.level >= content.tables.stats.levelCap ? 'At the level cap.' : `Training stops at level ${tr.maxLevel}; the rest is earned in the dungeons.`)
+    : h('div', null, h('p', { class: 'hint' }, `Buy levels with hacksilver: ${tr.costPerLevel} \u00d7 the level you leave, up to level ${tr.maxLevel}. Experience already earned carries over.`),
+      h('p', null, h('label', null, 'Levels ', h('select', { 'data-testid': 'train-levels', onchange: (e) => { trainLevels = Number(e.target.value); ctx.rerender(); } },
+        [...new Set([1, 5, 10, room].filter((n) => n >= 1 && n <= room))].sort((a, b) => a - b).map((n) => h('option', { value: String(n), selected: trainLevels === n }, n === room && n > 1 ? `${n} (to ${tr.maxLevel})` : String(n))))), ' ',
+        button(`Train to level ${hero.level + trainLevels} (${tCost} hacksilver)`, () => ctx.run(train, hero.id, trainLevels), { id: 'train', disabled: Boolean(tWhy), title: tWhy }), tWhy ? h('small', { class: 'why' }, ` ${tWhy}`) : null)));
+  const pt = content.tables.paragon, realmDef = content.realmById[cls.realm], hearts = save.materials[realmDef.rareMaterial], pCost = paragonCost(hero, content), total = paragonStars(hero);
+  const BONUS = { crit: 'crit chance', critDmg: 'crit damage', sres: 'status resistance', heal: 'healing strength', lifesteal: 'lifesteal' }, b = cls.paragonBonus;
+  const pRow = (stat) => {
+    const have = (hero.paragon && hero.paragon[stat]) || [], s1 = cls.stats[stat];
+    const gain = heroBaseParagon(s1, content.tables.stats.levelCap, have.concat([hero.level]), content.tables.stats, pt.starBp) - heroBaseParagon(s1, content.tables.stats.levelCap, have, content.tables.stats, pt.starBp);
+    const why = have.length >= pt.maxPerStat ? 'this stat is full' : save.paragonPoints < 1 ? 'you have no Paragon Point' : hearts < pCost ? `costs ${pCost} ${realmDef.rareMaterial.split('_').join(' ')} (you have ${hearts})` : '';
+    return h('tr', null, h('th', { scope: 'row' }, stat), h('td', { 'data-testid': `pstars-${stat}` }, '\u25cf'.repeat(have.length) + '\u25cb'.repeat(pt.maxPerStat - have.length) + ` ${have.length} of ${pt.maxPerStat}`),
+      h('td', { class: 'num' }, have.length >= pt.maxPerStat ? '\u2014' : `+${gain} at level ${content.tables.stats.levelCap}`),
+      h('td', null, button('Add a star', () => ctx.run(addParagonStar, hero.id, stat), { id: `pstar-${stat}`, disabled: Boolean(why), title: why })));
+  };
+  const paragonPanel = panel('Paragon stars', h('p', { class: 'hint' }, `A star raises how much this stat grows with every level you gain after buying it (+${pt.starBp / 100}% of the growth each); levels already gained are not changed, so earlier is better. Each star costs a Paragon Point and ${pCost} ${realmDef.rareMaterial.split('_').join(' ')}. Paragon Points drop, rarely, from expedition site bosses. A hero who dies or is dismissed takes their stars with them.`),
+    h('p', { 'data-testid': 'paragon-have' }, `Paragon Points: ${save.paragonPoints} \u00b7 ${realmDef.rareMaterial.split('_').join(' ')}: ${hearts} \u00b7 ${total} of ${pt.maxPerStat * 6} stars`),
+    h('table', { class: 'stats' }, h('tbody', null, ['VIG', 'MIT', 'ARC', 'GRD', 'WRD', 'SPD'].map(pRow))),
+    h('p', { class: 'hint' }, `With all ${pt.maxPerStat * 6} stars ${hero.name} gains +${b.bp / 100}% ${BONUS[b.kind]}${total >= pt.maxPerStat * 6 ? ' (earned)' : ''}.`));
+  return h('div', { class: 'screen hero' },
+    h('p', null, h('a', { href: '#/hall' }, '← The Hall')),
+    h('header', { class: 'hero-head' }, heroPortrait(cls, 130),
+      h('div', null, h('h1', { 'data-testid': 'hero-name' }, hero.name), h('p', null, `${cls.name} · ${cls.role} · level ${hero.level} `, realmTag(content, cls.realm)),
+        h('p', { class: hero.injury > 0 ? 'warn' : '' }, injuryText(hero)),
+        hero.level < content.tables.stats.levelCap ? h('div', null, bar(hero.xp, need, 'xp'), h('small', null, `XP ${hero.xp} / ${need}`)) : null,
+        h('p', null, thread, ' ', dis))),
+    h('div', { class: 'two' }, panel('Stats', stats, hero.injury > 0 ? h('p', { class: 'hint' }, 'These are the unhurt numbers; a hero sent injured fights at half.') : null),
+      panel('Equipment', h('table', { class: 'equip' }, h('tbody', null, content.items.slotOrder.map(slotRow))), h('p', { class: 'hint' }, `A hero may wear items up to ${content.items.levelSlack} levels above their own. Upgrade in the Forge.`))),
+    trainPanel,
+    paragonPanel,
+    panel('Skills', h('ul', { class: 'skills' }, sheet.unit.skills.map((s) => { const d = content.skillById[s]; return h('li', null, h('b', null, d.name), ` — ${d.type}, ${d.range}${d.cooldown ? `, cooldown ${d.cooldown}` : ''}`); }))),
+    panel('Runbook', runbookEditor(ctx, hero)));
+}

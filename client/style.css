@@ -1,0 +1,118 @@
+/* Woodcut register: walnut ink on vellum. Textures (--vellum-url, --frame-url, --hatch-url, --ink-url, --rule-url) are generated at run time. */
+:root {
+  --vellum: #e9dcb9; --vellum-shade: #cdb98a; --walnut: #2a1d12; --umber: #5b3a1e;
+  --midgard: #b8442a; --asgard: #c8962e; --helheim: #4d8c88; --hp: #9e2b25; --heal: #265030; --warn: #8a2420;
+  --serif: Georgia, 'Times New Roman', 'Noto Serif', serif; --mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+}
+* { box-sizing: border-box; }
+html { background: var(--vellum); }
+body { margin: 0; color: var(--walnut); font: 17px/1.45 var(--serif); background: var(--vellum) var(--vellum-url) repeat; min-height: 100vh; }
+#app { max-width: 76rem; margin: 0 auto; padding: 0 16px 2rem; }
+a { color: var(--walnut); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+a:hover, a:focus-visible { background: var(--walnut); color: var(--vellum); }
+h1, h2, h3 { font-family: var(--serif); font-variant: small-caps; letter-spacing: .06em; line-height: 1.15; margin: .6rem 0 .4rem; }
+h1 { font-size: 2rem; border-bottom: 5px double var(--walnut); padding-bottom: .2rem; }
+h2 { font-size: 1.35rem; } h3 { font-size: 1.1rem; }
+small, .hint { color: var(--umber); } .hint { margin: .3rem 0; }
+.num, td.num, dd, .stats td, .purse { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+td.num, .stats td { text-align: right; }
+
+.masthead { display: flex; flex-wrap: wrap; align-items: baseline; gap: .4rem 1.2rem; padding: 1rem 0 .4rem; border-bottom: 5px double var(--walnut); }
+.masthead .title { border: 0; margin: 0; font-size: 2.1rem; padding: 0; } .masthead .title a { text-decoration: none; }
+.purse { margin: 0; color: var(--umber); flex: 1; }
+nav { display: flex; flex-wrap: wrap; gap: .35rem; }
+nav a { padding: .3rem .8rem; border: 3px solid var(--walnut); text-decoration: none; font-variant: small-caps; letter-spacing: .08em; font-weight: bold; }
+nav a[aria-current="page"] { background: var(--ink-url) var(--walnut); color: var(--vellum); }
+nav a:hover, nav a:focus-visible { background: var(--walnut); color: var(--vellum); }
+#notice { min-height: 0; } #notice:not(:empty) { margin: .8rem 0; padding: .5rem .8rem; border: 3px solid var(--walnut); background: var(--vellum-shade); font-weight: bold; }
+#notice.bad { color: var(--warn); border-color: var(--warn); } #notice.ok { color: var(--heal); border-color: var(--heal); }
+#screen:focus { outline: none; }
+footer { margin-top: 2rem; border-top: 3px solid var(--walnut); padding-top: .4rem; }
+
+.panel { border: 24px solid transparent; border-image: var(--frame-url) 30 round; background: rgba(205,185,138,.35); background-clip: padding-box; padding: .2rem .6rem .8rem; margin: 1.1rem 0; }
+.panel > h2 { margin-top: 0; background: var(--hatch-url); padding: .2rem .4rem; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1rem; align-items: start; }
+
+button, select, input, textarea { font: inherit; color: var(--walnut); }
+button { background: var(--ink-url) var(--walnut); color: var(--vellum); border: 3px solid var(--walnut); padding: .35rem .9rem; margin: .15rem .2rem .15rem 0; font-variant: small-caps; letter-spacing: .06em; font-weight: bold; cursor: pointer; min-height: 2.4rem; }
+button:hover, button:focus-visible { background: var(--vellum); color: var(--walnut); outline: 3px solid var(--walnut); outline-offset: 2px; }
+button:disabled { background: var(--hatch-url) var(--vellum-shade); color: var(--umber); border-style: dashed; cursor: not-allowed; }
+button.primary { font-size: 1.1rem; padding: .5rem 1.4rem; }
+select, textarea, input[type="text"] { background: var(--vellum); border: 2px solid var(--walnut); padding: .3rem .4rem; max-width: 100%; }
+select { min-height: 2.4rem; } textarea { width: 100%; font-family: var(--mono); font-size: .9rem; }
+input[type="checkbox"], input[type="radio"] { width: 1.2rem; height: 1.2rem; accent-color: var(--walnut); }
+:focus-visible { outline: 3px solid var(--walnut); outline-offset: 2px; }
+.row-buttons { display: flex; flex-wrap: wrap; align-items: center; gap: .2rem; margin: .3rem 0; }
+.warn { color: var(--warn); } .why { color: var(--warn); display: block; }
+.msg:not(:empty) { border: 2px solid var(--walnut); padding: .3rem .7rem; margin: .5rem 0; background: var(--vellum); } .msg.bad { border-color: var(--warn); color: var(--warn); } .msg.ok { border-color: var(--heal); color: var(--heal); }
+
+.cards, .party { display: grid; grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr)); gap: .8rem; }
+.party { grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); }
+.hero-card { display: flex; gap: .6rem; padding: .5rem; border: 3px solid var(--walnut); background: var(--vellum); }
+.hero-card.injured { background: var(--hatch-url) var(--vellum); }
+.hero-card h3 { margin: .1rem 0; } .hero-card p { margin: .15rem 0; }
+.portrait { flex: none; align-self: flex-start; height: auto; background: var(--vellum-shade); border: 2px solid var(--walnut); }
+.bar { height: .7rem; background: var(--vellum-shade); border: 2px solid var(--walnut); margin: .2rem 0; } .bar i { display: block; height: 100%; background: var(--umber); }
+.realm::before { content: ''; display: inline-block; width: .7rem; height: .7rem; margin-right: .3rem; border: 2px solid var(--walnut); }
+.realm.midgard::before { background: var(--midgard); border-radius: 0; } .realm.asgard::before { background: var(--asgard); transform: rotate(45deg) scale(.8); } .realm.helheim::before { background: var(--helheim); border-radius: 50%; }
+.realm { white-space: nowrap; font-variant: small-caps; letter-spacing: .04em; }
+
+table { border-collapse: collapse; width: 100%; } th, td { text-align: left; padding: .25rem .4rem; border-bottom: 1px solid var(--umber); vertical-align: top; } th { font-variant: small-caps; letter-spacing: .05em; }
+.equip select { width: 100%; min-width: 12rem; } .equip th { white-space: nowrap; } .line { font-size: .9rem; color: var(--umber); }
+.kv { display: grid; grid-template-columns: max-content 1fr; gap: .15rem .9rem; margin: .3rem 0; } .kv dt { font-variant: small-caps; letter-spacing: .05em; } .kv dd { margin: 0; }
+.hero-head { display: flex; gap: 1rem; align-items: flex-start; flex-wrap: wrap; } .skills { margin: 0; padding-left: 1.2rem; }
+
+.rule { border: 3px solid var(--walnut); margin: .6rem 0; padding: .3rem .6rem .6rem; background: var(--vellum); } .rule legend { font-variant: small-caps; font-weight: bold; padding: 0 .4rem; }
+.when, .do, .clause { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .5rem; margin: .25rem 0; } .when > b, .do > b { min-width: 2.4rem; }
+.items { list-style: none; padding: 0; margin: .4rem 0; max-height: 26rem; overflow: auto; border: 2px solid var(--walnut); }
+.items li button { width: 100%; text-align: left; background: var(--vellum); color: var(--walnut); font-variant: normal; letter-spacing: 0; font-weight: normal; border: 0; border-bottom: 1px solid var(--umber); margin: 0; }
+.items li button:hover, .items li button:focus-visible { background: var(--walnut); color: var(--vellum); }
+.items li.sel button, .items li.sel button:hover, .items li.sel button:focus-visible { background: var(--ink-url) var(--walnut); color: var(--vellum); font-weight: bold; border-left: 8px solid var(--umber); }
+.pending { border: 3px double var(--walnut); padding: .4rem .7rem; margin: .6rem 0; background: var(--vellum); }
+
+.realm-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: .8rem; }
+.realm-card { display: flex; flex-direction: column; gap: .2rem; border: 3px solid var(--walnut); padding: .5rem; background: var(--vellum); cursor: pointer; } .realm-card.on { outline: 5px double var(--walnut); outline-offset: 2px; background: var(--vellum-shade); }
+.realm-card input { position: absolute; opacity: 0; } .realm-card:focus-within { outline: 3px solid var(--walnut); outline-offset: 2px; }
+.thumb { width: 100%; height: auto; border: 2px solid var(--walnut); } .party-list { padding-left: 1.4rem; }
+
+.stage { position: relative; aspect-ratio: 16 / 9; border: 5px double var(--walnut); background: var(--vellum-shade); }
+.battle-canvas { display: block; width: 100%; height: 100%; } .battle-canvas.fg { position: absolute; inset: 0; }
+.controls button { min-width: 3rem; } .hash { overflow-wrap: anywhere; font-family: var(--mono); font-size: .85rem; }
+.units { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; margin: .4rem 0; } .unit-list { list-style: none; margin: 0; padding: .3rem .5rem; border: 2px solid var(--walnut); background: var(--vellum); font-size: .9rem; } .unit-list li.down { color: var(--umber); text-decoration: line-through; }
+.log { max-height: 18rem; overflow: auto; margin: 0; padding-left: 2rem; font-size: .95rem; border: 2px solid var(--walnut); background: var(--vellum); } .log li { padding: .05rem .4rem; }
+#summary, [data-testid="summary"] { margin-top: .8rem; } .earned { margin: .3rem 0; }
+
+@media (max-width: 640px) {
+  body { font-size: 16px; } .two { grid-template-columns: 1fr; }
+  .masthead .title { font-size: 1.7rem; } h1 { font-size: 1.6rem; } .panel { border-width: 18px; padding: 0 .2rem .6rem; }
+  nav { width: 100%; } nav a { flex: 1 1 auto; text-align: center; }
+  .units { grid-template-columns: 1fr; }
+  .cards, .party { grid-template-columns: 1fr; } .kv { grid-template-columns: 1fr; } .kv dd { margin-bottom: .3rem; }
+  .items { max-height: 16rem; } .units { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; margin: .4rem 0; } .unit-list { list-style: none; margin: 0; padding: .3rem .5rem; border: 2px solid var(--walnut); background: var(--vellum); font-size: .9rem; } .unit-list li.down { color: var(--umber); text-decoration: line-through; }
+.log { max-height: 12rem; } .realm-cards { grid-template-columns: 1fr; }
+  .hero-card .portrait { width: 64px; height: auto; }
+  .equip, .equip tbody, .equip tr, .equip th, .equip td { display: block; width: 100%; } .equip tr { border-bottom: 1px solid var(--umber); padding: .3rem 0; } .equip th, .equip td { border: 0; padding: .1rem 0; } .equip td.num { text-align: left; }
+  .equip select { min-width: 0; }
+}
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+
+.filters { display: flex; flex-wrap: wrap; gap: .3rem .9rem; align-items: center; margin: .3rem 0; } .filters select { max-width: 11rem; }
+.items li { display: flex; align-items: center; } .items li .pick { flex: none; margin: 0 .4rem; width: 1.2rem; height: 1.2rem; } .items li button { flex: 1; }
+.bulk { margin-top: .6rem; border: 2px solid var(--walnut); padding: .3rem .6rem; background: var(--vellum); } .bulk summary { cursor: pointer; font-variant: small-caps; font-weight: bold; }
+
+.map-wrap { overflow: auto; max-width: 100%; max-height: 32rem; border: 3px solid var(--walnut); background: var(--vellum-shade); }
+.map { display: grid; gap: 1px; background: var(--umber); width: max-content; }
+.cell { width: 1.9rem; height: 1.9rem; min-height: 0; margin: 0; padding: 0; border: 0; font: bold .95rem var(--mono); letter-spacing: 0; font-variant: normal; color: var(--walnut); background: var(--vellum); cursor: default; }
+.cell:disabled { opacity: 1; border: 0; cursor: default; color: var(--walnut); }
+.cell.go { cursor: pointer; outline: 2px dashed var(--walnut); outline-offset: -3px; } .cell.go:hover, .cell.go:focus-visible { background: var(--walnut); color: var(--vellum); }
+.cell.t0 { background: var(--vellum); } .cell.t1 { background: var(--hatch-url) #cfc08c; } .cell.t2 { background: var(--hatch-url) #bfa878; } .cell.t3 { background: #9fb9b0; } .cell.t4 { background: var(--walnut); color: var(--vellum); } .cell.tx { background: var(--hatch-url) var(--vellum-shade); opacity: .75; }
+.cell.site { background: var(--vellum); color: var(--hp); font-size: 1.1rem; } .cell.me { background: var(--walnut); color: var(--vellum); }
+.dpad { display: grid; grid-template-columns: repeat(4, auto); gap: .2rem; justify-content: start; margin-top: .4rem; } .dpad button { min-width: 3rem; }
+.away { margin: .6rem 0; padding: .4rem .8rem; border: 3px double var(--walnut); background: var(--vellum-shade); font-weight: bold; }
+
+.two > *, .panel, .screen { min-width: 0; }
+
+/* legendary lairs and prizes */
+.cell.lair { color: #9e2b25; font-size: 1.25rem; }
+.prize { font-weight: bold; }
+.victory { font-style: italic; border-top: 1px solid var(--walnut); padding-top: .4rem; }
