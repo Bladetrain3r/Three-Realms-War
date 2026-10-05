@@ -7,7 +7,7 @@ import { itemLine, matName } from '../format.js';
 
 export function battle(ctx) {
   const { store, content } = ctx, lb = store.lastBattle;
-  if (!lb) return h('div', { class: 'screen' }, h('h1', null, 'The Battle'), h('p', null, 'No delve has been run yet. ', h('a', { href: '#/delve' }, 'Go to the Delve Board.')));
+  if (!lb) return h('div', { class: 'screen' }, h('h1', null, 'The Battle'), h('p', null, 'No battle yet. ', h('a', { href: '#/delve' }, 'Go to the Delve Board'), ' or ', h('a', { href: '#/replays' }, 'watch a replay file.')));
   const bg = h('canvas', { class: 'battle-canvas bg', 'aria-hidden': 'true' });
   const canvas = h('canvas', { class: 'battle-canvas fg', 'data-testid': 'battle-canvas', role: 'img', 'aria-label': 'the battle' });
   const stage = h('div', { class: 'stage' }, bg, canvas);
@@ -51,7 +51,21 @@ export function battle(ctx) {
     if (s.lostGear) summary.append(h('p', { class: 'warn' }, `${s.lostGear} piece${s.lostGear === 1 ? '' : 's'} of gear were lost: the stash was full.`));
     summary.append(h('p', { class: 'row-buttons' }, button('Back to the map', () => { location.hash = '#/expedition'; }, { id: 'to-map', class: 'primary' })));
   };
+  const viewedSummary = () => {
+    const r = lb.replay.result || {}, isDelve = lb.replay.kind === 'delve', rw = r.rewards;
+    clear(summary);
+    summary.append(h('h2', null, r.outcome === 1 ? (isDelve ? 'Delve won' : 'Fight won') : 'The party was lost'), h('p', null, `${r.cleared || 0} of ${r.encounters || 0} encounters cleared (as the file records it).`));
+    if (isDelve && rw) summary.append(h('ul', { class: 'earned' }, h('li', null, `${rw.xp} XP, ${rw.hacksilver} hacksilver`), h('li', null, `${(rw.items || []).length} item${(rw.items || []).length === 1 ? '' : 's'} found`)));
+    if (!isDelve && r.died && r.died.length) summary.append(h('p', { class: 'warn' }, `${r.died.length} hero${r.died.length === 1 ? '' : 'es'} lost for good in this fight.`));
+    summary.append(h('p', { class: 'hint' }, 'Watching a replay file changes nothing in your game.'), h('p', { class: 'row-buttons' }, button('Load another replay', () => { location.hash = '#/replays'; }, { id: 'to-replays', class: 'primary' }), button('To the Hall', () => { location.hash = '#/hall'; }, { id: 'to-hall' })));
+  };
+  const verdictPanel = lb.kind === 'viewed' ? (() => {
+    const v = lb.verdict;
+    return panel('Replay file', v.ok ? h('p', { 'data-testid': 'verdict' }, 'Verified: the game recomputed this battle from its inputs and every event, the result and the hash match.')
+      : h('div', { 'data-testid': 'verdict', class: 'warn' }, h('p', null, 'Not verified:'), h('ul', null, v.reasons.map((x) => h('li', null, x))), h('p', { class: 'hint' }, 'It still plays from the numbers it carries.')));
+  })() : null;
   const showSummary = () => {
+    if (lb.kind === 'viewed') return viewedSummary();
     if (lb.kind === 'floor') return floorSummary();
     const s = lb.summary, after = store.save;
     clear(summary);
@@ -97,7 +111,7 @@ export function battle(ctx) {
     if (reduced) { view.skip(); status.textContent = 'Reduced motion is on: showing the finished battle and the log.'; } else { view.play(1); status.textContent = 'Playing at 1×'; }
     requestAnimationFrame(frame); view.draw(view.clock); view.onChange();
   });
-  return h('div', { class: 'screen battle' }, h('h1', null, `${content.realmById[lb.replay.inputs.realm].dungeon} — level ${lb.replay.inputs.level}`),
-    batchPanel, stage, units, status, controls, summary, panel('Log', log),
+  return h('div', { class: 'screen battle' }, h('h1', null, `${lb.kind === 'viewed' ? 'Replay file: ' : ''}${content.realmById[lb.replay.inputs.realm].dungeon} — level ${lb.replay.inputs.level}`),
+    verdictPanel, batchPanel, stage, units, status, controls, summary, panel('Log', log),
     h('p', { class: 'hint hash', 'data-testid': 'replay-hash' }, `Replay hash ${lb.replay.hash}`));
 }

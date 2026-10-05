@@ -1,6 +1,7 @@
 // The save in the browser: holds the current save, runs rules-layer actions (turning refusals into messages), autosaves to
 // localStorage when it can, and exports / imports through the same validator the tests use.
-import { newGame, playDelve, playDelves, batchStop, batchTotals, MAX_BATCH, rest, salvageMany, fillDefaults, addParagonStar, startExpedition, move as moveExp, enterFloor, retreat as retreatExp, returnHome, GameError, validateSave, canonical } from '../sim/index.js';
+import { newGame, playDelve, playDelves, batchStop, batchTotals, MAX_BATCH, rest, salvageMany, fillDefaults, addParagonStar, startExpedition, move as moveExp, enterFloor, retreat as retreatExp, returnHome, GameError, validateSave, canonical, readReplay, verifyReplay } from '../sim/index.js';
+import { initState, applyAll } from './replay-state.js';
 
 export const SAVE_KEY = 'three-realms.save.v1';
 
@@ -87,6 +88,23 @@ export function createStore({ content, saveSchema, build, storage = null, now = 
       lastBattle = { replay: last.replay, summary: last.summary, before };
       for (const f of listeners) f();
       return { ok: true, value: { runs, stopped, totals: lastBatch.totals } };
+    },
+    // Watch a replay file: parse it, check it (hash and a fresh simulation), and make sure its event log can be played at all. Never touches the save.
+    viewReplay(text) {
+      let doc;
+      try { doc = readReplay(text); } catch (e) { return { ok: false, errors: [{ key: '(file)', message: e.message }] }; }
+      const bad = (key, message) => ({ ok: false, errors: [{ key, message }] });
+      if (doc.kind !== 'delve' && doc.kind !== 'floor') return bad('kind', `a replay is a delve or a floor (this says "${doc.kind}")`);
+      if (!doc.inputs || !content.realmById[doc.inputs.realm]) return bad('inputs.realm', 'this replay is for a realm this build does not have');
+      if (!Array.isArray(doc.inputs.party) || doc.inputs.party.length < 1 || doc.inputs.party.length > 4) return bad('inputs.party', 'a party has 1 to 4 heroes');
+      if (!Array.isArray(doc.events) || !Array.isArray(doc.plan) || doc.events.some((e) => !Array.isArray(e)) || doc.plan.some((enc) => !Array.isArray(enc))) return bad('events', 'the event log and the plan are not lists of events and encounters');
+      for (const p of doc.inputs.party) if (!content.heroById[p.class]) return bad('inputs.party', `the hero class "${p.class}" does not exist in this build`);
+      for (const enc of doc.plan) for (const m of enc) if (!content.legendById[m.id] && !content.bossById[m.id] && !content.roster.some((r) => r.id === m.id)) return bad('plan', `the monster "${m.id}" does not exist in this build`);
+      try { applyAll(initState(doc, content), doc, content); } catch (e) { return bad('events', `the event log cannot be played: ${e.message}`); }
+      let verdict;
+      try { verdict = verifyReplay(doc, content); } catch (e) { verdict = { ok: false, resimulated: false, reasons: [`it could not be re-simulated: ${e.message}`] }; }
+      lastBattle = { replay: doc, summary: null, kind: 'viewed', verdict }; lastBatch = null;
+      return { ok: true, verdict };
     },
     selectRun(i) { if (lastBatch && i >= 0 && i < lastBatch.runs.length) { lastBatch.index = i; lastBattle = { ...lastBattle, replay: lastBatch.runs[i].replay, summary: lastBatch.runs[i].summary }; } },
     // expedition actions: each returns the rules layer's summary; a floor also keeps its replay for the battle screen

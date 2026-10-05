@@ -86,3 +86,38 @@ test('store: a timed batch lands the same save and runs as playDelves, applies e
   assert.equal((await b.delvesTimed({ realm: 'midgard', level: 99 }, 3, 0)).code, 'level_locked', 'refusals arrive at once, before any waiting');
   assert.equal((await b.delvesTimed({ realm: 'midgard', level: 1 }, 99, 0)).code, 'bad_count');
 });
+
+// ---- G6: watching a replay file ----
+import { createReplay, createFloorReplay, serializeReplay, indexContent } from '../../sim/index.js';
+import { builtSave } from '../../checks/expedition-bot.mjs';
+import { buildHeroUnit, itemsById } from '../../sim/index.js';
+const partyOf = (s) => { const by = itemsById(s); return s.party.map((id) => buildHeroUnit(s.heroes.find((h) => h.id === id), by, content)); };
+const delveReplay = (c = content, seed = 7) => createReplay({ realm: 'midgard', level: 5, seed, party: partyOf(builtSave(c, { heroLevel: 8, tier: 'runed', star: 3, ilvl: 8, withLines: true }, 3)), setAllowed: false }, c);
+
+test('replay viewer: a good file is verified and becomes the battle shown; the save is untouched and nothing is notified', () => {
+  const a = make(); let n = 0; a.subscribe(() => n++);
+  const before = a.exportText(), doc = delveReplay(), r = a.viewReplay(serializeReplay(doc));
+  assert.equal(r.ok, true); assert.deepEqual(r.verdict, { ok: true, resimulated: true, reasons: [] });
+  assert.equal(a.lastBattle.kind, 'viewed'); assert.equal(a.lastBattle.replay.hash, doc.hash); assert.equal(a.exportText(), before); assert.equal(n, 0);
+  const f = createFloorReplay({ realm: 'asgard', level: 12, seed: 4, boss: true, legend: 'fenris', party: partyOf(builtSave(content, { heroLevel: 50, tier: 'heirloom', star: 5, ilvl: 50, withLines: true }, 5)), heroHp: null }, content);
+  assert.equal(a.viewReplay(serializeReplay(f)).ok, true); assert.equal(a.lastBattle.replay.kind, 'floor');
+});
+
+test('replay viewer: a changed file is not verified but still plays; a file from other content says so', () => {
+  const a = make(), doc = JSON.parse(serializeReplay(delveReplay()));
+  const hit = doc.events.find((e) => e[0] === 4); hit[3] += 1; // one damage number changed after the hash was made
+  const r = a.viewReplay(JSON.stringify(doc)); assert.equal(r.ok, true); assert.equal(r.verdict.ok, false); assert.match(r.verdict.reasons.join(' | '), /hash mismatch/);
+  const raw = structuredClone(content.raw); raw.tables.legend.rewardMul = 7; const other = indexContent(raw);
+  const r2 = a.viewReplay(serializeReplay(delveReplay(other))); assert.equal(r2.ok, true); assert.equal(r2.verdict.resimulated, false); assert.match(r2.verdict.reasons.join(' | '), /content mismatch/);
+});
+
+test('replay viewer: damaged or foreign files are refused with the reason and leave the previous battle alone', () => {
+  const a = make(), good = JSON.parse(serializeReplay(delveReplay())); a.viewReplay(JSON.stringify(good)); const shown = a.lastBattle.replay.hash;
+  const refused = (mut, re) => { const d = structuredClone(good); mut(d); const r = a.viewReplay(typeof d === 'string' ? d : JSON.stringify(d)); assert.equal(r.ok, false, re.source); assert.match(r.errors[0].message, re); assert.equal(a.lastBattle.replay.hash, shown); };
+  assert.equal(a.viewReplay('not json').ok, false); assert.match(a.viewReplay('not json').errors[0].message, /not valid JSON/);
+  refused((d) => { d.format = 'other'; }, /format is "other"/); refused((d) => { d.v = 2; }, /version 2 is not supported/); refused((d) => { delete d.events; }, /missing key "events"/);
+  refused((d) => { d.kind = 'duel'; }, /a delve or a floor/); refused((d) => { d.inputs.realm = 'vanaheim'; }, /realm this build does not have/);
+  refused((d) => { d.inputs.party[0].class = 'jester'; }, /hero class "jester"/); refused((d) => { d.inputs.party = []; }, /1 to 4 heroes/);
+  refused((d) => { d.plan[0][0].id = 'dragon'; }, /monster "dragon"/); refused((d) => { d.events.push([99]); }, /cannot be played: unknown event opcode 99/);
+  refused((d) => { d.events[3] = 'x'; }, /not lists of events/); refused((d) => { d.plan = 'x'; }, /not lists of events/); refused((d) => { d.plan[0] = 7; }, /not lists of events/); refused((d) => { d.events = d.events.slice(0, 5).concat([[4, 1, 99, 5, 0, 0]]); }, /cannot be played/);
+});

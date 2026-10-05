@@ -17,3 +17,10 @@ jobs:
       - run: npm test
       - name: Budgets (measured, printed)
         run: node checks/measure-client.mjs
+      - name: Build the deployable page (refuses invalid content) and print its size
+        run: node tools/bundle.mjs --out dist --build "ci-${GITHUB_SHA::7}"
+      - name: Balance bounds (delves, expeditions, legendary bosses)
+        run: |
+          node checks/balance.mjs
+          node checks/balance-expedition.mjs
+          node checks/balance-legends.mjs

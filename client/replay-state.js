@@ -64,7 +64,7 @@ export function applyEvent(st, ev, replay, content) {
     case 10: log(`${nameOf(st, ev[1])} ${ev[2] === 0 ? 'is shocked and loses the turn' : 'has nothing to do'}.`); return { kind: 'skip', unit: ev[1] };
     case 11: log(ev[1] === 1 ? `Encounter won in ${ev[2]} rounds.` : `The party is defeated after ${ev[2]} rounds.`); return { kind: 'enc_end', outcome: ev[1], rounds: ev[2] };
     case 12: u[ev[1]].hp = ev[2]; log(`${nameOf(st, ev[1])} rests to ${ev[2]} HP.`); return { kind: 'rest', unit: ev[1], hp: ev[2] };
-    case 13: st.over = true; st.outcome = ev[1]; st.cleared = ev[2]; log(ev[1] === 1 ? `Delve won: ${ev[2]} encounters cleared.` : `Delve lost after ${ev[2]} encounters cleared.`); return { kind: 'end', outcome: ev[1], cleared: ev[2] };
+    case 13: st.over = true; st.outcome = ev[1]; st.cleared = ev[2]; log(ev[1] === 1 ? `${replay.kind === 'floor' ? 'Floor' : 'Delve'} won: ${ev[2]} encounters cleared.` : `${replay.kind === 'floor' ? 'Floor' : 'Delve'} lost after ${ev[2]} encounters cleared.`); return { kind: 'end', outcome: ev[1], cleared: ev[2] };
     case 14: { // DEATH_SAVE: 0 revived at 1 HP, 1 died for good, 2 saved by a Thread
       const x = u[ev[1]];
       if (ev[2] === 1) { x.alive = false; x.hp = 0; x.statuses = {}; x.lost = true; log(`${nameOf(st, ev[1])} is lost for good.`); } else { x.hp = 1; x.alive = true; log(ev[2] === 2 ? `${nameOf(st, ev[1])} is held back from death by a Thread of the Norns.` : `${nameOf(st, ev[1])} wakes at 1 HP, injured.`); }

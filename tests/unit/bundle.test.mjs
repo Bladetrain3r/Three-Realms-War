@@ -91,3 +91,16 @@ test('bundle: the shipped page carries only the save schema (content is validate
   const p = join(root, 'content', 'tables.json'), t = JSON.parse(readFileSync(p, 'utf8')); t.legend.unlockCount = 99; writeFileSync(p, JSON.stringify(t));
   await assert.rejects(() => build({ out: join(root, 'out'), root }), /content refused.*tables.json: legend.unlockCount/s);
 });
+
+test('bundle: shrinking removes comments, blank lines and indentation only; a module with a multi-line template is left alone; the built page counts all three files', async () => {
+  const { strip, build } = await import('../../tools/bundle.mjs');
+  const src = '// header\nconst a = 1; // keep this\n\n  function f() {\n    // inner\n    return a;\n  }\n';
+  assert.equal(strip(src), 'const a = 1; // keep this\nfunction f() {\nreturn a;\n}');
+  const tpl = 'const t = `one\n  // two\n  three`;\n';
+  assert.equal(strip(tpl), tpl);
+  assert.equal(new Function(strip(src) + '; return f();')(), 1);
+  const { mkdtempSync } = await import('node:fs'); const { tmpdir } = await import('node:os'); const { join } = await import('node:path');
+  const r = await build({ out: mkdtempSync(join(tmpdir(), 'dist-')), build: 't' });
+  assert.deepEqual(Object.keys(r.bytes), ['game.js', 'index.html', 'style.css']); assert.ok(r.bytes['style.css'] > 1000);
+  assert.ok(Object.values(r.bytes).reduce((a, b) => a + b, 0) <= 400 * 1024);
+});

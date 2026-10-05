@@ -3,17 +3,17 @@
  "chromium": "headless, software rendering, viewport 1920x1080",
  "problems": [],
  "bundleBytes": {
-  "game.js": 304130,
+  "game.js": 365081,
   "index.html": 453,
-  "style.css": 10252
+  "style.css": 12477
  },
- "bundleTotalBytes": 314835,
- "jsHeapBytesAfterAllScreensAndAReplay": 4569683,
+ "bundleTotalBytes": 378011,
+ "jsHeapBytesAfterAllScreensAndAReplay": 5457581,
  "drawMsPerBattleFrame": {
   "n": 300,
-  "median": 4.4,
-  "p95": 7.3,
-  "max": 9.8
+  "median": 4.5,
+  "p95": 6,
+  "max": 12
  },
  "rafIntervalMsWhilePlaying4x": {
   "n": 120,

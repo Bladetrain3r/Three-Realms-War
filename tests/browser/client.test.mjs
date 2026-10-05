@@ -21,7 +21,7 @@ test('client: every screen renders with no console error, at desktop and at 390 
     const { page, problems, context } = await openGame(browser, game.url, { width, height: 900 });
     const heroId = await page.evaluate(() => window.ThreeRealms.save().heroes[0].id);
     const seen = {};
-    for (const [hash, heading] of [['#/hall', /The Hall/], [`#/hero/${heroId}`, /\S/], ['#/forge', /The Forge/], ['#/delve', /The Delve Board/], ['#/expedition', /Expedition/], ['#/settings', /Settings/], ['#/battle', /The Battle/]]) {
+    for (const [hash, heading] of [['#/hall', /The Hall/], [`#/hero/${heroId}`, /\S/], ['#/forge', /The Forge/], ['#/delve', /The Delve Board/], ['#/expedition', /Expedition/], ['#/settings', /Settings/], ['#/replays', /Replays/], ['#/battle', /The Battle/]]) {
       await go(page, hash);
       seen[hash] = await page.textContent('#screen h1');
       assert.match(seen[hash], heading, `${hash} at ${width}px`);
@@ -148,7 +148,7 @@ test('client: the hall refuses what the rules refuse and says why (cannot afford
   await context.close();
 });
 
-test('client budgets: shipped bytes <= 400 KB, heap <= 256 MB after every screen and a replay, battle frame p95 <= 16.7 ms at 1920 x 1080 (DESIGN 15)', async (t) => {
+test('client budgets: shipped bytes (game.js, index.html and style.css together) <= 400 KB, heap <= 256 MB after every screen and a replay, battle frame p95 <= 16.7 ms at 1920 x 1080 (DESIGN 15)', async (t) => {
   if (!need(t)) return;
   const total = Object.values(game.bytes).reduce((a, b) => a + b, 0);
   assert.ok(total <= 400 * 1024, `shipped ${total} bytes`);
@@ -301,8 +301,8 @@ test('client: the Forge filters, sorts, selects by rule and bulk-salvages exactl
   // select by rule: stash, up to Fine, level 10 or less, star 0, keep set pieces
   await page.click('[data-testid=bulk-preview]', { trial: true }).catch(() => {});
   await page.evaluate(() => { document.querySelector('details.bulk').open = true; });
-  await page.fill('[data-testid=r-level]', '10'); await page.dispatchEvent('[data-testid=r-level]', 'change');
-  await page.evaluate(() => { document.querySelector('details.bulk').open = true; });
+  await page.fill('[data-testid=r-level]', '10'); await page.press('[data-testid=r-level]', 'Tab'); // commit the value and leave the field now: a blur later, during the click, re-renders and shuts the panel
+  await settle(page); await page.evaluate(() => { document.querySelector('details.bulk').open = true; });
   await page.click('[data-testid=select-matching]');
   const ids = matching(playtest, { maxTier: 'fine', maxLevel: 10, maxStar: 0, noSet: true });
   assert.match(await text(page, 'bulk-preview'), new RegExp(`^${ids.length} selected`));
@@ -510,6 +510,40 @@ test('client: a legendary lair through the page: the Hall lists the legends, the
   await sameSave(page, want, 'banked'); assert.match(await text(page, 'beaten-fenris'), /Fang of Fenris is in your stash/);
   await go(page, '#/hall'); assert.match(await text(page, 'legend-fenris'), /beaten \(Fang of Fenris is yours\)/); assert.match(await text(page, 'legend-progress'), /1 of 4/);
   assert.equal(await page.evaluate(() => window.ThreeRealms.save().items.filter((i) => i.legend === 'fenris').length), 1);
+  assert.deepEqual(problems, []);
+  await context.close();
+});
+
+test('client: the replay viewer loads a replay file (a delve and a legend fight), verifies it, plays it, refuses damaged files with the reason, and never touches the save', async (t) => {
+  if (!need(t)) return;
+  const { createReplay, createFloorReplay, serializeReplay, buildHeroUnit, itemsById, indexContent } = await import('../../sim/index.js');
+  const { builtSave } = await import('../../checks/expedition-bot.mjs');
+  const partyOf = (s) => { const by = itemsById(s); return s.party.map((id) => buildHeroUnit(s.heroes.find((h) => h.id === id), by, content)); };
+  const delve = createReplay({ realm: 'helheim', level: 6, seed: 31, party: partyOf(builtSave(content, { heroLevel: 9, tier: 'runed', star: 3, ilvl: 9, withLines: true }, 3)), setAllowed: false }, content);
+  const fenris = createFloorReplay({ realm: 'asgard', level: 12, seed: 8, boss: true, legend: 'fenris', party: partyOf(builtSave(content, { heroLevel: 20, tier: 'runed', star: 3, ilvl: 15, withLines: true }, 5)), heroHp: null }, content);
+  assert.ok(fenris.events.some((e) => e[0] === 15), 'the chosen fight reaches a second phase');
+  const start = newGame(content, 31, { savedAt: '', build: 'client-test' });
+  const { page, problems, context } = await openGame(browser, game.url);
+  await importSave(page, start); const saved = withoutMeta(await page.evaluate(() => window.ThreeRealms.exportText()));
+  const load = async (text) => { await go(page, '#/replays'); await page.setInputFiles('[data-testid=replay-file]', { name: 'r.json', mimeType: 'application/json', buffer: Buffer.from(text) }); };
+  await load(serializeReplay(delve)); await page.waitForFunction(() => location.hash === '#/battle'); await settle(page);
+  assert.match(await text(page, 'verdict'), /^Verified/);
+  await page.waitForFunction((h) => window.ThreeRealms.battleState() && window.ThreeRealms.battleState().hash === h, delve.hash);
+  await page.waitForFunction(() => window.ThreeRealms.battleState().cursor > 0); await page.click('[data-testid=skip]');
+  assert.match(await text(page, 'summary'), /(Delve won|The party was lost)[\s\S]*encounters cleared \(as the file records it\)/); assert.match(await text(page, 'replay-hash'), new RegExp(delve.hash));
+  assert.equal((await page.evaluate(() => window.ThreeRealms.battleState())).events, delve.events.length);
+  await load(serializeReplay(fenris)); await page.waitForFunction(() => location.hash === '#/battle'); await settle(page);
+  await page.waitForFunction(() => window.ThreeRealms.battleState() && window.ThreeRealms.battleState().cursor > 0); await page.click('[data-testid=skip]');
+  assert.match(await text(page, 'verdict'), /^Verified/); assert.match(await text(page, 'log'), /enters a new phase: Snapped Chain/); assert.match(await text(page, 'summary'), /Fight won|The party was lost/); assert.match(await text(page, 'log'), /Floor (won|lost)/);
+  // a damaged file: refused with the reason in one case, "not verified" but playable in another
+  await load('{"format": "three-realms-replay"'); assert.match(await text(page, 'replay-msg'), /refused[\s\S]*not valid JSON/);
+  const doc = JSON.parse(serializeReplay(delve)); doc.events.find((e) => e[0] === 4)[3] += 1;
+  await load(JSON.stringify(doc)); await page.waitForFunction(() => location.hash === '#/battle'); await settle(page);
+  assert.match(await text(page, 'verdict'), /Not verified[\s\S]*hash mismatch/); await page.click('[data-testid=skip]'); assert.match(await text(page, 'summary'), /Load another replay/);
+  const raw = structuredClone(content.raw); raw.tables.legend.rewardMul = 7;
+  await load(serializeReplay(createReplay({ realm: 'helheim', level: 6, seed: 31, party: delve.inputs.party, setAllowed: false }, indexContent(raw))));
+  await page.waitForFunction(() => location.hash === '#/battle'); await settle(page); assert.match(await text(page, 'verdict'), /content mismatch[\s\S]*still plays/);
+  assert.equal(withoutMeta(await page.evaluate(() => window.ThreeRealms.exportText())), saved, 'watching replays does not change the save');
   assert.deepEqual(problems, []);
   await context.close();
 });

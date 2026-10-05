@@ -38,14 +38,22 @@ function transform(id, src) {
 const idOf = (from, s) => (s.startsWith('.') ? posix.normalize(posix.join(posix.dirname(from), s)) : s);
 
 // entry: path relative to root. virtuals: { 'virtual:name': 'module source' }. Returns the script text.
-export function bundle(entry, { root = ROOT, virtuals = {}, globalName = null } = {}) {
+// Shipping size: drop full-line comments, blank lines and leading indentation. It cannot change what the code means (a removed line is a
+// comment or whitespace between tokens), except inside a multi-line template literal, so a module that has one (a line with an odd number of
+// backticks) is left exactly as written. Nothing else is touched: no renaming, no rewriting.
+export function strip(src) {
+  if (src.split('\n').some((l) => (l.split('`').length - 1) % 2 === 1)) return src;
+  return src.split('\n').map((l) => l.trim()).filter((l) => l !== '' && !l.startsWith('//')).join('\n');
+}
+
+export function bundle(entry, { root = ROOT, virtuals = {}, globalName = null, shrink = false } = {}) {
   const mods = {}, order = [], visiting = [];
   const load = (id) => {
     if (mods[id]) return;
     if (visiting.includes(id)) throw new Error(`import cycle: ${[...visiting, id].join(' -> ')}`);
     visiting.push(id);
     const src = virtuals[id] !== undefined ? virtuals[id] : readFileSync(join(root, ...id.split('/')), 'utf8');
-    const t = transform(id, src);
+    const t = transform(id, shrink ? strip(src) : src);
     for (const d of t.deps) load(idOf(id, d));
     mods[id] = t.code; order.push(id);
     visiting.pop();
@@ -89,12 +97,13 @@ export async function validateContentFiles(root = ROOT) {
 export async function build({ out = join(ROOT, 'dist'), build: label = 'dev', root = ROOT } = {}) {
   await validateContentFiles(root);
   mkdirSync(out, { recursive: true });
-  const js = bundle('client/main.js', { root, virtuals: { 'virtual:content': contentModule(root, { withSchemas: false }) } });
+  const js = bundle('client/main.js', { root, shrink: true, virtuals: { 'virtual:content': contentModule(root, { withSchemas: false }) } });
   writeFileSync(join(out, 'game.js'), js);
   const html = readFileSync(join(root, 'client', 'index.html'), 'utf8').replace(/__BUILD__/g, label);
   writeFileSync(join(out, 'index.html'), html);
   for (const f of ['style.css']) if (existsSync(join(root, 'client', f))) copyFileSync(join(root, 'client', f), join(out, f));
-  return { out, bytes: { 'game.js': Buffer.byteLength(js), 'index.html': Buffer.byteLength(html) } };
+  const css = existsSync(join(root, 'client', 'style.css')) ? readFileSync(join(root, 'client', 'style.css')).length : 0;
+  return { out, bytes: { 'game.js': Buffer.byteLength(js), 'index.html': Buffer.byteLength(html), 'style.css': css } }; // everything the page loads (DESIGN 15)
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

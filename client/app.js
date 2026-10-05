@@ -9,9 +9,10 @@ import { delveBoard } from './screens/delve.js';
 import { battle } from './screens/battle.js';
 import { settings } from './screens/settings.js';
 import { expedition } from './screens/expedition.js';
+import { replays } from './screens/replays.js';
 
-const NAV = [['hall', 'Hall'], ['forge', 'Forge'], ['delve', 'Delve'], ['expedition', 'Expedition'], ['battle', 'Battle'], ['settings', 'Settings']];
-const SCREENS = { hall: (c) => hall(c), hero: (c, a) => hero(c, a), forge: (c) => forge(c), delve: (c) => delveBoard(c), battle: (c) => battle(c), expedition: (c) => expedition(c), settings: (c) => settings(c) };
+const NAV = [['hall', 'Hall'], ['forge', 'Forge'], ['delve', 'Delve'], ['expedition', 'Expedition'], ['battle', 'Battle'], ['replays', 'Replays'], ['settings', 'Settings']];
+const SCREENS = { hall: (c) => hall(c), hero: (c, a) => hero(c, a), forge: (c) => forge(c), delve: (c) => delveBoard(c), battle: (c) => battle(c), expedition: (c) => expedition(c), replays: (c) => replays(c), settings: (c) => settings(c) };
 const PREF_KEY = 'three-realms.prefs.v1';
 
 function makePrefs(storage) {
@@ -70,7 +71,7 @@ export function mountApp({ root, store, content, build, engineCheck, storage }) 
     clear(nav);
     for (const [id, label] of NAV) nav.append(h('a', { href: `#/${id}`, 'aria-current': id === name || (name === 'hero' && id === 'hall') ? 'page' : null, 'data-testid': `nav-${id}` }, label));
     clear(screen);
-    if (s.expedition !== null && !['expedition', 'battle', 'settings'].includes(name)) screen.append(h('p', { class: 'away', 'data-testid': 'away' }, 'Your party is away on an expedition. ', h('a', { href: '#/expedition' }, 'Back to the map.')));
+    if (s.expedition !== null && !['expedition', 'battle', 'replays', 'settings'].includes(name)) screen.append(h('p', { class: 'away', 'data-testid': 'away' }, 'Your party is away on an expedition. ', h('a', { href: '#/expedition' }, 'Back to the map.')));
     try { screen.append(SCREENS[name](ctx, arg)); } catch (e) { console.error(e); screen.append(h('div', { class: 'screen' }, h('h1', null, 'Something went wrong'), h('p', { 'data-testid': 'screen-error' }, `This screen could not be drawn: ${e.message}`))); }
     screen.dataset.screen = name;
     if (fresh) { window.scrollTo(0, 0); } else window.scrollTo(0, y);
