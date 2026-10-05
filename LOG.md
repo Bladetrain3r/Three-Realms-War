@@ -211,5 +211,5 @@ rounds used: 1 for the viewer and CI (R35), after the legends work of R31 to R34
 
 ### R36 — page ceiling — 2026-10-05
 plan: Ziggy raised the shipped-page ceiling to 1 MB ("even at 56k with a cached page it's barely a dent"): DESIGN 15 and Changes 0.12, the two tests, STOP-3 and G6 evidence, and the final CI run ids | eval: the budget tests, then the push's CI | expect: green
-result: see the next push's CI
-decision: proceed — Ziggy is playtesting; the next move is his (Alpha 0.1 if it plays well)
+result: CI on 4a700a9 failed with 1 of 583 (the log tail did not name it). Reproduced by running three copies of the browser suite at once on this machine: two different tests flaked, both test-side timing and not game faults. (1) the runbook editor test reloaded the page straight after the save and read the old value from localStorage once (50 !== 70): Chromium commits localStorage asynchronously; the test now waits 500 ms before the reload. (2) the activity-timer test assumed the Hall could be reached while a batch of 10 runs at 150 ms was still going: now 1000 ms per run, and it waits until run 3 is under way before pressing stop, so the batch summary exists. Three loaded runs: 28 of 28 each. Earlier flake (Forge bulk salvage, R35) was the same family. I do not claim the CI failure was one of these two: the log did not say.
+decision: proceed — pushed; if CI shows a different failing test I will take it from its name. Ziggy is playtesting; the next move is his (Alpha 0.1 if it plays well)

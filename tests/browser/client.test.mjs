@@ -95,6 +95,7 @@ test('client: the runbook editor refuses invalid runbooks and says why; valid on
   await page.selectOption('[data-testid="arg-0-0-pct"]', '70');
   await page.click('[data-testid=save-runbook]');
   await page.waitForFunction((id) => window.ThreeRealms.save().heroes.find((h) => h.id === id).runbook.rules[0].when[0].pct === 70, hero.id);
+  await page.waitForTimeout(500); // Chromium hands localStorage writes to its storage process asynchronously; a reload straight after can read the old value on a loaded machine (seen: 50 !== 70 with three browser suites running at once)
   await page.reload(); await page.waitForFunction(() => window.ThreeRealms && window.ThreeRealms.ready); await settle(page);
   assert.equal(await page.evaluate((id) => window.ThreeRealms.save().heroes.find((h) => h.id === id).runbook.rules[0].when[0].pct, hero.id), 70, 'the saved runbook did not survive a reload (browser storage)');
   assert.deepEqual(problems, []);
@@ -422,14 +423,15 @@ test('client: training buys levels exactly as the rules layer prices them, refus
 test('client: with the activity timer on, a batch shows its progress, locks the party meanwhile, can be stopped after the current run, and equals the rules layer', async (t) => {
   if (!need(t)) return;
   const start = newGame(content, 424242, { savedAt: '', build: 'client-test' }); for (const h of start.heroes) h.level = 40;
-  const { page, problems, context } = await openGame(browser, game.url, { timer: 150 });
+  const { page, problems, context } = await openGame(browser, game.url, { timer: 1000 }); // 10 s for the batch: under load the page needs seconds to get to the Hall and back, and a batch that has already finished is a different test
   await importSave(page, start);
   await go(page, '#/delve'); await page.selectOption('[data-testid=count]', '10'); await page.click('[data-testid=descend]');
-  await page.waitForSelector('[data-testid=busy]'); assert.match(await text(page, 'busy'), /Run \d+ of 10, 0.15 seconds each/);
+  await page.waitForSelector('[data-testid=busy]'); assert.match(await text(page, 'busy'), /Run \d+ of 10, 1 seconds each/);
   assert.equal(await page.isDisabled('[data-testid=descend]'), true);
   await go(page, '#/hall'); await page.click('[data-testid="bench-' + start.party[3] + '"]');
   assert.match(await text(page, 'notice'), /out on a delve run/);
-  await go(page, '#/delve'); await page.click('[data-testid=stop-batch]');
+  await go(page, '#/delve'); await page.waitForFunction(() => /Run [3-9] of 10/.test(((document.querySelector('[data-testid=busy]') || {}).textContent) || ''), null, { timeout: 15000 }); // at least two runs have landed
+  await page.click('[data-testid=stop-batch]');
   await page.waitForFunction(() => location.hash === '#/battle', null, { timeout: 15000 }); await settle(page);
   assert.match(await text(page, 'batch-summary').catch(() => ''), /stopped|won/);
   const runs = await page.locator('[data-testid=run-select] option').count(); assert.ok(runs >= 1 && runs < 10, `${runs} runs`);
