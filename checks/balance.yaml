@@ -163,3 +163,41 @@ expedition:
   silver_return_on_provisions: [0.5, 3.0]
   # Items: banked items per completed expedition (at least the site boss's, not a flood).
   items_per_completed_expedition: [1, 12]
+
+# ---------------------------------------------------------------------------------------------------------------------------------
+# G5, re-baselined. Written 2026-10-05, BEFORE the runner was changed to evaluate it, with Ziggy's word ("Go ahead with your suggested
+# order", after I proposed re-baselining the expedition bounds around an over-levelled party).
+#
+# Why: the `expedition:` section above measured one party, hero level = expedition level with 3-star Runed gear, and found the design
+# lethal for it (wipe 0.48 to 0.93). Ziggy's intent, stated afterwards: expeditions are "high-reward but death pits for badly built
+# parties", a reason to keep a sizeable, varied and well equipped roster. So the right question has two parts: a WELL-BUILT party should
+# usually come home and deeper sites should pay for their danger; a BADLY-BUILT party (the old measuring party) should often not.
+#
+# Honest note on independence: I had run Ziggy's real party (four level-50 heroes, Heirloom 5-star gear at item levels 10 to 20) against
+# the unchanged design before writing these numbers (nearest site wipe 0.00 to 0.25, sites 12 or more away 0.61 to 0.93), so these bounds
+# are informed by what the design already does, but they state what Ziggy asked for, not what the design happens to give: the reward side
+# in particular (deep over nearest expected silver >= 1) is false for that run.
+#
+# The `expedition:` bounds that do NOT concern lethality (rewards by depth, silver return, items, starvation, floor steps, deep over
+# shallow death ratio) stay in force unchanged; the lethality bounds of `expedition:` (hero_death_per_embarked_hero, wipe_rate,
+# hero_death_per_won_encounter) are replaced by the ones below. The old report stays in evidence/G5-balance.json.
+expedition_v2:
+  # well built: the four starting classes at the level cap, Heirloom 5-star gear (ladder row `heirloom`) at item level = E, no lines.
+  well_built:
+    hero_level: 50
+    levels: [20, 30, 40]
+    # nearest site, per level (pooled over the three realms): usually comes home.
+    nearest_wipe:
+      L20: [0.0, 0.10]
+      L30: [0.0, 0.20]
+      L40: [0.0, 0.35]
+    # sites 12 or more cells from the start: dangerous but beatable.
+    deep_wipe: [0.05, 0.70]
+    # risk pays: expected hacksilver per attempt (a wipe banks nothing) at deep sites over the same at the nearest site; and xp likewise.
+    deep_over_nearest_expected_silver: [1.0, 8.0]
+    deep_over_nearest_expected_xp: [1.0, 8.0]
+  # badly built: the old measuring party, hero level = E, 3-star Runed gear at item level E, no lines. Expedition levels as before.
+  badly_built:
+    levels: [10, 20, 30]
+    nearest_wipe: [0.35, 0.97]
+    hero_death_per_embarked_hero: [0.25, 0.97]
