@@ -254,16 +254,6 @@
     "recruit": {
       "type": "object",
       "properties": {
-        "levelNum": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 100
-        },
-        "levelDen": {
-          "type": "integer",
-          "minimum": 1,
-          "maximum": 100
-        },
         "costBase": {
           "type": "integer",
           "minimum": 0,
@@ -298,17 +288,21 @@
           "type": "integer",
           "minimum": 1,
           "maximum": 100
+        },
+        "startLevel": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 50
         }
       },
       "required": [
-        "levelNum",
-        "levelDen",
         "costBase",
         "costPerLevel",
         "rareMul",
         "rosterMax",
         "startingRoster",
-        "kitLevelDen"
+        "kitLevelDen",
+        "startLevel"
       ],
       "additionalProperties": false
     },
@@ -550,6 +544,11 @@
           "type": "integer",
           "minimum": 1,
           "maximum": 100
+        },
+        "restXpGap": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 50
         }
       },
       "required": [
@@ -570,7 +569,8 @@
         "threadBp",
         "rep",
         "threadHearts",
-        "unlockCap"
+        "unlockCap",
+        "restXpGap"
       ],
       "additionalProperties": false
     },
@@ -755,6 +755,26 @@
         "floorsMax"
       ],
       "additionalProperties": false
+    },
+    "training": {
+      "type": "object",
+      "properties": {
+        "costPerLevel": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "maxLevel": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 50
+        }
+      },
+      "required": [
+        "costPerLevel",
+        "maxLevel"
+      ],
+      "additionalProperties": false
     }
   },
   "required": [
@@ -765,7 +785,8 @@
     "recruit",
     "delve",
     "progress",
-    "expedition"
+    "expedition",
+    "training"
   ],
   "additionalProperties": false
 }

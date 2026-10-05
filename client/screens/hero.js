@@ -4,11 +4,13 @@ import { panel, kv, bar, button, heroPortrait, realmTag } from '../ui.js';
 import { equip, dismiss, assignThread, unassignThread } from '../../sim/index.js';
 import { wornIds } from '../../sim/game.js';
 import { canEquip } from '../../sim/hero.js';
+import { train } from '../../sim/index.js';
+import { trainingCost } from '../../sim/progress.js';
 import { xpToNext } from '../../sim/progress.js';
 import { heroSheet, itemLine, itemMainText, itemLineTexts, injuryText } from '../format.js';
 import { runbookEditor } from '../runbook-editor.js';
 
-let confirmDismiss = null;
+let confirmDismiss = null, trainLevels = 1;
 
 export function hero(ctx, id) {
   const { store, content } = ctx, save = store.save, hero = save.heroes.find((x) => x.id === Number(id));
@@ -43,6 +45,16 @@ export function hero(ctx, id) {
     ? h('span', null, 'Dismiss for good? ', button('Yes, dismiss', () => { confirmDismiss = null; const r = ctx.run(dismiss, hero.id); if (r.ok) location.hash = '#/hall'; }, { id: 'confirm-dismiss' }), button('Keep', () => { confirmDismiss = null; ctx.rerender(); }, { id: 'keep' }))
     : button('Dismiss…', () => { confirmDismiss = hero.id; ctx.rerender(); }, { id: 'dismiss', disabled: save.heroes.length <= 1, title: save.heroes.length <= 1 ? 'the last hero cannot be dismissed' : '' });
 
+  const tr = content.tables.training, room = tr.maxLevel - hero.level;
+  trainLevels = Math.max(1, Math.min(trainLevels, Math.max(1, room)));
+  const tCost = room > 0 ? trainingCost(hero.level, trainLevels, tr) : 0;
+  const tWhy = room <= 0 ? `training stops at level ${tr.maxLevel}` : save.currency.hacksilver <= 0 ? 'you have no hacksilver' : save.currency.hacksilver < tCost ? `costs ${tCost} (you have ${save.currency.hacksilver})` : '';
+  const trainPanel = panel('Training', room <= 0
+    ? h('p', null, hero.level >= content.tables.stats.levelCap ? 'At the level cap.' : `Training stops at level ${tr.maxLevel}; the rest is earned in the dungeons.`)
+    : h('div', null, h('p', { class: 'hint' }, `Buy levels with hacksilver: ${tr.costPerLevel} \u00d7 the level you leave, up to level ${tr.maxLevel}. Experience already earned carries over.`),
+      h('p', null, h('label', null, 'Levels ', h('select', { 'data-testid': 'train-levels', onchange: (e) => { trainLevels = Number(e.target.value); ctx.rerender(); } },
+        [...new Set([1, 5, 10, room].filter((n) => n >= 1 && n <= room))].sort((a, b) => a - b).map((n) => h('option', { value: String(n), selected: trainLevels === n }, n === room && n > 1 ? `${n} (to ${tr.maxLevel})` : String(n))))), ' ',
+        button(`Train to level ${hero.level + trainLevels} (${tCost} hacksilver)`, () => ctx.run(train, hero.id, trainLevels), { id: 'train', disabled: Boolean(tWhy), title: tWhy }), tWhy ? h('small', { class: 'why' }, ` ${tWhy}`) : null)));
   return h('div', { class: 'screen hero' },
     h('p', null, h('a', { href: '#/hall' }, '← The Hall')),
     h('header', { class: 'hero-head' }, heroPortrait(cls, 130),
@@ -52,6 +64,7 @@ export function hero(ctx, id) {
         h('p', null, thread, ' ', dis))),
     h('div', { class: 'two' }, panel('Stats', stats, hero.injury > 0 ? h('p', { class: 'hint' }, 'These are the unhurt numbers; a hero sent injured fights at half.') : null),
       panel('Equipment', h('table', { class: 'equip' }, h('tbody', null, content.items.slotOrder.map(slotRow))), h('p', { class: 'hint' }, `A hero may wear items up to ${content.items.levelSlack} levels above their own. Upgrade in the Forge.`))),
+    trainPanel,
     panel('Skills', h('ul', { class: 'skills' }, sheet.unit.skills.map((s) => { const d = content.skillById[s]; return h('li', null, h('b', null, d.name), ` — ${d.type}, ${d.range}${d.cooldown ? `, cooldown ${d.cooldown}` : ''}`); }))),
     panel('Runbook', runbookEditor(ctx, hero)));
 }

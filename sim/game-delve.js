@@ -19,7 +19,8 @@ export function applyDelveResult(save, content, replay, partyIds) {
   const res = replay.result, p = content.tables.progress, realm = replay.inputs.realm, level = replay.inputs.level;
   const summary = { outcome: res.outcome, encounters: res.encounters, cleared: res.cleared, xp: 0, levelUps: [], injured: [], healed: [], hacksilver: 0, materials: [],
     reputation: 0, items: [], droppedItems: 0, threads: 0, unlocked: null };
-  const benchedHealthy = save.heroes.filter((h) => !partyIds.includes(h.id) && h.injury === 0).map((h) => h.id);
+  const topParty = partyIds.reduce((m, id) => Math.max(m, findHero(save, id).level), 1); // rest xp reaches only heroes within restXpGap of the party's best
+  const benchedHealthy = save.heroes.filter((h) => !partyIds.includes(h.id) && h.injury === 0 && h.level + p.restXpGap >= topParty).map((h) => h.id);
 
   for (const h of save.heroes) {
     if (!partyIds.includes(h.id) && h.injury > 0) { h.injury--; if (h.injury === 0) summary.healed.push(h.id); }
@@ -67,6 +68,26 @@ export function playDelve(save, content, { realm, level, force = [] }) {
 
 export const MAX_BATCH = 50;
 
+// Why a batch should stop after this run (null: carry on). Shared by playDelves and the client's timed batches.
+export function batchStop(save, summary) {
+  if (summary.outcome !== 1) return 'lost';
+  if (save.party.some((id) => findHero(save, id).injury > 0)) return 'injury'; // hurt now, or forced in hurt and still hurt
+  return null;
+}
+
+// The totals of a list of runs ({ summary }).
+export function batchTotals(runs) {
+  const totals = { delves: runs.length, wins: 0, xp: 0, hacksilver: 0, reputation: 0, threads: 0, items: 0, droppedItems: 0, materials: {}, levelUps: [], injured: [], unlocked: null };
+  for (const { summary: s } of runs) {
+    if (s.outcome === 1) totals.wins++;
+    totals.xp += s.xp; totals.hacksilver += s.hacksilver; totals.reputation += s.reputation; totals.threads += s.threads; totals.items += s.items.length; totals.droppedItems += s.droppedItems;
+    for (const m of s.materials) totals.materials[m.id] = (totals.materials[m.id] || 0) + m.n;
+    totals.levelUps.push(...s.levelUps); totals.injured.push(...s.injured);
+    if (s.unlocked) totals.unlocked = s.unlocked;
+  }
+  return totals;
+}
+
 // Delve the same board up to `count` times in a row (DESIGN.md 11.7). The batch stops early, after the run that caused it, when a delve
 // is lost or any party hero is injured afterwards, including one the player forced in (a further run would need forcing again, which is the player's call). The first run
 // refuses exactly as playDelve does. Returns { save, runs: [{ replay, summary }], stopped, totals }.
@@ -77,16 +98,8 @@ export function playDelves(save, content, opts, count) {
   for (let i = 0; i < count; i++) {
     const out = playDelve(cur, content, i === 0 ? opts : { ...opts, force: [] });
     cur = out.save; runs.push({ replay: out.replay, summary: out.summary });
-    if (out.summary.outcome !== 1) { stopped = 'lost'; break; }
-    if (cur.party.some((id) => findHero(cur, id).injury > 0)) { stopped = 'injury'; break; } // hurt now, or forced in hurt and still hurt
+    const why = batchStop(cur, out.summary);
+    if (why) { stopped = why; break; }
   }
-  const totals = { delves: runs.length, wins: 0, xp: 0, hacksilver: 0, reputation: 0, threads: 0, items: 0, droppedItems: 0, materials: {}, levelUps: [], injured: [], unlocked: null };
-  for (const { summary: s } of runs) {
-    if (s.outcome === 1) totals.wins++;
-    totals.xp += s.xp; totals.hacksilver += s.hacksilver; totals.reputation += s.reputation; totals.threads += s.threads; totals.items += s.items.length; totals.droppedItems += s.droppedItems;
-    for (const m of s.materials) totals.materials[m.id] = (totals.materials[m.id] || 0) + m.n;
-    totals.levelUps.push(...s.levelUps); totals.injured.push(...s.injured);
-    if (s.unlocked) totals.unlocked = s.unlocked;
-  }
-  return { save: cur, runs, stopped, totals };
+  return { save: cur, runs, stopped, totals: batchTotals(runs) };
 }

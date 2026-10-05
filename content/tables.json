@@ -44,8 +44,6 @@
     "restCostWounded": 30
   },
   "recruit": {
-    "levelNum": 3,
-    "levelDen": 4,
     "costBase": 100,
     "costPerLevel": 20,
     "rareMul": 3,
@@ -56,7 +54,8 @@
       "stormcaller",
       "hearthkeeper"
     ],
-    "kitLevelDen": 2
+    "kitLevelDen": 2,
+    "startLevel": 1
   },
   "delve": {
     "minEncounters": 3,
@@ -112,7 +111,8 @@
       "honoured": 400
     },
     "threadHearts": 5,
-    "unlockCap": 50
+    "unlockCap": 50,
+    "restXpGap": 10
   },
   "expedition": {
     "width": 20,
@@ -144,5 +144,9 @@
     "deathSaveBp": 4000,
     "reviveInjury": 2,
     "floorsMax": 6
+  },
+  "training": {
+    "costPerLevel": 100,
+    "maxLevel": 40
   }
 }

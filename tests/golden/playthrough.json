@@ -2,19 +2,19 @@
   "steps": 300,
   "botSeed": 555,
   "masterSeed": 20261002,
-  "finalSaveHash": "f7a571cefff436409d8bbcf6522d05f48d578b497a88580fd7bf53c54fcffbc6",
-  "counter": 162,
-  "heroes": 11,
-  "items": 121,
-  "wins": 49,
-  "losses": 61,
+  "finalSaveHash": "71cddf9b80e4e1b361d6957fa3ea77ec436c3ba2c750e0a9a014e2ab909c75d8",
+  "counter": 171,
+  "heroes": 18,
+  "items": 161,
+  "wins": 58,
+  "losses": 52,
   "ok": {
-    "party": 20,
+    "party": 18,
     "delve": 110,
-    "upgrade": 41,
-    "equip": 54,
-    "runbook": 15,
-    "salvage": 8,
-    "recruit": 7
+    "upgrade": 43,
+    "equip": 52,
+    "runbook": 13,
+    "recruit": 14,
+    "salvage": 7
   }
 }

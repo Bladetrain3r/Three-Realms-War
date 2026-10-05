@@ -2,7 +2,7 @@
 // A player (or a CI job on another browser) runs it to confirm that this device computes exactly the same game as everyone else.
 import { newGame, playDelve } from '../sim/index.js';
 
-export const ENGINE_CHECK = { masterSeed: 20261002, realm: 'midgard', level: 1, expectedHash: '5e5e65b70b90ede4961a00e69378c024e6f050bfd8c85ec3281c0369a659532c' };
+export const ENGINE_CHECK = { masterSeed: 20261002, realm: 'midgard', level: 1, expectedHash: '8e903e5f385aadd5bc3dfb3caa95807fdbb90a68205d6baef7e16e61c2973aeb' };
 
 export function engineCheck(content, expected = ENGINE_CHECK.expectedHash) {
   const save = newGame(content, ENGINE_CHECK.masterSeed, { savedAt: '', build: 'engine-check' });

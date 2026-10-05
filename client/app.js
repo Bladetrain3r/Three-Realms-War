@@ -17,7 +17,7 @@ const PREF_KEY = 'three-realms.prefs.v1';
 function makePrefs(storage) {
   let data = {};
   try { data = JSON.parse(storage.getItem(PREF_KEY) || '{}') || {}; } catch (e) { data = {}; }
-  return { get: (k) => Boolean(data[k]), set(k, v) { data[k] = v; try { storage.setItem(PREF_KEY, JSON.stringify(data)); } catch (e) { /* ignored */ } } };
+  return { get: (k) => Boolean(data[k]), num: (k, d) => (Number.isFinite(data[k]) ? data[k] : d), set(k, v) { data[k] = v; try { storage.setItem(PREF_KEY, JSON.stringify(data)); } catch (e) { /* ignored */ } } };
 }
 
 export function mountApp({ root, store, content, build, engineCheck, storage }) {
@@ -42,7 +42,10 @@ export function mountApp({ root, store, content, build, engineCheck, storage }) 
     expRetreat() { const r = store.expRetreat(); if (!r.ok) ctx.say(r.message, 'bad'); return r; },
     expHome() { const r = store.expHome(); if (!r.ok) ctx.say(r.message, 'bad'); else ctx.say('The pack is banked.', 'ok'); return r; },
     expFloor() { const r = store.expFloor(); if (!r.ok) ctx.say(r.message, 'bad'); return r; },
-    startBatch(opts, n) { const r = store.delves(opts, n); if (!r.ok) ctx.say(r.message, 'bad'); return r; },
+    async startBatch(opts, n) {
+      const r = n > 1 && !prefs.get('noTimer') ? await store.delvesTimed(opts, n, prefs.num('timerMs', 2000)) : store.delves(opts, n);
+      if (!r.ok) ctx.say(r.message, 'bad'); return r;
+    },
     bulkSalvage(ids) { return store.bulkSalvage(ids); },
     rest() { const r = store.rest(); if (!r.ok) ctx.say(r.message, 'bad'); else ctx.say(`Rested: ${r.value.cost} hacksilver spent${r.value.healed.length ? `, ${r.value.healed.length} hero${r.value.healed.length === 1 ? '' : 'es'} recovered` : ''}.`, 'ok'); return r; },
     start(opts) { const r = store.delve(opts); if (!r.ok) ctx.say(r.message, 'bad'); return r; },

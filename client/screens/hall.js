@@ -60,5 +60,5 @@ export function hall(ctx) {
     panel('Party', h('p', { class: 'hint' }, 'Slots 1 and 2 stand in the front row, 3 and 4 in the back. Up to four heroes.'), partyList),
     panel(`Roster (${save.heroes.length} of ${content.tables.recruit.rosterMax})`, bench),
     restPanel,
-    panel('Recruit', h('p', { class: 'hint' }, `New recruits arrive at level ${lvl} with a Plain kit at level ${recruitKitLevel(lvl, content.tables.recruit)}. You have ${save.currency.hacksilver} hacksilver.`), recruits));
+    panel('Recruit', h('p', { class: 'hint' }, `New recruits arrive at level ${lvl} with a Plain kit at level ${recruitKitLevel(lvl, content.tables.recruit)}. Level them in the dungeons (a benched hero within ${content.tables.progress.restXpGap} levels of your best earns half xp) or train them on the hero screen. You have ${save.currency.hacksilver} hacksilver.`), recruits));
 }

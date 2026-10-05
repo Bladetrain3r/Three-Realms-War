@@ -16,8 +16,10 @@ export async function launch() {
   return chromium.launch({ executablePath: exe, args: ['--no-sandbox', '--enable-precise-memory-info'] });
 }
 // Opens the game in a fresh browser context (own localStorage). Returns { page, problems }.
-export async function openGame(browser, url, { width = 1280, height = 800, reducedMotion = 'no-preference' } = {}) {
+// timer: false (default) switches the activity timer off; a number of milliseconds turns it on at that speed.
+export async function openGame(browser, url, { width = 1280, height = 800, reducedMotion = 'no-preference', timer = false } = {}) {
   const context = await browser.newContext({ viewport: { width, height }, reducedMotion }), page = await context.newPage(), problems = [];
+  await page.addInitScript((prefs) => { try { if (!localStorage.getItem('three-realms.prefs.v1')) localStorage.setItem('three-realms.prefs.v1', JSON.stringify(prefs)); } catch (e) { /* no storage */ } }, timer ? { timerMs: timer } : { noTimer: true });
   page.on('pageerror', (e) => problems.push(String(e))); page.on('console', (m) => { if (m.type() === 'error') problems.push(m.text()); });
   await page.goto(url);
   await page.waitForFunction(() => window.ThreeRealms && window.ThreeRealms.ready, null, { timeout: 30000 });

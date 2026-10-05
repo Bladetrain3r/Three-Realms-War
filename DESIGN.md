@@ -363,11 +363,11 @@ The new game begins with four heroes at level 1: **Shieldwarden, Huscarl** and *
 **Stormcaller** (Asgard), each with Plain (item level 1, star 0) gear for every slot, and all realms at delve level 1.
 Heroes get a name from `content/names.json` (a list per realm) chosen by a seeded draw when recruited.
 
-- **Recruit level** `max(1, idiv(topLevel * 3, 4))` where `topLevel` is the highest hero level on the roster.
-- **Recruit cost** (hacksilver): `100 + 20 x recruit level` for a common class, three times that for a rare class.
+- **Recruit level:** every recruit begins at level 1 (`recruit.startLevel`), whatever the roster's best hero is (changed in 0.8; it was three quarters of the top level). A recruit is levelled by diving (delves, expeditions) or bought up by training (11.8).
+- **Recruit cost** (hacksilver, at the recruit's level, so 120 at level 1): `100 + 20 x recruit level` for a common class, three times that for a rare class.
 - The roster holds at most 24 heroes. A hero can be dismissed (their gear returns to the stash).
 
-[WE-23] recruit level when the top hero is level 26, and when it is level 1 => 19, 1
+[WE-23] recruit level when the top hero is level 26, and when it is level 1 => 1, 1
 
 ## 8. Equipment
 
@@ -676,7 +676,7 @@ The player picks any delve level `1 .. unlocked(R)`. `unlocked(R)` starts at 1 a
 [WE-21] experience to the next level at L1, L20, L49 => 80, 1050, 7402
 
 Each cleared encounter gives every participating hero `10 + 4 D` xp (the boss encounter `2x`); a lost delve gives none.
-Benched healthy heroes receive 50% of the delve's xp ("rest xp"), so a roster is not punished for rotation. Leftover xp
+Benched healthy heroes receive 50% of the delve's xp ("rest xp") **if they are within 10 levels of the party's highest-level hero** (0.8: otherwise a level-1 recruit could be levelled for free by benching it), so a roster is not punished for rotation. Leftover xp
 carries over; several levels may be gained at once.
 
 ### 11.2 Rewards per cleared delve (win only)
@@ -723,6 +723,15 @@ of the save's stream, applied before the next begins. The batch stops after the 
 hero injured (including one forced in), so the player decides about forcing. The first run refuses exactly as a single delve does. The
 result is every run's replay (any can be watched) plus totals: delves, wins, xp, silver, materials, reputation, items found and dropped,
 level-ups, injuries, and why it stopped.
+
+### 11.8 Training (added in 0.8, Ziggy's numbers)
+
+Silver can buy levels. A hero below level 40 (`training.maxLevel`; the hero cap stays 50, the last ten levels are earned in the dungeons)
+can be trained up: one level from level `L` costs `100 x L` hacksilver (`training.costPerLevel`), several levels cost the sum, xp already
+earned carries over. Training needs a positive balance that covers the whole cost (it never creates debt), and is locked while an
+expedition is under way.
+
+[WE-36] training a level-10 hero up 3 levels; training a level-1 hero all the way to level 40 => 3300, 78000
 
 ## 12. Expeditions (built in G5; specified now)
 
@@ -923,11 +932,12 @@ Random choices use `deriveSeed(masterSeed, counter)` and then increment `counter
   Plain item-level-1 kit of its realm; party = those four; `hacksilver` 0; every realm unlocked at 1. Every new hero (also a recruit)
   begins with the class's **starter runbook** from `content/starter_runbooks.json`, which the player edits freely.
 - **Recruit.** The class must exist; a rare class needs its realm's reputation at *Known*; the roster holds at most 24; the cost is
-  `recruitCost(recruitLevel(topLevel))` hacksilver (7.5); the recruit arrives with a full Plain kit at item level `max(1, idiv(level, 2))`, half its level (`recruitKitLevel`, 0.6), because a recruit's level can sit well above the dungeon level it will be sent to.
+  `recruitCost(recruitLevel(topLevel))` hacksilver (7.5; every recruit is level 1, so a common class costs 120); the recruit arrives with a full Plain kit at item level `max(1, idiv(level, 2))` (`recruitKitLevel`).
 
 [WE-35] the kit item level of a recruit at level 15, and at level 1 => 7, 1
 - **Rest.** `rest(save, content)` (11.6): every injury counter drops by 1, `restCost` hacksilver is spent (the balance may go negative); refused when the
   balance is 0 or below (`in_debt`, as is recruiting) or when nobody is injured.
+- **Train.** `train(save, content, heroId, levels)` (11.8): `trainingCost` hacksilver, whole levels, never above `training.maxLevel`, never into debt.
 - **Dismiss.** Gear returns to the stash; an assigned Thread of the Norns returns to the count; the party closes over the gap; the last
   hero cannot be dismissed.
 - **Equip.** The item must fit the slot and be at most `hero level + 5`; an item worn by another hero moves; `null` unequips.
@@ -961,6 +971,7 @@ Random choices use `deriveSeed(masterSeed, counter)` and then increment `counter
   JSON; import accepts a file or pasted text.
 - **Battle.** The player never re-simulates: it plays the replay's event log. HP, statuses, floating numbers and the text log are all
   derived from the events alone (G1 test), so a replay file from another machine plays the same.
+- **Activity timer** (0.8). A batch of delves (11.7) runs one delve at a time, 2 seconds apart by default; each is applied and autosaved when it lands, and the party and the rest of the game are locked until the batch ends or the player stops it after the current run. It is presentation only: the saves and replays are exactly those of `playDelves` (tested), and a Settings switch turns it off (for testing and simulation). Single delves and expedition floors are not delayed.
 - **Tests.** Browser tests drive the real page through its DOM (`data-testid` attributes); a read-only `window.ThreeRealms` exposes the
   current save and last replay for assertions, and nothing else.
 
@@ -1066,3 +1077,12 @@ Random choices use `deriveSeed(masterSeed, counter)` and then increment `counter
   bought, position, `seen` (a 0/1 string, one per cell), party, hp (-1 = full), floors cleared per site, current site, pack, steps; the map is
   regenerated from the seed and never stored. WE-24 to WE-26 are now checked by the sim. **Status: the balance bounds written first for
   expeditions are NOT met by the design as written** (wipe rate 0.48 to 0.93 against 0.01 to 0.25; `evidence/G5.md`, `reports/BLOCKED-G5.md`).
+- **0.8 (2026-10-05, Ziggy's decisions after the second playtest):** (1) **Every recruit is level 1** (7.5; content `recruit.startLevel` 1 replaces `levelNum` and
+  `levelDen`), so a recruit costs 120 hacksilver (360 for a rare class) and must be levelled. (2) **Rest xp** (11.1) reaches only benched healthy
+  heroes within 10 levels of the party's highest-level hero (`progress.restXpGap`); without this a level-1 recruit would have reached level 40
+  free in about 190 delves of benching, at no risk (measured from the xp table, not simulated). The gap of 10 is mine; Ziggy asked for the
+  loophole closed, not for the number. (3) **Training** (new 11.8): 100 x level per level, up to level 40, never into debt; WE-36 (Ziggy: "100x level
+  is fine, expensive but grindable with delves"; the cap 40 is also his, the level cap stays 50). Decided by Ziggy and parked for the next steps: delves
+  drop at most Runed items (Heirloom only from expeditions); five legendary single-monster bosses with one fixed item each and a marked
+  encounter on the expedition map, unique per save; paragon stars that multiply each future level's increment (not retroactively), three per
+  stat, bought with xp-free rare realm resources, with a class bonus at 18 of 18 stars. (4) **Activity timer** (section 20): built now, 2 s per run of a batch, switchable off.

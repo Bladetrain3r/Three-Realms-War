@@ -15,10 +15,11 @@ test('progress: xp to next strictly increases with level', () => {
 });
 
 test('progress: recruit level and cost (DESIGN.md WE-23)', () => {
-  assert.equal(recruitLevel(26, r), 19);
+  assert.equal(recruitLevel(26, r), 1);
   assert.equal(recruitLevel(1, r), 1);
-  assert.equal(recruitCost(19, false, r), 480);
-  assert.equal(recruitCost(19, true, r), 1440);
+  assert.equal(recruitCost(1, false, r), 120);
+  assert.equal(recruitCost(1, true, r), 360);
+  assert.equal(recruitCost(19, false, r), 480, 'the cost formula still prices a higher level');
 });
 
 test('progress: a level-20 delve of three encounters and a boss (DESIGN.md WE-22)', () => {

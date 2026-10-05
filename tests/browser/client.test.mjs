@@ -394,3 +394,46 @@ test('client: the expedition map at 390 px scrolls inside its own box, not the p
   assert.deepEqual(problems, []);
   await context.close();
 });
+
+test('client: training buys levels exactly as the rules layer prices them, refuses with the reason, and stops at level 40', async (t) => {
+  if (!need(t)) return;
+  const { train } = await import('../../sim/index.js');
+  const start = newGame(content, 88, { savedAt: '', build: 'client-test' }); start.currency.hacksilver = 1500; start.heroes[0].level = 10;
+  const id = start.heroes[0].id;
+  const { page, problems, context } = await openGame(browser, game.url);
+  await importSave(page, start);
+  await go(page, `#/hero/${id}`);
+  assert.match(await page.textContent('[data-testid=train]'), /Train to level 11 \(1000 hacksilver\)/);
+  await page.click('[data-testid=train]');
+  await sameSave(page, train(start, content, id, 1), 'one level');
+  assert.equal(await page.isDisabled('[data-testid=train]'), true);
+  assert.match(await page.getAttribute('[data-testid=train]', 'title'), /costs 1100 \(you have 500\)/);
+  const rich = structuredClone(start); rich.currency.hacksilver = 100000; rich.heroes[0].level = 38;
+  await importSave(page, rich); await go(page, `#/hero/${id}`);
+  await page.selectOption('[data-testid=train-levels]', '2'); await page.click('[data-testid=train]');
+  await sameSave(page, train(rich, content, id, 2), 'to 40');
+  assert.match(await text(page, 'notice') + await page.textContent('#screen'), /Training stops at level 40/);
+  assert.equal(await page.locator('[data-testid=train]').count(), 0);
+  assert.deepEqual(problems, []);
+  await context.close();
+});
+
+test('client: with the activity timer on, a batch shows its progress, locks the party meanwhile, can be stopped after the current run, and equals the rules layer', async (t) => {
+  if (!need(t)) return;
+  const start = newGame(content, 424242, { savedAt: '', build: 'client-test' }); for (const h of start.heroes) h.level = 40;
+  const { page, problems, context } = await openGame(browser, game.url, { timer: 150 });
+  await importSave(page, start);
+  await go(page, '#/delve'); await page.selectOption('[data-testid=count]', '10'); await page.click('[data-testid=descend]');
+  await page.waitForSelector('[data-testid=busy]'); assert.match(await text(page, 'busy'), /Run \d+ of 10, 0.15 seconds each/);
+  assert.equal(await page.isDisabled('[data-testid=descend]'), true);
+  await go(page, '#/hall'); await page.click('[data-testid="bench-' + start.party[3] + '"]');
+  assert.match(await text(page, 'notice'), /out on a delve run/);
+  await go(page, '#/delve'); await page.click('[data-testid=stop-batch]');
+  await page.waitForFunction(() => location.hash === '#/battle', null, { timeout: 15000 }); await settle(page);
+  assert.match(await text(page, 'batch-summary').catch(() => ''), /stopped|won/);
+  const runs = await page.locator('[data-testid=run-select] option').count(); assert.ok(runs >= 1 && runs < 10, `${runs} runs`);
+  const want = playDelves(start, content, { realm: 'midgard', level: 1 }, runs);
+  await sameSave(page, want.save, 'the timed batch');
+  assert.deepEqual(problems, []);
+  await context.close();
+});

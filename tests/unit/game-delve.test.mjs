@@ -69,7 +69,7 @@ test('delve: injury bookkeeping: benched hurt heroes heal by one per delve; a fo
 });
 
 test('delve: rest xp: healthy benched heroes get half of the delve xp; participants get all of it; levels rise and carry xp over', () => {
-  const s0 = fresh(); for (const h of s0.heroes) h.level = 50;
+  const s0 = fresh(); for (const h of s0.heroes) h.level = 12; // the bench hero is within the rest-xp gap of 10
   s0.heroes.push({ ...structuredClone(s0.heroes[0]), id: s0.nextId++, name: 'Bench', level: 3, xp: 10, slots: { weapon: null, armour: null, helm: null, charm: null } });
   valid(s0);
   const r = playDelve(s0, content, { realm: 'midgard', level: 1 }), s = valid(r.save), bench = s.heroes.at(-1), xp = r.summary.xp;
@@ -78,7 +78,7 @@ test('delve: rest xp: healthy benched heroes get half of the delve xp; participa
   while (left >= xpToNext(level, content.tables.progress)) { left -= xpToNext(level, content.tables.progress); level++; }
   assert.deepEqual([bench.level, bench.xp], [level, left]);
   assert.equal(r.summary.levelUps.some((u) => u.heroId === bench.id), level > 3);
-  assert.ok(s.heroes.slice(0, 4).every((h) => h.level === 50 && h.xp === 0), 'at the level cap, xp stays 0');
+  assert.ok(s.heroes.slice(0, 4).every((h) => h.level > 12 || h.xp > 0), 'participants gained the full xp');
 });
 
 test('delve: unlocking: only a win at the highest unlocked level opens the next, and never beyond 50', () => {

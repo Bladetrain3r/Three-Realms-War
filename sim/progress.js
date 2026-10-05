@@ -5,8 +5,17 @@ export function xpToNext(level, p) {
   return p.xpBase + p.xpPerLevel * level + idiv(level * level * level, p.xpCubeDiv);
 }
 
+// Every recruit begins at `startLevel` (DESIGN 0.8; before, three quarters of the top hero's level). `topLevel` is kept in the signature.
 export function recruitLevel(topLevel, r) {
-  return Math.max(1, idiv(topLevel * r.levelNum, r.levelDen));
+  void topLevel;
+  return r.startLevel;
+}
+
+// 11.8: training one hero from `level` up `levels` levels costs costPerLevel x each level it leaves.
+export function trainingCost(level, levels, t) {
+  let c = 0;
+  for (let L = level; L < level + levels; L++) c += t.costPerLevel * L;
+  return c;
 }
 
 // A recruit's starting kit is built at half the hero's level (at least 1): a recruit can arrive above the dungeon level.

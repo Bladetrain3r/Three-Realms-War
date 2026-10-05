@@ -26,7 +26,7 @@ export function battle(ctx) {
 
   const batch = store.lastBatch;
   const batchPanel = batch && batch.runs.length > 1 ? (() => {
-    const t = batch.totals, why = { done: `all ${batch.requested} delves were run`, lost: 'it stopped after a lost delve', injury: 'it stopped because a party hero is injured' }[batch.stopped];
+    const t = batch.totals, why = { done: `all ${batch.requested} delves were run`, lost: 'it stopped after a lost delve', injury: 'it stopped because a party hero is injured', stopped: 'you stopped it' }[batch.stopped];
     const mats = Object.entries(t.materials).map(([id, n]) => `${n} ${matName(id)}`).join(', ');
     return panel(`Batch: ${t.delves} of ${batch.requested} delves`, h('p', { 'data-testid': 'batch-summary' }, `${t.wins} won; ${why}.`),
       h('ul', { class: 'earned' }, h('li', null, `${t.xp} XP to each party member in total`), h('li', null, `${t.hacksilver} hacksilver`), mats ? h('li', null, mats) : null, h('li', null, `${t.reputation} reputation`),

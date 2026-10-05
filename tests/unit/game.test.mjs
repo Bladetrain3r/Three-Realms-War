@@ -39,16 +39,16 @@ test('game: a new game is a pure function of its seed', () => {
   refuses(() => newGame(content, 2 ** 32), 'bad_seed');
 });
 
-test('game: recruit costs hacksilver, arrives at 3/4 of the top level with a free Plain kit at half the hero\'s level, and uses a seed step', () => {
+test('game: recruit costs hacksilver, arrives at level 1 with a free Plain kit, and uses a seed step', () => {
   const s0 = rich(fresh());
   s0.heroes[0].level = 20;
   const s = valid(recruit(s0, content, 'hunter'));
   const h = s.heroes.at(-1);
-  assert.deepEqual([h.class, h.level, h.xp, h.injury], ['hunter', 15, 0, 0]);
-  assert.equal(s.currency.hacksilver, 100000 - (100 + 20 * 15));
+  assert.deepEqual([h.class, h.level, h.xp, h.injury], ['hunter', 1, 0, 0]);
+  assert.equal(s.currency.hacksilver, 100000 - (100 + 20 * 1));
   assert.equal(s.rng.counter, s0.rng.counter + 1);
   assert.equal(s.items.length, s0.items.length + 4);
-  assert.ok(Object.values(h.slots).every((id) => itemsById(s)[id].ilvl === 7), 'kit level is idiv(15, 2)');
+  assert.ok(Object.values(h.slots).every((id) => itemsById(s)[id].ilvl === 1), 'kit level is max(1, idiv(1, 2))');
   assert.equal(topLevel(s), 20);
 });
 

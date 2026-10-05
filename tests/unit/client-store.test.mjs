@@ -63,3 +63,26 @@ test('store: a delve keeps its replay and the pre-delve save for the battle scre
   a.reset(); assert.equal(a.lastBattle, null); assert.ok(a.save.heroes.length === 4);
 });
 
+
+test('store: a timed batch lands the same save and runs as playDelves, applies each run as it lands, locks everything meanwhile, and can be stopped', async () => {
+  const { playDelves } = await import('../../sim/index.js');
+  const mk = () => { const a = make(); for (const h of a.save.heroes) h.level = 40; return a; };
+  const a = mk(); a.importText(a.exportText());
+  const strongSave = JSON.parse(a.exportText()); for (const h of strongSave.heroes) h.level = 40; a.importText(JSON.stringify(strongSave));
+  const want = playDelves(strongSave, content, { realm: 'midgard', level: 1 }, 4);
+  const seen = []; a.subscribe(() => seen.push(a.busy ? a.busy.i : 'idle'));
+  const p = a.delvesTimed({ realm: 'midgard', level: 1 }, 4, 5);
+  assert.equal(a.busy.n, 4);
+  assert.equal(a.act(setParty, [a.save.party[0]]).code, 'busy'); assert.equal(a.delve({ realm: 'midgard', level: 1 }).code, 'busy'); assert.equal(a.importText('{}').ok, false);
+  const r = await p;
+  assert.equal(r.ok, true); assert.equal(a.busy, null);
+  assert.equal(canonical(a.save).replace(/"meta":\{[^}]*\},/, ''), canonical(want.save).replace(/"meta":\{[^}]*\},/, ''));
+  assert.deepEqual(r.value.runs.map((x) => x.replay.hash), want.runs.map((x) => x.replay.hash)); assert.equal(r.value.stopped, want.stopped);
+  assert.ok(seen.includes(0) && seen.includes('idle'));
+  // stop after the current run
+  const b = mk(); b.importText(JSON.stringify(strongSave));
+  const q = b.delvesTimed({ realm: 'midgard', level: 1 }, 10, 5); b.stopBatch();
+  const rb = await q; assert.equal(rb.value.stopped, 'stopped'); assert.equal(rb.value.runs.length, 1);
+  assert.equal((await b.delvesTimed({ realm: 'midgard', level: 99 }, 3, 0)).code, 'level_locked', 'refusals arrive at once, before any waiting');
+  assert.equal((await b.delvesTimed({ realm: 'midgard', level: 1 }, 99, 0)).code, 'bad_count');
+});
