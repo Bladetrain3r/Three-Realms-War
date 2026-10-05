@@ -22,12 +22,12 @@ export function makeUnit(def, id, side, slot, startHp, content) {
     id, side, slot, def, hp, maxHp: def.maxHp, alive: hp > 0,
     skills, skillIds: def.skills.slice(), cd: skills.map(() => 0),
     basic: effectiveSkill(content.skillById[BASIC_BY_ATTACK[def.attack]], def, content),
-    statuses: [], turn: 0, shockImmune: 0,
+    statuses: [], turn: 0, shockImmune: 0, phase: 0, bonus: {},
   };
 }
 
 export function statOf(u, stat, content) {
-  let pct = u.def.stats[stat].pct;
+  let pct = u.def.stats[stat].pct + (u.bonus[stat] || 0);
   for (const s of u.statuses) {
     const m = content.statusById[s.id].mods;
     if (m && m[stat]) pct += m[stat];

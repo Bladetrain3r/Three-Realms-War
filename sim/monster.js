@@ -10,7 +10,7 @@ export function buildMonster(row, level, content, opts = {}) {
   const stats = {};
   for (const s of STATS) {
     let multiplierBp = 0;
-    if (boss) multiplierBp = s === 'VIG' ? e.bossVigBp : e.bossOtherBp;
+    if (boss) multiplierBp = s === 'VIG' ? (opts.vigBp || e.bossVigBp) : (opts.otherBp || e.bossOtherBp);
     else if (row.signature) multiplierBp = e.signatureBp;
     const base = enemyBase(arche.stats[s], level, e, { multiplierBp, tilt: realm.affinityStats.includes(s) });
     let pct = 0;
@@ -38,6 +38,13 @@ export function buildMonster(row, level, content, opts = {}) {
   if (lifestealBp) def.lifestealBp = lifestealBp;
   if (regenBp) def.regenBp = regenBp;
   if (extraRiders.length) def.extraRiders = extraRiders;
+  return def;
+}
+
+// 10.7: a legendary boss at `level` in the expedition's realm: the boss profile with the legend's own multipliers and its phases.
+export function buildLegend(l, level, realm, content) {
+  const def = buildMonster({ id: l.id, name: l.name, realm, skills: l.phases[0].skills }, level, content, { boss: true, vigBp: l.vigBp, otherBp: l.otherBp });
+  def.phases = l.phases.map((p) => ({ atBp: p.atBp, skills: p.skills.slice(), mods: p.mods }));
   return def;
 }
 

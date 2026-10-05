@@ -75,7 +75,26 @@ export function generateMap(rng, E, x) {
   };
 }
 
-export const mapFromSeed = (seed, E, x) => generateMap(createRng(seed), E, x);
+// 12.6: the lair of a legendary boss is a one-floor site added after the ordinary sites, placed with its own stream (seed xor a constant)
+// so the ordinary map never changes. specs: [{ legend, level }] with level 0 meaning "the usual site level plus the lair bonus".
+function placeLairs(map, seed, E, x, specs, L) {
+  const W = map.width, H = map.height, rng = createRng((seed ^ 0x1a14c0de) >>> 0), seen = reachable(map.terrain, W, H, map.start.x, map.start.y);
+  for (const spec of specs) {
+    const free = (cx, cy, from) => seen[cy * W + cx] && dist(cx, cy, map.start.x, map.start.y) >= from && map.sites.every((s) => dist(cx, cy, s.x, s.y) >= x.siteSpacing);
+    let cands = [];
+    for (let from = L.minDist; from >= 0 && cands.length === 0; from -= 2) for (let cy = 0; cy < H; cy++) for (let cx = 0; cx < W; cx++) if (free(cx, cy, from)) cands.push([cx, cy]);
+    if (cands.length === 0) for (let cy = 0; cy < H; cy++) for (let cx = 0; cx < W; cx++) if (seen[cy * W + cx] && !map.sites.some((s) => s.x === cx && s.y === cy)) cands.push([cx, cy]);
+    const [cx, cy] = cands[rng.range(cands.length)], d = dist(cx, cy, map.start.x, map.start.y);
+    map.sites.push({ id: map.sites.length, x: cx, y: cy, dist: d, level: spec.level > 0 ? spec.level : E + idiv(d, x.siteLevelDiv) + L.levelBonus, floors: 1, lair: spec.legend });
+  }
+  return map;
+}
+
+// specs: see placeLairs; omitted for an ordinary map. L: content.tables.legend.
+export function mapFromSeed(seed, E, x, specs = [], L = null) {
+  const map = generateMap(createRng(seed), E, x);
+  return specs.length ? placeLairs(map, seed, E, x, specs, L) : map;
+}
 
 // Cells within `radius` (Manhattan) of (cx, cy), as flat indexes.
 export function cellsWithin(cx, cy, radius, W, H) {

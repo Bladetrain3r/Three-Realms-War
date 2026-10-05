@@ -6,8 +6,8 @@ import { pathToFileURL } from 'node:url';
 import { build } from '../../tools/bundle.mjs';
 import { findChromium } from './chromium.mjs';
 
-export function buildGame(label = 'test') {
-  const out = mkdtempSync(join(tmpdir(), 'dist-')); const r = build({ out, build: label });
+export async function buildGame(label = 'test') {
+  const out = mkdtempSync(join(tmpdir(), 'dist-')); const r = await build({ out, build: label });
   return { out, url: pathToFileURL(join(out, 'index.html')).href, bytes: r.bytes };
 }
 export async function launch() {

@@ -807,6 +807,74 @@
         "heartBase"
       ],
       "additionalProperties": false
+    },
+    "legend": {
+      "type": "object",
+      "properties": {
+        "roundCap": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 500
+        },
+        "levelBonus": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 20
+        },
+        "minDist": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 40
+        },
+        "unlockCount": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        "chaosLevel": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "chaosFrom": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 50
+        },
+        "rewardMul": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "hearts": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 20
+        },
+        "paragon": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 20
+        },
+        "chaosParagon": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 20
+        }
+      },
+      "required": [
+        "roundCap",
+        "levelBonus",
+        "minDist",
+        "unlockCount",
+        "chaosLevel",
+        "chaosFrom",
+        "rewardMul",
+        "hearts",
+        "paragon",
+        "chaosParagon"
+      ],
+      "additionalProperties": false
     }
   },
   "required": [
@@ -819,7 +887,8 @@
     "progress",
     "expedition",
     "training",
-    "paragon"
+    "paragon",
+    "legend"
   ],
   "additionalProperties": false
 }

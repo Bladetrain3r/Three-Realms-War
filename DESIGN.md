@@ -686,6 +686,33 @@ A delve at realm `R` and delve level `D` (1 to 50) has `n = 3 + range(3)` encoun
 The player picks any delve level `1 .. unlocked(R)`. `unlocked(R)` starts at 1 and rises by 1 each time a delve at level
 `unlocked(R)` is won in realm `R`, to a cap of 50. Nothing else gates a delve.
 
+### 10.7 Legendary bosses and the final boss (added in 0.11, Ziggy's design; numbers marked mine are mine)
+
+A **legendary boss** is one monster that fights alone in the front row, in **phases**. It is built like a delve boss (the brute profile, immune to
+shock, no affixes) with its own multipliers on VIG and on the other five stats (`vigBp`, `otherBp`, content `monsters.legends`; the delve boss uses
+30000 and 15000), in the realm of the expedition it lairs in (so its resistances follow the realm, and `realm` element skills take that element).
+Its level is the lair's (12.6). A fight over a legend has its own round cap (`legend.roundCap` 60) because a single boss takes many rounds.
+
+**Phases.** A legend lists phases; phase 0 starts at full HP, every later phase has a threshold `atBp`. At the start of the boss's turn (after its
+status ticks, before it chooses), while its HP `h` satisfies `h x 10000 <= atBp x maxHP` for the next phase, it **enters** that phase: its skill list
+is replaced by the phase's list (used in order, first ready skill, as 10.4), all its cooldowns clear, the phase's `mods` (percentages of the six stats) are added for good, and
+the event PHASE `[15, unit, phase index]` is logged. Several thresholds crossed at once are entered in order, one event each. Entering a phase does not heal.
+
+| Legend | Appears from expedition level | VIG x (bp) | other stats x (bp) | Phases | Its one item (mine: the slot and the lines) |
+|---|---|---|---|---|---|
+| Fenris, the Unchained Wolf | 10 | 136000 | 21000 | 3 (Snapped Chain at 6600, Wolf of Ragnarok at 3300) | Fang of Fenris, weapon MIT, helheim |
+| Jormungandr, the World-Serpent | 20 | 180000 | 34000 | 3 (Venom Tide at 6600, Maw of the World at 3300) | Coil of Jormungandr, armour, midgard |
+| Ymir, the First Giant | 30 | 165000 | 34000 | 3 (Wall of Rime at 6600, Avalanche at 3300) | Rimecrown of Ymir, helm, helheim |
+| Beowulf, Slayer of Grendel | 40 | 145000 | 20000 | 3 (Dragon's Bane at 6600, Last Stand at 3300) | Torque of the Geats, charm, midgard |
+| Odin, the Allfather | 50 | 143000 | 30000 | 3 (Wild Hunt at 6600, Seer of Ragnarok at 3300) | Gungnir, the Rune-Spear, weapon ARC, asgard |
+| Chaos, the Yawning Void | 50 | 150000 | 24000 | 4 (Unmaking at 7500, Maw Eternal at 5000, End of Names at 2500) | none (the end boss) |
+
+The multipliers are mine, found by the balance runner (`checks/balance-legends.mjs`, `evidence/legends-balance.json`) against the bounds written first in
+`checks/balance.yaml` (`legends:` and `final:`): a party of level E+5 in Runed 3-star gear wins about half the time, a level-50 party in Heirloom
+5-star gear nearly always, a party five levels under in Plain gear almost never; against the final boss, a level-50 party in Heirloom 5-star gear with one
+paragon star per stat wins 20 to 80 percent, the same without paragon and in Runed 3-star gear almost never, and one with all 18 paragon stars and four
+Legendary pieces 80 percent or more. Skill powers and phase mods are content (`skills.json` owner `legend`).
+
 ## 11. Progression and the economy
 
 ### 11.1 Experience
@@ -792,6 +819,24 @@ expedition's pack is lost. A wipe loses that party only, never the save.
 
 [WE-26] a death save at 4000 bp: the draw 3999, and the draw 4000 (1 means the hero dies) => 1, 0
 
+### 12.6 Lairs: the legendary bosses and the final boss (added in 0.11)
+
+A **lair** is an extra site on the expedition map with one floor (a single fight against one legend, 10.7). It is placed after the ordinary sites, from its own
+random stream (the seed xor a constant), so the ordinary map never changes: on a cell reachable from the start, at least `legend.minDist` (10) from it when any such
+cell exists, and at least the site spacing from every other site; its level is the usual site level plus `legend.levelBonus` (2); the final boss's lair is always level
+`legend.chaosLevel` (60). The map marks it with a star once seen, and the site box names the boss, its phases and its prize.
+
+**Which lairs a new expedition carries** (fixed at set-out and stored in `expedition.lairs`): the lowest legend (in content order) not yet beaten whose
+`from` level the expedition level has reached, and the final boss when `legend.unlockCount` (4) legends have been beaten, it has not, and the expedition level
+is at least `legend.chaosFrom` (50). Ziggy's rule: beating any four of the five opens it, the fifth is optional. A legend beaten once never lairs again in that save.
+
+**Reward.** A boss encounter's reward at the lair's level, times `legend.rewardMul` (6), scaled as the deepest floor of a site at that distance (12.3),
+plus `legend.hearts` (3) hearts of the expedition's realm and `legend.paragon` (1) Paragon Point (3 for the final boss), plus the legend's one fixed Legendary item
+(8.4): its slot and lines from the content, item level the lair's level capped at 50, no mulligan, `legend` set to the boss. Everything goes into the pack; **the boss
+counts as beaten, and the item exists, only when the pack is banked**, so a party that wins and then dies on the way home has beaten nothing (the wipe rule of
+12.4, unchanged). A Legendary item is never turned away by a full stash and does not count towards the stash limit, and a dead hero's Legendary gear is never dropped.
+Banking the final boss sets `won`: the end of a core run (the game goes on; a new game plus is a later idea, BACKLOG).
+
 ## 13. Save schema (version 1)
 
 One JSON document under one browser-storage key (`three-realms-save`); exported and imported as the same JSON in a file
@@ -825,7 +870,7 @@ a save with a higher `version` than the build is refused, a lower one is migrate
 ```
 
 `party` is slot order (0 to 3). `lines` are `[kindIndex, raw]` pairs; `held` is the pre-attempt `lines` kept for the
-mulligan until the player accepts or reverts. `expedition` is `null` or the expedition state (G5 specifies its keys in
+mulligan until the player accepts or reverts. `legendsBeaten` lists the legend ids banked as beaten and `won` is true exactly when the final boss is among them (0.11); a legend's item carries `legend: <id>`; an expedition also has `lairs` (the legend ids on its map) and its pack `legends` (beaten but not yet banked). `expedition` is `null` or the expedition state (G5 specifies its keys in
 `DESIGN.md` Changes before use). Unknown keys are refused. Export then import must restore a byte-identical canonical save.
 
 ## 14. Replay format (version 1)
@@ -862,6 +907,8 @@ verified by re-simulating.
 | 11 | ENC_END | outcome (1 win, 0 loss), rounds |
 | 12 | REST | unit, HP after |
 | 13 | DELVE_END | outcome, encounters cleared |
+| 14 | DEATH_SAVE | hero slot, result (0 revived at 1 HP, 1 died for good, 2 held by a Thread); floors of expeditions only |
+| 15 | PHASE | unit, phase index; a legendary boss entering a phase (10.7) |
 
 **Canonical form and the hash.** Canonical JSON: object keys sorted by code unit order, arrays in order, integers only (a
 non-integer or `NaN` is an error), strings escaped with `JSON.stringify`, no whitespace. The hash is **SHA-256**, hex,
@@ -1110,8 +1157,13 @@ Random choices use `deriveSeed(masterSeed, counter)` and then increment `counter
   E 20 is 0 (was 0.05), a bound I had specified wrongly; both are with Ziggy's word. Result: **79 of 79** expedition checks in bounds, **148 of 148** in the delve table (the G3 report is
   byte-identical). **G5 is closed.** (3) **Delves never drop Heirloom** (8.6): the delve boss table is Fine 4000, Runed 6000; expeditions have their own tables (non-boss Plain 6500, Fine 2500, Runed 700,
   Heirloom 300; site boss Runed 4000, Heirloom 6000). (4) **Legendary tier** (8.2, 8.4): 22500 multiplier, 7 stars (star odds 2000 and 500 for stars 6 and 7), three fixed lines, no set, not salvageable,
-  stars 6 and 7 cost 3x; no random drop rolls it. The Legendary items themselves are the fixed drops of the legendary bosses (not built yet). The numbers 2000, 500, 3x, and the drop weights are mine.
+  stars 6 and 7 cost 3x; no random drop rolls it. The Legendary items themselves are the fixed drops of the legendary bosses (built in 0.11). The numbers 2000, 500, 3x, and the drop weights are mine.
 - **0.10 (2026-10-05, Ziggy's paragon design; the numbers marked mine are mine):** new 4.6. Stars per stat 3, +11% of future growth each, the cost of one Paragon Point plus
   hearts of the hero's realm (Ziggy: "not a pure XP thing - also burns through realm specific rare resources"), the drop only from expeditions and rare, the class bonus at 18 of 18 stars (his
   examples: an assassin +5% crit, a healer +5% healing strength). Mine: `heartBase` 5 (so a maxed hero's stars cost 855 hearts in all), the drop chance of 2000 bp per site-boss clear, and
   which bonus each class gets. Saves written earlier get `paragonPoints: 0` and `paragon: {}` filled in on load (additive keys inside version 1).
+- **0.11 (2026-10-05, Ziggy: "Defaults are fine, go ahead"; his decision: one fixed item per legendary boss and no set, the end boss is Chaos at level 60, it opens once four of the five legends are beaten):** new 10.7 (phases,
+  the event PHASE, the six legends) and 12.6 (lairs, rewards, the unlock, `won`); a floor replay with a `legend` input; save keys `legendsBeaten`, `won`, `expedition.lairs`, pack `legends`, item `legend` (additive, filled in
+  on load). Mine and flagged: every multiplier, skill power and phase threshold of the six legends, which legend carries which slot, `minDist` 10, `levelBonus` 2, `rewardMul` 6, 3 hearts, 1 Paragon Point (3 for Chaos),
+  the lowest-unbeaten rule for which lair appears, the final boss at expedition level 50 and up. **Build-time content validation:** the shipped page no longer carries the content schemas and the cross-checker (they pushed the
+  bundle past the 400 KB ceiling of 15: 441,000 bytes with the legends); `tools/bundle.mjs` validates the content at build time and refuses to build invalid content, the page indexes it as shipped. The ceiling is unchanged.

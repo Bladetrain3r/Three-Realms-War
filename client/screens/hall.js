@@ -1,7 +1,7 @@
 // Hall: the party in formation, the whole roster, and recruiting.
 import { h } from '../dom.js';
 import { panel, button, heroPortrait, bar, realmTag } from '../ui.js';
-import { setParty, recruit, restCost } from '../../sim/index.js';
+import { setParty, recruit, restCost, legendStatus } from '../../sim/index.js';
 import { recruitLevel, recruitCost, recruitKitLevel } from '../../sim/progress.js';
 import { topLevel } from '../../sim/game.js';
 import { injuryText } from '../format.js';
@@ -55,10 +55,16 @@ export function hall(ctx) {
   const restWhy = save.currency.hacksilver <= 0 ? (save.currency.hacksilver < 0 ? `you owe ${-save.currency.hacksilver} hacksilver; earn it back in a delve` : 'you have no hacksilver') : !hurt ? 'nobody is injured' : '';
   const restPanel = panel('Rest', h('p', { class: 'hint' }, `Idle time costs ${content.tables.injury.restCost} hacksilver per hero, ${content.tables.injury.restCostWounded} per injured hero. One rest takes one off every injury counter. Right now: ${rc.cost} hacksilver.${save.currency.hacksilver < 0 ? ` You are ${-save.currency.hacksilver} in debt.` : ''}`),
     button(`Rest the roster (${rc.cost})`, () => ctx.rest(), { id: 'rest', disabled: Boolean(restWhy), title: restWhy }), restWhy ? h('small', { class: 'why' }, restWhy) : null);
+  const lg = legendStatus(save, content), L = content.tables.legend;
+  const legendsPanel = panel('Legends', h('p', { class: 'hint' }, `Legendary bosses lair on expeditions, one at a time (the lowest you have not beaten, from the level shown). Each guards one item found nowhere else. Beat ${lg.needed} of the ${lg.legends.length - 1} and the final boss stirs on a level-${L.chaosFrom} expedition.`),
+    h('ul', { 'data-testid': 'legends' }, lg.legends.map((l) => h('li', { class: l.beaten ? 'prize' : '', 'data-testid': `legend-${l.id}` }, l.final ? `${l.name}: ${l.beaten ? 'beaten' : lg.chaosOpen ? `stirs on level-${L.chaosFrom} expeditions` : `sleeps (beat ${lg.needed} legends first)`}`
+      : `${l.name}: ${l.beaten ? `beaten (${content.legendById[l.id].item.name} is yours)` : `from expedition level ${l.from}`}`))),
+    h('p', { 'data-testid': 'legend-progress' }, `${lg.beaten} of ${lg.needed} needed legends beaten.`),
+    lg.won ? h('p', { class: 'victory', 'data-testid': 'won' }, 'Chaos is beaten: you have finished a core run. The realms go on.') : null);
   return h('div', { class: 'screen hall' },
     h('h1', null, 'The Hall'),
     panel('Party', h('p', { class: 'hint' }, 'Slots 1 and 2 stand in the front row, 3 and 4 in the back. Up to four heroes.'), partyList),
     panel(`Roster (${save.heroes.length} of ${content.tables.recruit.rosterMax})`, bench),
-    restPanel,
+    restPanel, legendsPanel,
     panel('Recruit', h('p', { class: 'hint' }, `New recruits arrive at level ${lvl} with a Plain kit at level ${recruitKitLevel(lvl, content.tables.recruit)}. Level them in the dungeons (a benched hero within ${content.tables.progress.restXpGap} levels of your best earns half xp) or train them on the hero screen. You have ${save.currency.hacksilver} hacksilver.`), recruits));
 }

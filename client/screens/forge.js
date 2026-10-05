@@ -33,7 +33,7 @@ export function forge(ctx) {
       it.star < tier.maxStar ? h('p', null, (() => { const st = starStep(it, content); return `A star would take the main stat from ${st.now} to ${st.next}${st.same ? ` (${NO_CHANGE})` : ''}. `; })(), `Next attempt: ${pct(odds)} to gain a star, costs ${cost.common} ${matName(realm.material)}${cost.rare ? ` + ${cost.rare} ${matName(realm.rareMaterial)}` : ''}. Every attempt costs, success or not.`) : h('p', null, 'At the top star for its tier.'),
       pending,
       h('div', { class: 'row-buttons' }, button('Upgrade', () => { const r = ctx.run(upgradeAttempt, it.id); if (r.ok && tier.fixedLines) { const after = store.save.items.find((x) => x.id === it.id).star; ctx.say(after > it.star ? `Star ${after} reached.` : 'No star gained; the materials are spent.', after > it.star ? 'ok' : 'bad'); } }, { disabled: Boolean(why), title: why, id: 'upgrade' }),
-        button(`Salvage (+${salvageValue(it)} ${matName(realm.material)})`, () => ctx.run(salvage, it.id), { disabled: worn[it.id] !== undefined, title: worn[it.id] !== undefined ? 'take the item off first' : '', id: 'salvage' })),
+        button(`Salvage (+${salvageValue(it)} ${matName(realm.material)})`, () => ctx.run(salvage, it.id), { disabled: worn[it.id] !== undefined || it.tier === 'legendary', title: it.tier === 'legendary' ? 'a Legendary item is kept' : worn[it.id] !== undefined ? 'take the item off first' : '', id: 'salvage' })),
       why ? h('small', { class: 'why' }, why) : null);
   }
 

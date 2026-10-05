@@ -3,7 +3,7 @@ import { floats, hashString, newCanvas } from './color.js';
 import { paint, groundShadow, inkLine } from './brush.js';
 import { build, palOf } from './parts.js';
 import { HEROES } from './heroes.js';
-import { ARCHETYPE, SIGNATURE, SIZE, BOSS } from './monsters.js';
+import { ARCHETYPE, SIGNATURE, SIZE, BOSS, LEGEND_REALM } from './monsters.js';
 
 export const SHEET = { w: 200, h: 260 };
 export const BOSS_SHEET = { w: 340, h: 400 };
@@ -39,6 +39,13 @@ export function monsterSprite(createRng, monster, quality = 1) {
     const sig = SIGNATURE[monster.id], mk = sig || ARCHETYPE[monster.archetype]; if (!mk) throw new Error(`no figure for monster ${monster.id}`);
     const size = (SIZE[monster.archetype] || 1) * (monster.signature ? 1.18 : 1);
     return render(mk(monster.realm), monster.realm, monster.id, createRng, size, SHEET, quality);
+  });
+}
+// A legendary boss keeps one look whatever realm the expedition is in (its palette is its own realm's).
+export function legendSprite(createRng, id, quality = 1) {
+  return cached(`l:${id}:${quality}`, () => {
+    const mk = BOSS[id], realm = LEGEND_REALM[id]; if (!mk || !realm) throw new Error(`no figure for legend ${id}`);
+    return render(mk(realm), realm, id, createRng, 1.4, BOSS_SHEET, quality);
   });
 }
 export function bossSprite(createRng, boss, quality = 1) {

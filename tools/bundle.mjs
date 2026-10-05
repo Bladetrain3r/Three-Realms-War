@@ -66,17 +66,30 @@ ${globalName ? `globalThis[${JSON.stringify(globalName)}] = __main;` : ''}
 }
 
 // The content and the schemas, embedded as JSON text (parsed and re-serialised without indentation to save bytes).
-export function contentModule(root = ROOT) {
-  const min = (p) => JSON.stringify(JSON.parse(readFileSync(p, 'utf8')));
-  const names = ['realms', 'statuses', 'heroes', 'skills', 'monsters', 'items', 'tables', 'names', 'runbook', 'starter_runbooks'];
-  const texts = Object.fromEntries(names.map((n) => [n, min(join(root, 'content', `${n}.json`))]));
-  const schemas = Object.fromEntries([...names, 'save'].map((n) => [n, min(join(root, 'content', 'schema', `${n}.schema.json`))]));
+const NAMES = ['realms', 'statuses', 'heroes', 'skills', 'monsters', 'items', 'tables', 'names', 'runbook', 'starter_runbooks'];
+const minOf = (p) => JSON.stringify(JSON.parse(readFileSync(p, 'utf8')));
+
+// The content as a module. withSchemas (tests, the art gallery): every content schema too, so the loader can validate in the page.
+// The shipped page (withSchemas false) carries only the save schema: the content is validated once, here, at build time (validateContentFiles),
+// which keeps the schemas and the cross-checker out of the 400 KB budget (DESIGN 15).
+export function contentModule(root = ROOT, { withSchemas = true } = {}) {
+  const texts = Object.fromEntries(NAMES.map((n) => [n, minOf(join(root, 'content', `${n}.json`))]));
+  const schemas = Object.fromEntries((withSchemas ? [...NAMES, 'save'] : ['save']).map((n) => [n, minOf(join(root, 'content', 'schema', `${n}.schema.json`))]));
   return `export const contentTexts = ${JSON.stringify(texts)};\nexport const schemaTexts = ${JSON.stringify(schemas)};\n`;
 }
 
-export function build({ out = join(ROOT, 'dist'), build: label = 'dev', root = ROOT } = {}) {
+// Refuses to build from content that fails its schemas or cross-checks (the same loader the tests and the Node tools use).
+export async function validateContentFiles(root = ROOT) {
+  const { loadContent } = await import('../sim/contentcheck.js');
+  const texts = Object.fromEntries(NAMES.map((n) => [n, readFileSync(join(root, 'content', `${n}.json`), 'utf8')]));
+  const schemas = Object.fromEntries(NAMES.map((n) => [n, readFileSync(join(root, 'content', 'schema', `${n}.schema.json`), 'utf8')]));
+  return loadContent(texts, schemas);
+}
+
+export async function build({ out = join(ROOT, 'dist'), build: label = 'dev', root = ROOT } = {}) {
+  await validateContentFiles(root);
   mkdirSync(out, { recursive: true });
-  const js = bundle('client/main.js', { root, virtuals: { 'virtual:content': contentModule(root) } });
+  const js = bundle('client/main.js', { root, virtuals: { 'virtual:content': contentModule(root, { withSchemas: false }) } });
   writeFileSync(join(out, 'game.js'), js);
   const html = readFileSync(join(root, 'client', 'index.html'), 'utf8').replace(/__BUILD__/g, label);
   writeFileSync(join(out, 'index.html'), html);
@@ -86,6 +99,6 @@ export function build({ out = join(ROOT, 'dist'), build: label = 'dev', root = R
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const arg = (k, d) => { const i = process.argv.indexOf(k); return i >= 0 ? process.argv[i + 1] : d; };
-  const r = build({ out: resolve(arg('--out', join(ROOT, 'dist'))), build: arg('--build', 'dev') });
+  const r = await build({ out: resolve(arg('--out', join(ROOT, 'dist'))), build: arg('--build', 'dev') });
   console.log(`built ${r.out}: ${Object.entries(r.bytes).map(([k, v]) => `${k} ${v} bytes`).join(', ')}`);
 }

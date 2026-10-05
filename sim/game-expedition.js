@@ -6,7 +6,8 @@ import { GameError } from './gameerror.js';
 import { buildHeroUnit } from './hero.js';
 import { createFloorReplay } from './replay.js';
 import { encounterRewards } from './progress.js';
-import { generateItem } from './items.js';
+import { generateItem, legendItem } from './items.js';
+import { lairSpecs, lairsFor, legendIlvl } from './game-legends.js';
 import { mapFromSeed, moveCost, cellsWithin } from './mapgen.js';
 import { clone, findHero, itemsById, nextSeed, stashCount, addHero } from './game.js';
 import { gainXp } from './game-delve.js';
@@ -14,11 +15,11 @@ import { gainXp } from './game-delve.js';
 const TIER = ['plain', 'fine', 'runed', 'heirloom', 'legendary'];
 const cache = Object.create(null); // maps are pure functions of (seed, level); this only saves recomputing them
 export function expeditionMap(ex, content) {
-  const key = `${ex.seed}:${ex.level}`;
-  if (cache[key] === undefined) cache[key] = mapFromSeed(ex.seed, ex.level, content.tables.expedition);
+  const key = `${ex.seed}:${ex.level}:${ex.lairs.join(',')}`;
+  if (cache[key] === undefined) cache[key] = mapFromSeed(ex.seed, ex.level, content.tables.expedition, lairSpecs(ex.lairs, content), content.tables.legend);
   return cache[key];
 }
-export const emptyPack = () => ({ xp: 0, hacksilver: 0, reputation: 0, threads: 0, paragon: 0, materials: {}, items: [] });
+export const emptyPack = () => ({ xp: 0, hacksilver: 0, reputation: 0, threads: 0, paragon: 0, materials: {}, items: [], legends: [] });
 
 function requireExpedition(save) {
   if (save.expedition === null) throw new GameError('no_expedition', 'there is no expedition under way');
@@ -46,8 +47,8 @@ export function startExpedition(save, content, { realm, level, provisions, force
   for (const h of heroes) if (h.injury > 0 && !force.includes(h.id)) throw new GameError('injured_not_forced', `${h.name} is injured for ${h.injury} more delve${h.injury === 1 ? '' : 's'}; rest them or send them at half strength`);
   const next = clone(save);
   next.currency.hacksilver -= cost;
-  const ex = { realm, level, seed: nextSeed(next), provisions, bought: provisions, x: 0, y: 0, seen: '0'.repeat(x.width * x.height), party: save.party.slice(), hp: save.party.map(() => -1), floors: [], site: null, pack: emptyPack(), steps: 0 };
-  const map = mapFromSeed(ex.seed, level, x);
+  const ex = { realm, level, seed: nextSeed(next), provisions, bought: provisions, x: 0, y: 0, seen: '0'.repeat(x.width * x.height), party: save.party.slice(), hp: save.party.map(() => -1), floors: [], site: null, pack: emptyPack(), steps: 0, lairs: lairsFor(save, content, level) };
+  const map = expeditionMap(ex, content);
   ex.x = map.start.x; ex.y = map.start.y; ex.floors = map.sites.map(() => 0);
   reveal(ex, map, content);
   next.expedition = ex;
@@ -61,7 +62,9 @@ function bank(next, content, how) {
   for (const id of ex.party) { const h = findHero(next, id), from = h.level; if (gainXp(h, p.xp, content) > 0) out.levelUps.push({ heroId: id, name: h.name, from, to: h.level }); }
   next.currency.hacksilver += p.hacksilver; next.reputation[ex.realm] += p.reputation; next.threads += p.threads; next.paragonPoints += p.paragon;
   for (const r of content.realms) for (const key of [r.material, r.rareMaterial]) if (p.materials[key]) { next.materials[key] += p.materials[key]; out.materials.push({ id: key, n: p.materials[key] }); }
-  for (const it of p.items) { if (stashCount(next) >= content.items.stashMax) out.droppedItems++; else { next.items.push(it); out.items++; } }
+  for (const it of p.items) { if (it.tier !== 'legendary' && stashCount(next) >= content.items.stashMax) out.droppedItems++; else { next.items.push(it); out.items++; } } // a legendary item is never turned away
+  out.legends = p.legends.slice();
+  for (const id of p.legends) if (!next.legendsBeaten.includes(id)) { next.legendsBeaten.push(id); if (content.legendById[id].final) next.won = true; }
   next.expedition = null;
   return out;
 }
@@ -109,13 +112,23 @@ function rewardsForFloor(next, content, ex, site, floor, cleared, boss) {
   return out;
 }
 
+// 12.6: the reward for a lair: a boss encounter's reward times the legend multiplier, scaled as a deepest-floor reward, hearts, Paragon Points
+// and, for a legend, its one fixed item. The final boss has no item; beating it is the end of a core run (`won`, set when the pack is banked).
+function rewardsForLair(next, content, site) {
+  const p = content.tables.progress, x = content.tables.expedition, L = content.tables.legend, l = content.legendById[site.lair];
+  const r = encounterRewards(site.level, true, p), scale = (v) => L.rewardMul * scaleReward(v, site.dist, x.floorsMax, x);
+  const out = { xp: scale(r.xp), hacksilver: scale(r.hacksilver), materials: scale(r.materials), items: [], threads: 0, reputation: p.repBoss, heart: L.hearts, paragon: l.final ? L.chaosParagon : L.paragon, legend: l.id };
+  if (l.item) out.items.push(legendItem(l, legendIlvl(site.level), next.nextId++));
+  return out;
+}
+
 function removeHero(next, content, id) {
   const h = findHero(next, id), items = itemsById(next), worn = content.items.slotOrder.filter((slot) => h.slots[slot] !== null).map((slot) => items[h.slots[slot]]);
   next.heroes = next.heroes.filter((x) => x.id !== id); next.party = next.party.filter((x) => x !== id);
   let lost = 0;
   while (stashCount(next) > content.items.stashMax) { // the dead hero's gear is dropped, cheapest first, only as far as the stash limit needs
-    let drop = null; // the cheapest piece still in the stash: lowest tier, then lowest id
-    for (const it of worn) if (next.items.some((y) => y.id === it.id) && (drop === null || TIER.indexOf(it.tier) < TIER.indexOf(drop.tier) || (it.tier === drop.tier && it.id < drop.id))) drop = it;
+    let drop = null; // the cheapest piece still in the stash: lowest tier, then lowest id; a legendary piece is never dropped
+    for (const it of worn) if (it.tier !== 'legendary' && next.items.some((y) => y.id === it.id) && (drop === null || TIER.indexOf(it.tier) < TIER.indexOf(drop.tier) || (it.tier === drop.tier && it.id < drop.id))) drop = it;
     if (drop === null) break;
     next.items = next.items.filter((y) => y.id !== drop.id); lost++;
   }
@@ -135,8 +148,8 @@ export function enterFloor(save, content) {
   const floor = done + 1, boss = floor === site.floors, byId = itemsById(next);
   const party = nex.party.map((id) => { const h = findHero(next, id); return { ...buildHeroUnit(h, byId, content, { forced: h.injury > 0 }), thread: h.thread }; });
   const heroHp = nex.hp.map((v) => (v < 0 ? null : v));
-  const replay = createFloorReplay({ realm: nex.realm, level: site.level, seed: nextSeed(next), boss, party, heroHp }, content);
-  const res = replay.result, deadIds = res.died.map((i) => nex.party[i]), lostGear = [], summary = { ended: null, floor, floors: site.floors, site: site.id, outcome: res.outcome, died: [], injured: [], threaded: [], rewards: null, rescued: false, cleared: false };
+  const replay = createFloorReplay({ realm: nex.realm, level: site.level, seed: nextSeed(next), boss, ...(site.lair ? { legend: site.lair } : {}), party, heroHp }, content);
+  const res = replay.result, deadIds = res.died.map((i) => nex.party[i]), lostGear = [], summary = { ended: null, floor, floors: site.floors, site: site.id, lair: site.lair || null, outcome: res.outcome, died: [], injured: [], threaded: [], rewards: null, rescued: false, cleared: false };
   res.injured.forEach((i) => { const h = findHero(next, nex.party[i]); h.injury = x.reviveInjury; summary.injured.push(h.id); });
   res.threaded.forEach((i) => { const h = findHero(next, nex.party[i]); h.injury = x.reviveInjury; h.thread = false; summary.threaded.push(h.id); });
   const hpKeep = nex.party.map((id, i) => ({ id, hp: res.hpAfter[i] })).filter((e) => !deadIds.includes(e.id));
@@ -144,11 +157,12 @@ export function enterFloor(save, content) {
   nex.party = hpKeep.map((e) => e.id); nex.hp = hpKeep.map((e) => e.hp);
   if (res.outcome === 1) {
     nex.floors[site.id] = floor;
-    const rw = rewardsForFloor(next, content, nex, site, floor, res.cleared, boss), p = nex.pack;
+    const rw = site.lair ? rewardsForLair(next, content, site) : rewardsForFloor(next, content, nex, site, floor, res.cleared, boss), p = nex.pack;
+    if (rw.legend) p.legends.push(rw.legend);
     p.xp += rw.xp; p.hacksilver += rw.hacksilver; p.reputation += rw.reputation; p.threads += rw.threads; p.paragon += rw.paragon;
     const realm = content.realmById[nex.realm]; p.materials[realm.material] = (p.materials[realm.material] || 0) + rw.materials;
     if (rw.heart) p.materials[realm.rareMaterial] = (p.materials[realm.rareMaterial] || 0) + rw.heart;
-    p.items.push(...rw.items); summary.rewards = { xp: rw.xp, hacksilver: rw.hacksilver, materials: rw.materials, heart: rw.heart, items: rw.items.length, threads: rw.threads, paragon: rw.paragon };
+    p.items.push(...rw.items); summary.rewards = { xp: rw.xp, hacksilver: rw.hacksilver, materials: rw.materials, heart: rw.heart, items: rw.items.length, threads: rw.threads, paragon: rw.paragon, legend: rw.legend || null };
     if (boss) { summary.cleared = true; nex.site = null; }
   } else { // a wipe: the party is gone and the pack with it; a hero held back by a Thread walks home alone and hurt
     summary.ended = 'wiped'; next.expedition = null;

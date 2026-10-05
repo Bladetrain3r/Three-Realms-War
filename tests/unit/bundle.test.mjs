@@ -79,3 +79,15 @@ test('bundle: importing a name the other module does not export is an error nami
   const root = fixture({ 'x.js': 'export const a = 1;\n', 'main.js': "import { a, b } from './x.js';\nexport const v = a;\n" });
   assert.throws(() => runBundle(root, 'main.js'), /main\.js.*does not export "b"/);
 });
+
+test('bundle: the shipped page carries only the save schema (content is validated at build time), and a build refuses invalid content', async () => {
+  const { contentModule, validateContentFiles, build } = await import('../../tools/bundle.mjs');
+  const shipped = contentModule(undefined, { withSchemas: false }), full = contentModule();
+  const keys = (src) => Object.keys(JSON.parse(src.split('\n')[1].replace('export const schemaTexts = ', '').replace(/;$/, '')));
+  assert.deepEqual(keys(shipped), ['save']); assert.ok(keys(full).length === 11);
+  const content = await validateContentFiles(); assert.equal(content.legends.length, 6);
+  const { mkdtempSync, cpSync, writeFileSync, readFileSync } = await import('node:fs'); const { tmpdir } = await import('node:os'); const { join } = await import('node:path');
+  const root = mkdtempSync(join(tmpdir(), 'bad-')); cpSync('content', join(root, 'content'), { recursive: true }); cpSync('client', join(root, 'client'), { recursive: true });
+  const p = join(root, 'content', 'tables.json'), t = JSON.parse(readFileSync(p, 'utf8')); t.legend.unlockCount = 99; writeFileSync(p, JSON.stringify(t));
+  await assert.rejects(() => build({ out: join(root, 'out'), root }), /content refused.*tables.json: legend.unlockCount/s);
+});

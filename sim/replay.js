@@ -40,7 +40,7 @@ export function createFloorReplay(input, content) {
   const out = resolveFloor(input, content);
   const doc = {
     format: FORMAT, v: VERSION, kind: 'floor', contentHash: contentHashOf(content), seed: input.seed,
-    inputs: { realm: input.realm, level: input.level, boss: input.boss, party: input.party, heroHp: input.heroHp },
+    inputs: { realm: input.realm, level: input.level, boss: input.boss, ...(input.legend ? { legend: input.legend } : {}), party: input.party, heroHp: input.heroHp },
     tables: { skills: out.skills, statuses: content.statuses.map((x) => x.id) }, plan: out.plan, events: out.events, result: out.result,
   };
   doc.hash = hashOf(doc);

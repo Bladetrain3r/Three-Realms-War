@@ -205,3 +205,60 @@ expedition_v2:
     levels: [10, 20, 30]
     nearest_wipe: [0.35, 0.97]
     hero_death_per_embarked_hero: [0.25, 0.97]
+
+# ---------------------------------------------------------------------------------------------------------------------------------
+# Legendary bosses and the final boss (DESIGN 10.7, 12.6). Written 2026-10-05, BEFORE the runner (checks/balance-legends.mjs) existed and
+# before any multiplier was tuned. Every figure here is mine (Ziggy asked for "legendary bosses" and, for the end, "a level 60 end boss
+# which requires ... a reasonably well maxed lvl50 party"; he gave no numbers), so they are flagged for his review in the STOP-3 report.
+#
+# What I had seen before writing them: one probe fight, Fenris at level 15 against four level-15 Runed 3-star heroes, ten fights, ten wins,
+# 3.8 rounds on average, the boss never reached its third phase. That is the "too soft" the first bounds below are meant to catch.
+#
+# A fight is one legend alone against the party, played by the starter runbooks (the same harness as G3), realms rotated, at the level of
+# a lair about 10 cells away: expedition level E + 3 (distance / 3) + 2 (lair bonus) = E + 5.
+legends:
+  fights: 150
+  # The expedition level at which each legend first appears (content: legends[].from). Fenris is a level-15 monster, Odin level 55.
+  levels:
+    fenris: 10
+    jormungandr: 20
+    ymir: 30
+    beowulf: 40
+    odin: 50
+  # A party that has just reached the legend's level: hero level E + 5, Runed 3-star gear at item level E. Should be a real fight, winnable.
+  ready:
+    hero_over_level: 5
+    tier: runed
+    star: 3
+    win_rate: [0.25, 0.80]
+    # fights last long enough to show the phases: median rounds, and the share of WON fights in which the boss entered its last phase.
+    median_rounds: [7, 30]
+    last_phase_share: [0.60, 1.0]
+    # a won fight costs lives at the death saves, but not most of the party
+    hero_death_per_won_fight: [0.05, 0.70]
+  # An under-prepared party: hero level E - 5 in Plain 2-star gear. Must lose almost always (these are bosses to prepare for).
+  weak:
+    hero_under_level: 5
+    tier: plain
+    star: 2
+    win_rate: [0.0, 0.05]
+  # A well-built party: level 50, Heirloom 5-star gear at item level E (the G5 "well built" party). Should usually win.
+  strong:
+    hero_level: 50
+    tier: heirloom
+    star: 5
+    win_rate: [0.75, 1.0]
+final:
+  level: 60
+  # "Reasonably well maxed" (Ziggy): level-50 heroes, Heirloom 5-star gear at item level 50, one paragon star on each stat bought at level 30.
+  solid:
+    paragon_stars_per_stat: 1
+    paragon_bought_at: 30
+    win_rate: [0.20, 0.80]
+    median_rounds: [10, 45]
+  # Level 50, Runed 3-star gear at item level 50, no paragon: not enough.
+  under:
+    win_rate: [0.0, 0.03]
+  # Everything: all 18 paragon stars bought at level 10, Heirloom 5-star gear with each hero wearing one of four Legendary pieces at 5 stars.
+  full:
+    win_rate: [0.80, 1.0]

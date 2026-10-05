@@ -558,5 +558,394 @@
         ]
       }
     }
+  ],
+  "legends": [
+    {
+      "id": "fenris",
+      "name": "Fenris, the Unchained Wolf",
+      "from": 10,
+      "vigBp": 136000,
+      "otherBp": 21000,
+      "final": false,
+      "phases": [
+        {
+          "name": "Bound Fury",
+          "atBp": 10000,
+          "mods": {},
+          "skills": [
+            "fenris_howl",
+            "fenris_bite"
+          ]
+        },
+        {
+          "name": "Snapped Chain",
+          "atBp": 6600,
+          "mods": {
+            "MIT": 2000,
+            "SPD": 1500
+          },
+          "skills": [
+            "fenris_lunge",
+            "fenris_rend",
+            "fenris_howl",
+            "fenris_bite"
+          ]
+        },
+        {
+          "name": "Wolf of Ragnarok",
+          "atBp": 3300,
+          "mods": {
+            "MIT": 3000,
+            "SPD": 1500
+          },
+          "skills": [
+            "fenris_devour",
+            "fenris_lunge",
+            "fenris_rend",
+            "fenris_bite"
+          ]
+        }
+      ],
+      "item": {
+        "name": "Fang of Fenris",
+        "slot": "weapon",
+        "kind": "MIT",
+        "realm": "helheim",
+        "lines": [
+          [
+            6,
+            300
+          ],
+          [
+            7,
+            2500
+          ],
+          [
+            1,
+            1100
+          ]
+        ]
+      }
+    },
+    {
+      "id": "jormungandr",
+      "name": "Jormungandr, the World-Serpent",
+      "from": 20,
+      "vigBp": 180000,
+      "otherBp": 34000,
+      "final": false,
+      "phases": [
+        {
+          "name": "Coiled",
+          "atBp": 10000,
+          "mods": {},
+          "skills": [
+            "jorm_coil",
+            "jorm_lash"
+          ]
+        },
+        {
+          "name": "Venom Tide",
+          "atBp": 6600,
+          "mods": {
+            "ARC": 3000
+          },
+          "skills": [
+            "jorm_flood",
+            "jorm_spit",
+            "jorm_lash"
+          ]
+        },
+        {
+          "name": "Maw of the World",
+          "atBp": 3300,
+          "mods": {
+            "MIT": 3000,
+            "ARC": 3000
+          },
+          "skills": [
+            "jorm_swallow",
+            "jorm_flood",
+            "jorm_spit",
+            "jorm_lash"
+          ]
+        }
+      ],
+      "item": {
+        "name": "Coil of Jormungandr",
+        "slot": "armour",
+        "kind": null,
+        "realm": "midgard",
+        "lines": [
+          [
+            0,
+            1100
+          ],
+          [
+            3,
+            1100
+          ],
+          [
+            8,
+            900
+          ]
+        ]
+      }
+    },
+    {
+      "id": "ymir",
+      "name": "Ymir, the First Giant",
+      "from": 30,
+      "vigBp": 165000,
+      "otherBp": 34000,
+      "final": false,
+      "phases": [
+        {
+          "name": "Primordial Frost",
+          "atBp": 10000,
+          "mods": {},
+          "skills": [
+            "ymir_blizzard",
+            "ymir_fist"
+          ]
+        },
+        {
+          "name": "Wall of Rime",
+          "atBp": 6600,
+          "mods": {
+            "GRD": 2500,
+            "WRD": 2500
+          },
+          "skills": [
+            "ymir_wall",
+            "ymir_blizzard",
+            "ymir_fist"
+          ]
+        },
+        {
+          "name": "Avalanche",
+          "atBp": 3300,
+          "mods": {
+            "ARC": 3500,
+            "MIT": 2000
+          },
+          "skills": [
+            "ymir_avalanche",
+            "ymir_blizzard",
+            "ymir_fist"
+          ]
+        }
+      ],
+      "item": {
+        "name": "Rimecrown of Ymir",
+        "slot": "helm",
+        "kind": null,
+        "realm": "helheim",
+        "lines": [
+          [
+            4,
+            1100
+          ],
+          [
+            0,
+            1000
+          ],
+          [
+            9,
+            1100
+          ]
+        ]
+      }
+    },
+    {
+      "id": "beowulf",
+      "name": "Beowulf, Slayer of Grendel",
+      "from": 40,
+      "vigBp": 145000,
+      "otherBp": 20000,
+      "final": false,
+      "phases": [
+        {
+          "name": "Geat-King",
+          "atBp": 10000,
+          "mods": {},
+          "skills": [
+            "beo_rally",
+            "beo_naegling"
+          ]
+        },
+        {
+          "name": "Dragon's Bane",
+          "atBp": 6600,
+          "mods": {
+            "GRD": 2500,
+            "MIT": 1500
+          },
+          "skills": [
+            "beo_cleave",
+            "beo_rally",
+            "beo_naegling"
+          ]
+        },
+        {
+          "name": "Last Stand",
+          "atBp": 3300,
+          "mods": {
+            "MIT": 4000
+          },
+          "skills": [
+            "beo_grip",
+            "beo_cleave",
+            "beo_naegling"
+          ]
+        }
+      ],
+      "item": {
+        "name": "Torque of the Geats",
+        "slot": "charm",
+        "kind": null,
+        "realm": "midgard",
+        "lines": [
+          [
+            5,
+            800
+          ],
+          [
+            6,
+            350
+          ],
+          [
+            2,
+            1100
+          ]
+        ]
+      }
+    },
+    {
+      "id": "odin",
+      "name": "Odin, the Allfather",
+      "from": 50,
+      "vigBp": 143000,
+      "otherBp": 30000,
+      "final": false,
+      "phases": [
+        {
+          "name": "The Wanderer",
+          "atBp": 10000,
+          "mods": {},
+          "skills": [
+            "odin_runes",
+            "odin_spear"
+          ]
+        },
+        {
+          "name": "Wild Hunt",
+          "atBp": 6600,
+          "mods": {
+            "ARC": 3000
+          },
+          "skills": [
+            "odin_storm",
+            "odin_runes",
+            "odin_spear"
+          ]
+        },
+        {
+          "name": "Seer of Ragnarok",
+          "atBp": 3300,
+          "mods": {
+            "ARC": 3000,
+            "SPD": 2000
+          },
+          "skills": [
+            "odin_doom",
+            "odin_storm",
+            "odin_spear"
+          ]
+        }
+      ],
+      "item": {
+        "name": "Gungnir, the Rune-Spear",
+        "slot": "weapon",
+        "kind": "ARC",
+        "realm": "asgard",
+        "lines": [
+          [
+            7,
+            2800
+          ],
+          [
+            2,
+            1100
+          ],
+          [
+            5,
+            850
+          ]
+        ]
+      }
+    },
+    {
+      "id": "chaos",
+      "name": "Chaos, the Yawning Void",
+      "from": 50,
+      "vigBp": 150000,
+      "otherBp": 24000,
+      "final": true,
+      "phases": [
+        {
+          "name": "The Yawning Void",
+          "atBp": 10000,
+          "mods": {},
+          "skills": [
+            "void_gaze",
+            "void_lash"
+          ]
+        },
+        {
+          "name": "Unmaking",
+          "atBp": 7500,
+          "mods": {
+            "ARC": 2500,
+            "MIT": 2500
+          },
+          "skills": [
+            "void_unmake",
+            "void_gaze",
+            "void_lash"
+          ]
+        },
+        {
+          "name": "Maw Eternal",
+          "atBp": 5000,
+          "mods": {
+            "ARC": 2500,
+            "MIT": 2500,
+            "SPD": 1500
+          },
+          "skills": [
+            "void_devour",
+            "void_unmake",
+            "void_lash"
+          ]
+        },
+        {
+          "name": "End of Names",
+          "atBp": 2500,
+          "mods": {
+            "ARC": 3500,
+            "MIT": 3500,
+            "SPD": 3000
+          },
+          "skills": [
+            "void_end",
+            "void_devour",
+            "void_unmake",
+            "void_lash"
+          ]
+        }
+      ],
+      "item": null
+    }
   ]
 }

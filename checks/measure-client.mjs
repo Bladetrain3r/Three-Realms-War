@@ -4,7 +4,7 @@ import { writeFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { buildGame, launch, openGame, go, settle } from '../tests/browser/game-page.mjs';
 
-const g = buildGame('measure'), browser = await launch();
+const g = await buildGame('measure'), browser = await launch();
 const bytes = Object.fromEntries(readdirSync(g.out).map((f) => [f, statSync(join(g.out, f)).size]));
 const { page, problems } = await openGame(browser, g.url, { width: 1920, height: 1080 });
 const heap = async () => page.evaluate(() => (performance.memory ? performance.memory.usedJSHeapSize : null));

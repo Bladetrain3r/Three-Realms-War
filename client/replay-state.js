@@ -70,6 +70,11 @@ export function applyEvent(st, ev, replay, content) {
       if (ev[2] === 1) { x.alive = false; x.hp = 0; x.statuses = {}; x.lost = true; log(`${nameOf(st, ev[1])} is lost for good.`); } else { x.hp = 1; x.alive = true; log(ev[2] === 2 ? `${nameOf(st, ev[1])} is held back from death by a Thread of the Norns.` : `${nameOf(st, ev[1])} wakes at 1 HP, injured.`); }
       return { kind: 'death_save', unit: ev[1], result: ev[2] };
     }
+    case 15: { // PHASE: a legendary boss's HP has fallen through a threshold
+      const L = content.legendById[u[ev[1]].id2], p = L ? L.phases[ev[2]] : null;
+      log(`${nameOf(st, ev[1])} enters a new phase${p ? `: ${p.name}` : ''}.`);
+      return { kind: 'phase', unit: ev[1], phase: ev[2], name: p ? p.name : '' };
+    }
     default: throw new RangeError(`unknown event opcode ${op}`);
   }
 }

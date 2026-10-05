@@ -50,7 +50,7 @@ export function runExpedition(save, content, opts) {
     pack: null, site: null, noSite: false };
   const probe = startExpedition(save, content, { realm: opts.realm, level: opts.level, provisions: 0 });
   const map = expeditionMap(probe.save.expedition, content), st = map.start;
-  const cands = map.sites.map((s) => ({ site: s, path: pathTo(map, content, st.x, st.y, s.x, s.y) })).filter((c) => c.path);
+  const cands = map.sites.map((s) => ({ site: s, path: pathTo(map, content, st.x, st.y, s.x, s.y) })).filter((c) => c.path && (opts.lair ? c.site.lair === opts.lair : !c.site.lair)); // the G5 bounds are about ordinary sites
   const pick = opts.choose(cands);
   if (!pick) { rec.noSite = true; return { save, record: rec }; }
   const need = pick.path.cost + pick.site.floors * X.floorCost, buy = Math.min(X.provisionMax, need + (opts.margin ?? 2));

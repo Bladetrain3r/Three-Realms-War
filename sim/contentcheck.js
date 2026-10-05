@@ -5,7 +5,7 @@ import { indexContent } from './content.js';
 import { validateRunbook } from './runbook.js';
 
 export const FILES = ['realms', 'statuses', 'heroes', 'skills', 'monsters', 'items', 'tables', 'names', 'runbook', 'starter_runbooks'];
-const MONSTER_OWNERS = ['archetype', 'special', 'boss'];
+const MONSTER_OWNERS = ['archetype', 'special', 'boss', 'legend'];
 const RESERVED_OWNERS = ['basic', 'set', ...MONSTER_OWNERS];
 
 export class ContentError extends Error {
@@ -90,6 +90,29 @@ function crossCheck(c, out) {
   c.monsters.bosses.forEach((b, i) => {
     if (!realms[b.realm]) bad('monsters', ['bosses', i, 'realm'], `unknown realm "${b.realm}"`);
     b.skills.forEach((s, j) => needSkill('monsters', ['bosses', i, 'skills', j], s, 'boss'));
+  });
+  unique('monsters', c.monsters.legends, ['legends']);
+  const finals = c.monsters.legends.filter((l) => l.final).length;
+  if (finals !== 1) bad('monsters', ['legends'], `exactly one legend is the final boss (found ${finals})`);
+  c.monsters.legends.forEach((l, i) => {
+    l.phases.forEach((p, j) => {
+      p.skills.forEach((s, k) => needSkill('monsters', ['legends', i, 'phases', j, 'skills', k], s, 'legend'));
+      if (j === 0 && p.atBp !== 10000) bad('monsters', ['legends', i, 'phases', 0, 'atBp'], 'the first phase starts at 10000');
+      if (j > 0 && p.atBp >= l.phases[j - 1].atBp) bad('monsters', ['legends', i, 'phases', j, 'atBp'], 'phase thresholds must fall');
+    });
+    if (l.final !== (l.item === null)) bad('monsters', ['legends', i, 'item'], 'exactly the final boss has no fixed item');
+    if (l.item) {
+      if (!realms[l.item.realm]) bad('monsters', ['legends', i, 'item', 'realm'], `unknown realm "${l.item.realm}"`);
+      if ((l.item.slot === 'weapon') !== (l.item.kind !== null)) bad('monsters', ['legends', i, 'item', 'kind'], 'only a weapon has a kind');
+      const kinds = [];
+      l.item.lines.forEach((ln, j) => {
+        const def = c.items.lines[ln[0]];
+        if (!def) return bad('monsters', ['legends', i, 'item', 'lines', j], `unknown line kind ${ln[0]}`);
+        if (ln[1] < def.lo || ln[1] > def.hi) bad('monsters', ['legends', i, 'item', 'lines', j], `value ${ln[1]} is outside ${def.lo} to ${def.hi}`);
+        if (kinds.includes(ln[0])) bad('monsters', ['legends', i, 'item', 'lines', j], `line kind ${ln[0]} appears twice`);
+        kinds.push(ln[0]);
+      });
+    }
   });
   c.monsters.affixes.forEach((a, i) => (a.effect.riders || []).forEach((r, j) => needStatus('monsters', ['affixes', i, 'effect', 'riders', j, 'status'], r.status)));
 

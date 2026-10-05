@@ -19,7 +19,7 @@ const played = play(newGame(content, 20261002, { savedAt: '', build: 'screenshot
 // the bot's party can end up as one hero; send the four strongest healthy heroes so the pictures show a full party
 const ids = played.heroes.filter((x) => x.injury === 0).sort((a, b) => b.level - a.level || a.id - b.id).slice(0, 4).map((x) => x.id);
 const save = setParty(played, content, ids);
-const g = buildGame('screenshots'), browser = await launch();
+const g = await buildGame('screenshots'), browser = await launch();
 for (const [label, width, height] of [['desktop', 1280, 800], ['mobile', 390, 800]]) {
   const { page, problems } = await openGame(browser, g.url, { width, height });
   await go(page, '#/settings'); await page.fill('[data-testid=import-text]', canonical(save)); await page.click('[data-testid=import]');

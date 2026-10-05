@@ -111,3 +111,8 @@ table { border-collapse: collapse; width: 100%; } th, td { text-align: left; pad
 .away { margin: .6rem 0; padding: .4rem .8rem; border: 3px double var(--walnut); background: var(--vellum-shade); font-weight: bold; }
 
 .two > *, .panel, .screen { min-width: 0; }
+
+/* legendary lairs and prizes */
+.cell.lair { color: #9e2b25; font-size: 1.25rem; }
+.prize { font-weight: bold; }
+.victory { font-style: italic; border-top: 1px solid var(--walnut); padding-top: .4rem; }

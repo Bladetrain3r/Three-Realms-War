@@ -154,5 +154,17 @@
     "starBp": 1100,
     "maxPerStat": 3,
     "heartBase": 5
+  },
+  "legend": {
+    "roundCap": 60,
+    "levelBonus": 2,
+    "minDist": 10,
+    "unlockCount": 4,
+    "chaosLevel": 60,
+    "chaosFrom": 50,
+    "rewardMul": 6,
+    "hearts": 3,
+    "paragon": 1,
+    "chaosParagon": 3
   }
 }

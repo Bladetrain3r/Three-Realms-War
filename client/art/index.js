@@ -1,6 +1,6 @@
 // The art engine's front door: every asset is made once from a constant seed and cached. Nothing here reads Math.random or the clock.
 import { createRng } from '../../sim/prng.js';
-import { heroSprite, monsterSprite, bossSprite, SHEET, BOSS_SHEET, clearArtCache } from './figures.js';
+import { heroSprite, monsterSprite, bossSprite, legendSprite, SHEET, BOSS_SHEET, clearArtCache } from './figures.js';
 import { paintBackdrop, BACKDROP } from './backdrop.js';
 import { vellumTile, vellumSheet } from './paper.js';
 import { frameTile, hatchTile, inkTile, ruleStrip, dataURL } from './woodcut.js';
@@ -14,6 +14,7 @@ export const Art = {
   hero: (cls) => heroSprite(createRng, cls.id, cls.realm),
   monster: (m) => monsterSprite(createRng, m),
   boss: (b) => bossSprite(createRng, b),
+  legend: (id) => legendSprite(createRng, id),
   backdrop: (realm) => once(`bd:${realm}`, () => paintBackdrop(createRng, realm)),
   sheet: (w, h, seed = 3) => once(`sh:${w}x${h}:${seed}`, () => vellumSheet(createRng, seed, w, h)),
   vellumURL: () => once('u:vellum', () => dataURL(vellumTile(createRng, 11))),

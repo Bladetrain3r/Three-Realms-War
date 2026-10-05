@@ -8,7 +8,7 @@ import { matching } from '../../client/forge-filter.js';
 import { buildGame, launch, openGame, go, settle } from './game-page.mjs';
 
 let browser = null, game = null;
-before(async () => { browser = await launch(); if (browser) game = buildGame('client-test'); });
+before(async () => { browser = await launch(); if (browser) game = await buildGame('client-test'); });
 after(async () => { if (browser) await browser.close(); });
 const need = (t) => { if (!browser) { t.skip('no Chromium found'); return false; } return true; };
 const text = (page, id) => page.textContent(`[data-testid="${id}"]`);
@@ -439,7 +439,7 @@ test('client: with the activity timer on, a batch shows its progress, locks the 
   await context.close();
 });
 
-test('client: a Legendary item shows seven stars and fixed lines, an attempt reports its result in words (no pending panel), and Salvage refuses it', async (t) => {
+test('client: a Legendary item shows seven stars and fixed lines, an attempt reports its result in words (no pending panel), and Salvage is switched off for it (the rules layer refuses it too, see legendary.test.mjs)', async (t) => {
   if (!need(t)) return;
   const { upgradeAttempt } = await import('../../sim/index.js');
   const start = newGame(content, 12, { savedAt: '', build: 'client-test' }); for (const k of Object.keys(start.materials)) start.materials[k] = 9999;
@@ -451,8 +451,8 @@ test('client: a Legendary item shows seven stars and fixed lines, an attempt rep
   const want = upgradeAttempt(start, content, id);
   await sameSave(page, want, 'a legendary attempt');
   assert.match(await text(page, 'notice'), /Star 6 reached|No star gained/); assert.equal(await page.locator('[data-testid=pending]').count(), 0);
-  await page.click('[data-testid=salvage]'); assert.match(await text(page, 'notice'), /cannot be salvaged/);
-  await sameSave(page, want, 'salvage refused');
+  assert.equal(await page.isDisabled('[data-testid=salvage]'), true); assert.equal(await page.getAttribute('[data-testid=salvage]', 'title'), 'a Legendary item is kept');
+  await sameSave(page, want, 'salvage unavailable');
   assert.deepEqual(problems, []);
   await context.close();
 });
@@ -475,6 +475,41 @@ test('client: the paragon panel spends points and hearts exactly as the rules la
   await page.click('[data-testid=pstar-MIT]'); want = addParagonStar(want, content, id, 'MIT'); await sameSave(page, want, 'second star costs more');
   assert.equal(want.materials.ember_heart, 0, '5 hearts for the first star, 10 for the second');
   assert.equal(await page.isDisabled('[data-testid=pstar-GRD]'), true); assert.match(await page.getAttribute('[data-testid=pstar-GRD]', 'title'), /no Paragon Point/);
+  assert.deepEqual(problems, []);
+  await context.close();
+});
+
+test('client: a legendary lair through the page: the Hall lists the legends, the map shows the lair, the fight shows its phases, the prize is banked on the way home, and the saves equal the rules layer\'s', async (t) => {
+  if (!need(t)) return;
+  const { startExpedition, move, enterFloor, returnHome, expeditionMap } = await import('../../sim/index.js');
+  const { builtSave, pathTo } = await import('../../checks/expedition-bot.mjs');
+  const start = builtSave(content, { heroLevel: 50, tier: 'heirloom', star: 5, ilvl: 50, withLines: true }, 4242); start.currency.hacksilver = 100000;
+  const { page, problems, context } = await openGame(browser, game.url);
+  await importSave(page, start); await go(page, '#/hall');
+  assert.match(await text(page, 'legend-fenris'), /Fenris.*from expedition level 10/); assert.match(await text(page, 'legend-chaos'), /sleeps \(beat 4 legends first\)/); assert.match(await text(page, 'legend-progress'), /0 of 4/);
+  await go(page, '#/expedition');
+  await page.selectOption('[data-testid=x-realm]', 'asgard'); await page.selectOption('[data-testid=x-level]', '12'); await page.fill('[data-testid=x-provisions]', '60'); await page.dispatchEvent('[data-testid=x-provisions]', 'change');
+  assert.match(await text(page, 'x-lairs'), /Fenris, the Unchained Wolf \(3 phases\)/);
+  await page.click('[data-testid=x-start]');
+  let want = startExpedition(start, content, { realm: 'asgard', level: 12, provisions: 60 }).save;
+  const ex = want.expedition, map = expeditionMap(ex, content), lair = map.sites.find((s) => s.lair), p = pathTo(map, content, ex.x, ex.y, lair.x, lair.y);
+  assert.equal(await page.locator('.cell.lair').count(), 0, 'a lair is not shown until it is seen');
+  for (const [x, y] of p.steps) { await page.click(`[data-testid="cell-${x}-${y}"]`); want = move(want, content, x, y).save; }
+  await sameSave(page, want, 'at the lair');
+  assert.equal(await page.locator('.cell.lair').count(), 1); assert.match(await text(page, 'lair-box'), /fights alone, in 3 phases \(Bound Fury, Snapped Chain, Wolf of Ragnarok\).*Fang of Fenris, a Legendary weapon/);
+  await page.click('[data-testid=x-floor]'); await page.waitForFunction(() => location.hash === '#/battle'); await settle(page);
+  const r = enterFloor(want, content); want = r.save; assert.equal(r.summary.outcome, 1);
+  await page.waitForFunction((h) => window.ThreeRealms.battleState() && window.ThreeRealms.battleState().hash === h, r.replay.hash);
+  await page.waitForFunction(() => window.ThreeRealms.battleState().cursor > 0); await page.click('[data-testid=skip]');
+  assert.match(await text(page, 'summary'), /Fenris, the Unchained Wolf is beaten.*Fang of Fenris is in the pack/);
+  const log = await text(page, 'log'); assert.match(log, /enters a new phase: Snapped Chain/); assert.match(log, /enters a new phase: Wolf of Ragnarok/);
+  await sameSave(page, want, 'after the fight');
+  await page.click('[data-testid=to-map]'); await settle(page);
+  assert.match(await text(page, 'x-pack'), /Fenris, the Unchained Wolf beaten/);
+  await page.click('[data-testid=x-home]'); want = returnHome(want, content).save;
+  await sameSave(page, want, 'banked'); assert.match(await text(page, 'beaten-fenris'), /Fang of Fenris is in your stash/);
+  await go(page, '#/hall'); assert.match(await text(page, 'legend-fenris'), /beaten \(Fang of Fenris is yours\)/); assert.match(await text(page, 'legend-progress'), /1 of 4/);
+  assert.equal(await page.evaluate(() => window.ThreeRealms.save().items.filter((i) => i.legend === 'fenris').length), 1);
   assert.deepEqual(problems, []);
   await context.close();
 });

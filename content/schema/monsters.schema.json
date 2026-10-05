@@ -307,13 +307,188 @@
       },
       "minItems": 1,
       "maxItems": 100
+    },
+    "legends": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "from": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "vigBp": {
+            "type": "integer",
+            "minimum": 10000,
+            "maximum": 1000000
+          },
+          "otherBp": {
+            "type": "integer",
+            "minimum": 10000,
+            "maximum": 100000
+          },
+          "final": {
+            "type": "boolean"
+          },
+          "phases": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "atBp": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 10000
+                },
+                "mods": {
+                  "type": "object",
+                  "properties": {
+                    "VIG": {
+                      "type": "integer",
+                      "minimum": -10000,
+                      "maximum": 10000
+                    },
+                    "MIT": {
+                      "type": "integer",
+                      "minimum": -10000,
+                      "maximum": 10000
+                    },
+                    "ARC": {
+                      "type": "integer",
+                      "minimum": -10000,
+                      "maximum": 10000
+                    },
+                    "GRD": {
+                      "type": "integer",
+                      "minimum": -10000,
+                      "maximum": 10000
+                    },
+                    "WRD": {
+                      "type": "integer",
+                      "minimum": -10000,
+                      "maximum": 10000
+                    },
+                    "SPD": {
+                      "type": "integer",
+                      "minimum": -10000,
+                      "maximum": 10000
+                    }
+                  },
+                  "required": [],
+                  "additionalProperties": false
+                },
+                "skills": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9_]*$"
+                  },
+                  "minItems": 1,
+                  "maxItems": 5,
+                  "uniqueItems": true
+                }
+              },
+              "required": [
+                "name",
+                "atBp",
+                "mods",
+                "skills"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 1,
+            "maxItems": 6
+          },
+          "item": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "slot": {
+                "enum": [
+                  "weapon",
+                  "armour",
+                  "helm",
+                  "charm"
+                ]
+              },
+              "kind": {
+                "enum": [
+                  "MIT",
+                  "ARC",
+                  null
+                ]
+              },
+              "realm": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*$"
+              },
+              "lines": {
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 100000
+                  },
+                  "minItems": 2,
+                  "maxItems": 2
+                },
+                "minItems": 3,
+                "maxItems": 3
+              }
+            },
+            "required": [
+              "name",
+              "slot",
+              "kind",
+              "realm",
+              "lines"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "from",
+          "vigBp",
+          "otherBp",
+          "final",
+          "phases",
+          "item"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 6,
+      "maxItems": 6
     }
   },
   "required": [
     "archetypes",
     "roster",
     "bosses",
-    "affixes"
+    "affixes",
+    "legends"
   ],
   "additionalProperties": false
 }

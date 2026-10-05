@@ -4,6 +4,7 @@ import { makeUnit, statOf, takenBp, hasStatus } from './unit.js';
 import { damageSteps } from './damage.js';
 import { addStatus, tryRider, tickStatuses, endTurn, down } from './status.js';
 import { chooseHeroAction, chooseMonsterAction } from './ai.js';
+import { enterPhases } from './phase.js';
 
 export function makeContext(content, rng, events) {
   const statusIdx = Object.create(null);
@@ -80,6 +81,7 @@ function takeTurn(ctx, u) {
   for (let i = 0; i < u.cd.length; i++) if (u.cd[i] > 0) u.cd[i]--;
   tickStatuses(ctx, u);
   if (!u.alive) return;
+  enterPhases(ctx, u);
   if (hasStatus(u, 'shock')) { ctx.emit([10, u.id, 0]); endTurn(ctx, u); return; }
   const choice = u.def.kind === 'hero' ? chooseHeroAction(ctx, u) : chooseMonsterAction(ctx, u);
   if (choice.brace) {
@@ -92,7 +94,7 @@ function takeTurn(ctx, u) {
 const anyAlive = (list) => list.some((u) => u.alive);
 
 // heroes, enemies: resolved unit definitions. heroHp: current HP per hero (null for full). Returns the outcome and HP.
-export function resolveEncounter(ctx, { index, heroes, heroHp, enemies }) {
+export function resolveEncounter(ctx, { index, heroes, heroHp, enemies, roundCap }) {
   const slotOf = (d, i) => (d.slot === undefined ? i : d.slot);
   const hs = heroes.map((d, i) => makeUnit(d, slotOf(d, i), 0, slotOf(d, i), heroHp ? heroHp[i] : null, ctx.content));
   const es = enemies.map((d, i) => makeUnit(d, 4 + slotOf(d, i), 1, slotOf(d, i), null, ctx.content));
@@ -101,7 +103,7 @@ export function resolveEncounter(ctx, { index, heroes, heroHp, enemies }) {
   }
   ctx.sides = [hs, es];
   ctx.emit([0, index, es.length]);
-  const cap = ctx.content.tables.combat.roundCap, all = hs.concat(es);
+  const cap = roundCap || ctx.content.tables.combat.roundCap, all = hs.concat(es);
   let outcome = null, rounds = 0;
   for (let r = 1; r <= cap && outcome === null; r++) {
     rounds = r; ctx.round = r;

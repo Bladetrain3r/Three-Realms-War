@@ -11,7 +11,7 @@ test('browser: the built game runs from file:// with no server, no console error
   const exe = findChromium();
   if (!exe) return t.skip('no Chromium found');
   const out = mkdtempSync(join(tmpdir(), 'dist-'));
-  build({ out, build: 'test' });
+  await build({ out, build: 'test' });
   const { chromium } = await import('playwright-core');
   const browser = await chromium.launch({ executablePath: exe, args: ['--no-sandbox'] });
   try {

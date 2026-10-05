@@ -4,6 +4,7 @@ import { mulbp } from './arith.js';
 import { createRng } from './prng.js';
 import { makeContext, resolveEncounter } from './combat.js';
 import { generateEncounter, planOf } from './delve.js';
+import { buildLegend } from './monster.js';
 
 // Event opcode 14, DEATH_SAVE: [14, hero slot, 0 revived at 1 HP | 1 died for good | 2 saved by a Thread of the Norns].
 export const DEATH_SAVE = 14;
@@ -17,7 +18,9 @@ export function resolveFloor(input, content) {
   if (input.party.length < 1 || input.party.length > 4) throw new RangeError('a party has 1 to 4 heroes');
   const x = content.tables.expedition, c = content.tables.combat, rng = createRng(input.seed), events = [], ctx = makeContext(content, rng, events);
   const encounters = [];
-  for (let k = 0; k < x.encountersPerFloor; k++) encounters.push(generateEncounter(rng, { realm: input.realm, level: input.level, kind: input.boss && k === x.encountersPerFloor - 1 ? 'boss' : 'middle' }, content));
+  if (input.legend) { // 10.7: a legendary boss fights alone, in the front row, over a longer round cap
+    encounters.push([{ ...buildLegend(content.legendById[input.legend], input.level, input.realm, content), slot: 0 }]);
+  } else for (let k = 0; k < x.encountersPerFloor; k++) encounters.push(generateEncounter(rng, { realm: input.realm, level: input.level, kind: input.boss && k === x.encountersPerFloor - 1 ? 'boss' : 'middle' }, content));
   const defs = input.party.map((d, i) => ({ ...d, slot: i }));
   const hp = defs.map((d, i) => (input.heroHp && input.heroHp[i] !== null && input.heroHp[i] !== undefined ? Math.min(d.maxHp, input.heroHp[i]) : d.maxHp));
   const gone = defs.map(() => false), died = [], injured = [], threaded = [];
@@ -30,7 +33,7 @@ export function resolveFloor(input, content) {
   };
   for (let k = 0; k < encounters.length; k++) {
     const live = defs.filter((_, i) => !gone[i]), liveHp = live.map((d) => hp[d.slot]);
-    const r = resolveEncounter(ctx, { index: k, heroes: live, heroHp: liveHp, enemies: encounters[k] });
+    const r = resolveEncounter(ctx, { index: k, heroes: live, heroHp: liveHp, enemies: encounters[k], roundCap: input.legend ? content.tables.legend.roundCap : 0 });
     live.forEach((d, j) => { hp[d.slot] = r.heroHp[j]; });
     if (r.outcome === 0) { // a lost encounter: every hero falls for good, unless a Thread holds them
       outcome = 0;

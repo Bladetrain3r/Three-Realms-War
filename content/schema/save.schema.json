@@ -517,6 +517,15 @@
               "type": "integer",
               "minimum": 0,
               "maximum": 1000
+            },
+            "legends": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*$"
+              },
+              "maxItems": 10,
+              "uniqueItems": true
             }
           },
           "required": [
@@ -526,7 +535,8 @@
             "threads",
             "materials",
             "items",
-            "paragon"
+            "paragon",
+            "legends"
           ],
           "additionalProperties": false
         },
@@ -534,6 +544,15 @@
           "type": "integer",
           "minimum": 0,
           "maximum": 1000000
+        },
+        "lairs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "maxItems": 10,
+          "uniqueItems": true
         }
       },
       "required": [
@@ -550,7 +569,8 @@
         "floors",
         "site",
         "pack",
-        "steps"
+        "steps",
+        "lairs"
       ],
       "additionalProperties": false
     },
@@ -558,6 +578,18 @@
       "type": "integer",
       "minimum": 0,
       "maximum": 1000000
+    },
+    "legendsBeaten": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]*$"
+      },
+      "maxItems": 10,
+      "uniqueItems": true
+    },
+    "won": {
+      "type": "boolean"
     }
   },
   "required": [
@@ -575,7 +607,9 @@
     "items",
     "threads",
     "expedition",
-    "paragonPoints"
+    "paragonPoints",
+    "legendsBeaten",
+    "won"
   ],
   "additionalProperties": false,
   "$defs": {
@@ -675,6 +709,10 @@
           "type": "integer",
           "minimum": 0,
           "maximum": 1
+        },
+        "legend": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$"
         }
       },
       "required": [

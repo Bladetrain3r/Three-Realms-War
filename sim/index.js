@@ -26,3 +26,7 @@ export { upgradeAttempt, acceptAttempt, undoAttempt, salvage, salvageMany } from
 export { kitOf } from './hero.js';
 export { paragonStars, paragonComplete } from './hero.js';
 export { validateSave, fillDefaults } from './save.js';
+export { lairsFor, lairSpecs, legendStatus, beatenCount, chaosOpen } from './game-legends.js';
+export { legendItem } from './items.js';
+export { buildLegend } from './monster.js';
+export { PHASE } from './phase.js';

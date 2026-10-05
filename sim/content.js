@@ -33,6 +33,8 @@ export function indexContent(raw) {
     roster: monsters.roster,
     bosses: monsters.bosses,
     bossById: byId(monsters.bosses),
+    legends: monsters.legends,
+    legendById: byId(monsters.legends),
     affixes: monsters.affixes,
     items: raw.items,
     tierById: byId(raw.items.tiers),

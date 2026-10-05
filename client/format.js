@@ -9,6 +9,7 @@ export const stars = (n, max) => '★'.repeat(n) + '☆'.repeat(Math.max(0, max 
 const LINE_NAME = { VIG_PCT: 'VIG', MIT_PCT: 'MIT', ARC_PCT: 'ARC', GRD_PCT: 'GRD', WRD_PCT: 'WRD', SPD_PCT: 'SPD', CRIT: 'Crit chance', CRITDMG: 'Crit damage', SRES: 'Status resist', RES_REALM: 'Realm resist' };
 
 export function itemTitle(it, content) {
+  if (it.legend && content.legendById[it.legend] && content.legendById[it.legend].item) return `${content.legendById[it.legend].item.name} (${content.tierById[it.tier].name} ${it.slot}${it.kind ? `, ${it.kind}` : ''})`;
   const tier = content.tierById[it.tier], realm = content.realmById[it.realm];
   return `${tier.name} ${realm.name} ${it.slot}${it.kind ? ` (${it.kind})` : ''}`;
 }

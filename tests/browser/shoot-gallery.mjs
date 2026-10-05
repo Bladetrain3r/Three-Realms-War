@@ -29,6 +29,12 @@ const GALLERY = {
     content.roster.forEach((m, i) => { const s = figures.monsterSprite(createRng, m); ctx.save(); ctx.translate((i % 8) * 200 + 200, Math.floor(i / 8) * 270 + 10); ctx.scale(-1, 1); ctx.drawImage(s, 0, 0); ctx.restore(); });
     content.bosses.forEach((b, i) => { ctx.drawImage(figures.bossSprite(createRng, b), i * 340 + 20, 1400, 340, 400); });
   },
+  legends: () => {
+    const { createRng, content, figures } = window.Art, root = document.getElementById('root'); root.innerHTML = '';
+    const cv = document.createElement('canvas'); cv.width = 1360; cv.height = 840; root.appendChild(cv); const ctx = cv.getContext('2d');
+    ctx.drawImage(window.Art.paper.vellumSheet(createRng, 9, 1360, 840), 0, 0);
+    content.legends.forEach((l, i) => { ctx.drawImage(figures.legendSprite(createRng, l.id), (i % 4) * 340, Math.floor(i / 4) * 410 + 10, 340, 400); });
+  },
   backdrops: () => {
     const { createRng, backdrop } = window.Art, root = document.getElementById('root'); root.innerHTML = '';
     const cv = document.createElement('canvas'); cv.width = 1440; cv.height = 1080; root.appendChild(cv); const ctx = cv.getContext('2d');

@@ -39,7 +39,7 @@ export function wornIds(save) {
 
 export function stashCount(save) {
   const w = wornIds(save);
-  return save.items.filter((it) => w[it.id] === undefined).length;
+  return save.items.filter((it) => w[it.id] === undefined && it.tier !== 'legendary').length; // a legendary item has a place of its own
 }
 
 // Actions that move items into the stash (unequip, a swap, dismissing) are refused when that would overfill it.
@@ -100,7 +100,7 @@ export function newGame(content, masterSeed, meta = { savedAt: '', build: '' }) 
   if (!Number.isInteger(masterSeed) || masterSeed < 0 || masterSeed > 4294967295) throw new GameError('bad_seed', 'the master seed must be an integer from 0 to 4294967295');
   const save = {
     format: SAVE_FORMAT, version: SAVE_VERSION, meta: { savedAt: meta.savedAt, build: meta.build }, rng: { masterSeed, counter: 0 }, nextId: 1,
-    currency: { hacksilver: 0 }, materials: {}, reputation: {}, unlocked: {}, heroes: [], party: [], items: [], threads: 0, expedition: null, paragonPoints: 0,
+    currency: { hacksilver: 0 }, materials: {}, reputation: {}, unlocked: {}, heroes: [], party: [], items: [], threads: 0, expedition: null, paragonPoints: 0, legendsBeaten: [], won: false,
   };
   for (const r of content.realms) { save.materials[r.material] = 0; save.materials[r.rareMaterial] = 0; save.reputation[r.id] = 0; save.unlocked[r.id] = 1; }
   for (const classId of content.tables.recruit.startingRoster) save.party.push(addHero(save, content, classId, 1, 1).id);

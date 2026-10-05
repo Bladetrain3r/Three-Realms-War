@@ -4,13 +4,18 @@ import { validateRunbook } from './runbook.js';
 import { kitOf, canEquip } from './hero.js';
 import { mapFromSeed, WATER, PEAK } from './mapgen.js';
 import { STATS } from './content.js';
+import { lairSpecs } from './game-legends.js';
 
 // Saves written before a key existed get its default (DESIGN 13: additive keys inside version 1). Mutates and returns `save`.
 export function fillDefaults(save) {
   if (save === null || typeof save !== 'object') return save;
   if (save.paragonPoints === undefined) save.paragonPoints = 0;
+  if (save.legendsBeaten === undefined) save.legendsBeaten = [];
+  if (save.won === undefined) save.won = false;
   if (Array.isArray(save.heroes)) for (const h of save.heroes) if (h && typeof h === 'object' && h.paragon === undefined) h.paragon = {};
   if (save.expedition && save.expedition.pack && save.expedition.pack.paragon === undefined) save.expedition.pack.paragon = 0;
+  if (save.expedition && save.expedition.pack && save.expedition.pack.legends === undefined) save.expedition.pack.legends = [];
+  if (save.expedition && save.expedition.lairs === undefined) save.expedition.lairs = [];
   return save;
 }
 
@@ -78,9 +83,21 @@ export function validateSave(save, content, schema) {
     if (!heroIds.includes(id)) bad(['party', i], `hero ${id} does not exist`);
     if (save.party.indexOf(id) !== i) bad(['party', i], `hero ${id} is in the party twice`);
   });
-  if (save.items.filter((it) => worn[it.id] === undefined).length > content.items.stashMax) bad(['items'], `the stash holds at most ${content.items.stashMax} items`);
+  if (save.items.filter((it) => worn[it.id] === undefined && it.tier !== 'legendary').length > content.items.stashMax) bad(['items'], `the stash holds at most ${content.items.stashMax} items`);
   for (const r of content.realms) {
     if (save.unlocked[r.id] > content.tables.progress.unlockCap) bad(['unlocked', r.id], `at most ${content.tables.progress.unlockCap}`);
+  }
+  save.legendsBeaten.forEach((id, i) => { if (!content.legendById[id]) bad(['legendsBeaten', i], `unknown legend "${id}"`); });
+  const finalId = content.legends.find((l) => l.final).id;
+  if (save.won !== save.legendsBeaten.includes(finalId)) bad(['won'], 'won is set exactly when the final boss has been beaten');
+  const legendOwners = Object.create(null);
+  for (const [it, where] of save.items.map((x) => [x, 'items']).concat(save.expedition ? save.expedition.pack.items.map((x) => [x, 'expedition.pack.items']) : [])) {
+    if (it.legend === undefined) continue;
+    const l = content.legendById[it.legend], at = it.id;
+    if (!l || l.item === null) { bad([where], `item ${at} belongs to unknown legend "${it.legend}"`); continue; }
+    if (it.tier !== 'legendary' || it.slot !== l.item.slot) bad([where], `item ${at} is not the legendary ${l.item.slot} of ${l.name}`);
+    if (legendOwners[it.legend] !== undefined) bad([where], `${l.name}'s item exists twice (items ${legendOwners[it.legend]} and ${at})`); else legendOwners[it.legend] = at;
+    if (where === 'items' && !save.legendsBeaten.includes(it.legend)) bad([where], `item ${at} is the prize of ${l.name}, who has not been beaten`);
   }
   if (save.expedition !== null) {
     const ex = save.expedition, x = content.tables.expedition, p = ['expedition'];
@@ -89,7 +106,9 @@ export function validateSave(save, content, schema) {
     if (ex.provisions > x.provisionMax) bad([...p, 'provisions'], `at most ${x.provisionMax}`);
     if (ex.seen.length !== x.width * x.height) bad([...p, 'seen'], `must have ${x.width * x.height} cells (has ${ex.seen.length})`);
     else {
-      const map = mapFromSeed(ex.seed, ex.level, x);
+      const lairsOk = ex.lairs.every((id) => content.legendById[id] && content.legendById[id].from <= ex.level);
+      if (!lairsOk) bad([...p, 'lairs'], 'a lair names an unknown legend or one the expedition level has not reached');
+      const map = mapFromSeed(ex.seed, ex.level, x, lairsOk ? lairSpecs(ex.lairs, content) : [], content.tables.legend);
       if (ex.x >= x.width || ex.y >= x.height || map.terrain[ex.y * x.width + ex.x] === WATER || map.terrain[ex.y * x.width + ex.x] === PEAK) bad([...p, 'x'], 'the party stands on water, a peak or off the map');
       if (ex.floors.length !== map.sites.length) bad([...p, 'floors'], `needs one entry per site (${map.sites.length})`);
       else ex.floors.forEach((f, i) => { if (f > map.sites[i].floors) bad([...p, 'floors', i], `site ${i} has only ${map.sites[i].floors} floors`); });

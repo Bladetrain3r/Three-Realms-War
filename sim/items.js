@@ -67,6 +67,12 @@ export function generateItem(rng, { ilvl, realm, boss, setAllowed, source = 'del
   return { id: 0, slot, kind, tier, ilvl, realm, set, star: 0, lines: rollLines(rng, tierDef.lines, content), held: null, heldStar: null, mulligan: 1 };
 }
 
+// 12.6: the fixed item of a legendary boss, as it drops: the boss's slot, kind and three lines, never rolled.
+export function legendItem(legend, ilvl, id) {
+  const it = legend.item;
+  return { id, slot: it.slot, kind: it.kind, tier: 'legendary', ilvl, realm: it.realm, set: null, star: 0, lines: it.lines.map((l) => l.slice()), held: null, heldStar: null, mulligan: 0, legend: legend.id };
+}
+
 // 8.4: cost of one attempt.
 export function upgradeCost(item, content) {
   const c = content.items.upgradeCost;

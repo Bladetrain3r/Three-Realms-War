@@ -29,4 +29,6 @@ test('art: every hero class and monster has a figure recipe', async () => {
   const mon = read('monsters');
   for (const m of mon.roster) assert.ok(SIGNATURE[m.id] || ARCHETYPE[m.archetype], m.id);
   for (const b of mon.bosses) assert.equal(typeof BOSS[b.id], 'function', b.id);
+  const { LEGEND_REALM } = await import('../client/art/monsters.js');
+  for (const l of mon.legends) { assert.equal(typeof BOSS[l.id], 'function', l.id); assert.ok(['midgard', 'asgard', 'helheim'].includes(LEGEND_REALM[l.id]), l.id); }
 });

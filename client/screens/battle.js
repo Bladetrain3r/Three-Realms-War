@@ -40,8 +40,9 @@ export function battle(ctx) {
   const floorSummary = () => {
     const s = lb.summary;
     clear(summary);
-    summary.append(h('h2', null, s.outcome === 1 ? `Floor ${s.floor} cleared` : 'The party was lost'),
-      s.outcome === 1 ? h('p', null, s.cleared ? 'The boss is down: the site is cleared.' : `${s.floors - s.floor} floor${s.floors - s.floor === 1 ? '' : 's'} remain. Descend, or retreat to the map.`) : h('p', { class: 'warn' }, 'Everyone who was not held back by a Thread is lost for good, and the pack with them.'));
+    const lg = s.lair ? content.legendById[s.lair] : null;
+    summary.append(h('h2', null, lg ? (s.outcome === 1 ? `${lg.name} is beaten` : 'The party was lost') : s.outcome === 1 ? `Floor ${s.floor} cleared` : 'The party was lost'),
+      s.outcome === 1 ? h('p', null, lg ? (lg.item ? `${lg.item.name} is in the pack: it is yours once you bring the pack home.` : 'Chaos is down. Bring the pack home to end the run.') : s.cleared ? 'The boss is down: the site is cleared.' : `${s.floors - s.floor} floor${s.floors - s.floor === 1 ? '' : 's'} remain. Descend, or retreat to the map.`) : h('p', { class: 'warn' }, 'Everyone who was not held back by a Thread is lost for good, and the pack with them.'));
     if (s.rewards) summary.append(h('ul', { class: 'earned' }, h('li', null, `Added to the pack: ${s.rewards.xp} XP, ${s.rewards.hacksilver} hacksilver, ${s.rewards.materials} common materials${s.rewards.heart ? `, ${s.rewards.heart} heart` : ''}`), s.rewards.items ? h('li', null, `${s.rewards.items} item${s.rewards.items === 1 ? '' : 's'} found`) : null, s.rewards.threads ? h('li', null, `${s.rewards.threads} Thread of the Norns`) : null, s.rewards.paragon ? h('li', null, `${s.rewards.paragon} Paragon Point${s.rewards.paragon === 1 ? '' : 's'}`) : null));
     if (s.died.length) summary.append(h('p', { class: 'warn', 'data-testid': 'x-died' }, `Lost for good: ${s.died.join(', ')}`));
     if (s.injured.length) summary.append(h('p', { class: 'warn' }, `Wounded and revived at 1 HP: ${names(s.injured)}`));

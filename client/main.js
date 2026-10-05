@@ -1,6 +1,6 @@
-// Boot: load and validate the content, run the on-device engine check, open the save, draw the first screen.
+// Boot: load the content, run the on-device engine check, open the save, draw the first screen.
 import { contentTexts, schemaTexts } from 'virtual:content';
-import { loadContent } from '../sim/contentcheck.js';
+import { indexContent } from '../sim/content.js';
 import { engineCheck } from './engine-check.js';
 import { createStore } from './store.js';
 import { mountApp } from './app.js';
@@ -8,7 +8,9 @@ import { mountApp } from './app.js';
 const root = document.getElementById('app');
 const buildMeta = document.querySelector('meta[name="build"]'), build = buildMeta ? buildMeta.content : 'dev';
 try {
-  const content = loadContent(contentTexts, schemaTexts), saveSchema = JSON.parse(schemaTexts.save), check = engineCheck(content);
+  const files = {}; // validated at build time (tools/bundle.mjs)
+  for (const k in contentTexts) files[k] = JSON.parse(contentTexts[k]);
+  const content = indexContent(files), saveSchema = JSON.parse(schemaTexts.save), check = engineCheck(content);
   let storage = null;
   try { storage = window.localStorage; storage.getItem('three-realms.probe'); } catch (e) { storage = null; }
   const store = createStore({
