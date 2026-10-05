@@ -102,5 +102,5 @@ test('bundle: shrinking removes comments, blank lines and indentation only; a mo
   const { mkdtempSync } = await import('node:fs'); const { tmpdir } = await import('node:os'); const { join } = await import('node:path');
   const r = await build({ out: mkdtempSync(join(tmpdir(), 'dist-')), build: 't' });
   assert.deepEqual(Object.keys(r.bytes), ['game.js', 'index.html', 'style.css']); assert.ok(r.bytes['style.css'] > 1000);
-  assert.ok(Object.values(r.bytes).reduce((a, b) => a + b, 0) <= 400 * 1024);
+  assert.ok(Object.values(r.bytes).reduce((a, b) => a + b, 0) <= 1024 * 1024);
 });

@@ -79,7 +79,7 @@ const minOf = (p) => JSON.stringify(JSON.parse(readFileSync(p, 'utf8')));
 
 // The content as a module. withSchemas (tests, the art gallery): every content schema too, so the loader can validate in the page.
 // The shipped page (withSchemas false) carries only the save schema: the content is validated once, here, at build time (validateContentFiles),
-// which keeps the schemas and the cross-checker out of the 400 KB budget (DESIGN 15).
+// which keeps the schemas and the cross-checker out of the page budget (DESIGN 15).
 export function contentModule(root = ROOT, { withSchemas = true } = {}) {
   const texts = Object.fromEntries(NAMES.map((n) => [n, minOf(join(root, 'content', `${n}.json`))]));
   const schemas = Object.fromEntries((withSchemas ? [...NAMES, 'save'] : ['save']).map((n) => [n, minOf(join(root, 'content', 'schema', `${n}.schema.json`))]));

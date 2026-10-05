@@ -20,7 +20,7 @@ Going public and any announcement are yours; I have done neither. Answer here or
 2. **Which legend drops which item** (Fenris: weapon MIT, Jormungandr: armour, Ymir: helm, Beowulf: charm, Odin: weapon ARC) and the three fixed lines of each. Mine.
 3. **"Depth 5 or more"** became "a lair at least 10 cells from home, one floor, one fight". The lowest legend you have not beaten whose level the expedition has reached is the one that lairs; Chaos lairs on level-50 expeditions once four have fallen. Mine.
 4. **Reward of a lair**: a boss reward times 6 at the deepest-floor multiplier, 3 hearts, 1 Paragon Point (3 for Chaos). Mine. Chaos gives no item.
-5. **The 400 KB page ceiling** is no longer a comfortable fit for features: it is 378,011 bytes of 409,600 after I made the shipping build drop comments and indentation (and stopped shipping the content schemas). I would raise the ceiling to 512 KB rather than squeeze further; your call.
+5. ~~**The 400 KB page ceiling**~~ **Decided by Ziggy: 1 MB** (DESIGN 0.12). The page is 378,011 bytes after the shipping build drops comments and indentation and stops shipping the content schemas.
 
 ## 3. Known gaps (what I did not do or cannot claim)
 
@@ -34,7 +34,7 @@ Going public and any announcement are yours; I have done neither. Answer here or
 
 ## 4. Budgets as measured (`evidence/G6.md`)
 
-Page 378,011 bytes (ceiling 409,600); JS heap 5.46 MB (256 MB); battle frame p95 6.0 ms at 1920 x 1080, software rendering (16.7 ms); one level-50 encounter median 0.078 ms (5 ms); ten thousand delves 1.21 s (60 s).
+Page 378,011 bytes (ceiling now 1,048,576; was 409,600); JS heap 5.46 MB (256 MB); battle frame p95 6.0 ms at 1920 x 1080, software rendering (16.7 ms); one level-50 encounter median 0.078 ms (5 ms); ten thousand delves 1.21 s (60 s).
 
 ## 5. Cost and iteration summary (from `LOG.md`)
 

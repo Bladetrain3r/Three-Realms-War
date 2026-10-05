@@ -208,3 +208,8 @@ decision: proceed — evidence/G6.md, the G6 retrospective, reports/STOP-3.md, p
 
 ### G6 retrospective — 2026-10-05
 rounds used: 1 for the viewer and CI (R35), after the legends work of R31 to R34 which the viewer also plays. What the evaluation caught that reading would not: the budget test was counting less than the budget says, and only the measuring script (which counts everything) showed it; a surviving mutation in the viewer's input checks; a flaky browser test whose cause was a blur during a click. What I would specify differently: the budget's unit ("everything the page loads") should have named the files and the test should have been written from that sentence, not from what was easy to sum; and a replay file should have had a stated maximum size and shape from G1 so the viewer's refusals were designed, not found.
+
+### R36 — page ceiling — 2026-10-05
+plan: Ziggy raised the shipped-page ceiling to 1 MB ("even at 56k with a cached page it's barely a dent"): DESIGN 15 and Changes 0.12, the two tests, STOP-3 and G6 evidence, and the final CI run ids | eval: the budget tests, then the push's CI | expect: green
+result: see the next push's CI
+decision: proceed — Ziggy is playtesting; the next move is his (Alpha 0.1 if it plays well)

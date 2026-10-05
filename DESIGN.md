@@ -937,7 +937,7 @@ when a run produces it (G1 for the sim, G4 for the client), with the command tha
 | Ten thousand delves, headless Node | <= 60 s on the CI runner | G1/G3 test |
 | Client tab memory (JS heap, after a replay and every screen) | <= 256 MB | G4 headless-browser test |
 | Frame time drawing an encounter at 1920 x 1080 | p95 <= 16.7 ms (60 fps) on a software-rendered CI browser; target laptop GPU | G4 test |
-| Shipped bundle (everything the page loads, uncompressed) | <= 400 KB | G4/G6 test |
+| Shipped bundle (everything the page loads, uncompressed) | <= 1 MB (1,048,576 bytes; was 400 KB until 0.12) | G4/G6 test |
 | Save document | <= 512 KB | schema test |
 
 ## 16. Art style guide (replaced in 0.5; direction from Ziggy, 2026-10-02)
@@ -1167,3 +1167,4 @@ Random choices use `deriveSeed(masterSeed, counter)` and then increment `counter
   on load). Mine and flagged: every multiplier, skill power and phase threshold of the six legends, which legend carries which slot, `minDist` 10, `levelBonus` 2, `rewardMul` 6, 3 hearts, 1 Paragon Point (3 for Chaos),
   the lowest-unbeaten rule for which lair appears, the final boss at expedition level 50 and up. **Build-time content validation:** the shipped page no longer carries the content schemas and the cross-checker (they pushed the
   bundle past the 400 KB ceiling of 15: 441,000 bytes with the legends); `tools/bundle.mjs` validates the content at build time and refuses to build invalid content, the page indexes it as shipped. The ceiling is unchanged.
+- **0.12 (2026-10-05, Ziggy: "Heck let's raise the ceiling to 1M, even at 56k with a cached page it's barely a dent"):** the shipped-bundle ceiling of 15 is 1 MB (1,048,576 bytes), up from 400 KB. Measured at the time: 378,011 bytes. The build still drops comments and indentation and still validates content at build time; nothing else changes.
